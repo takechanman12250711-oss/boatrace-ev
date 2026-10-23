@@ -37,8 +37,19 @@ def log(*a):
 
 # ---------------------------------------------------------------- 取込
 def cmd_history(args):
+    """取込済み（決まり手まで入っている日）は飛ばすので、途中で止まっても再実行で続きから進む。"""
+    import time
+
+    t0 = time.monotonic()
     with db.session() as con:
+        done = {r[0] for r in con.execute(
+            "SELECT date FROM races GROUP BY date HAVING SUM(kimarite IS NOT NULL) > 0")}
         for date in daterange(args.date_from, args.date_to):
+            if date in done and not args.force:
+                continue
+            if args.max_minutes and time.monotonic() - t0 > args.max_minutes * 60:
+                log(f"時間切れで中断（{date} から再開できます）")
+                break
             try:
                 races, entries, pays = history.fetch_day(date)
             except Exception as e:  # 1日失敗しても続ける
@@ -316,7 +327,7 @@ def cmd_status(args):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="boatev")
     sp = ap.add_subparsers(dest="cmd", required=True)
-    p = sp.add_parser("history"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.set_defaults(f=cmd_history)
+    p = sp.add_parser("history"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.add_argument("--force", action="store_true"); p.set_defaults(f=cmd_history)
     p = sp.add_parser("collect"); p.add_argument("--date", required=True); p.add_argument("--to"); p.set_defaults(f=cmd_collect)
     p = sp.add_parser("backfill-odds"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.set_defaults(f=cmd_backfill_odds)
     p = sp.add_parser("train"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_train)

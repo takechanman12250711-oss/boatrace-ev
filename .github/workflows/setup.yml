@@ -26,7 +26,7 @@ jobs:
       - name: history
         run: |
           TO="${{ inputs.to }}"; [ -z "$TO" ] && TO=$(date -d yesterday +%Y%m%d)
-          python -m boatev.cli history --from ${{ inputs.from }} --to $TO
+          python -m boatev.cli history --from ${{ inputs.from }} --to $TO --max-minutes 240
       - run: python -m boatev.cli compare-features --from 20240101 || true
       - run: python -m boatev.cli train
       - run: python -m boatev.cli backtest --test-from ${{ inputs.test_from }} || true
