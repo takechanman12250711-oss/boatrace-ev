@@ -36,6 +36,19 @@ def log(*a):
 
 
 # ---------------------------------------------------------------- 取込
+def _history_log(date, sec, **kw):
+    """取込1日ごとの所要時間・通信状況を記録（status.jsonで確認する）。"""
+    from . import http
+    p = config.DATA_DIR / "history_log.json"
+    try:
+        rows = json.loads(p.read_text()) if p.exists() else []
+    except ValueError:
+        rows = []
+    rows.append({"date": date, "sec": round(sec, 1), "at": now().isoformat(timespec="seconds"),
+                 **kw, "http": {k: (round(v, 1) if isinstance(v, float) else v) for k, v in http.STATS.items()}})
+    p.write_text(json.dumps(rows[-200:], ensure_ascii=False))
+
+
 def cmd_history(args):
     """取込済み（決まり手まで入っている日）は飛ばすので、途中で止まっても再実行で続きから進む。"""
     import time
@@ -50,16 +63,19 @@ def cmd_history(args):
             if args.max_minutes and time.monotonic() - t0 > args.max_minutes * 60:
                 log(f"時間切れで中断（{date} から再開できます）")
                 break
+            t_day = time.monotonic()
             try:
                 races, entries, pays = history.fetch_day(date)
             except Exception as e:  # 1日失敗しても続ける
                 log(date, "失敗:", e)
+                _history_log(date, time.monotonic() - t_day, error=str(e)[:200])
                 continue
             db.upsert(con, "races", races, ("race_id",))
             db.upsert(con, "entries", entries, ("race_id", "boat"))
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             con.commit()
             log(date, f"races={len({r['race_id'] for r in races})} entries={len(entries)}")
+            _history_log(date, time.monotonic() - t_day, races=len({r['race_id'] for r in races}))
         miss = config.DATA_DIR / "parse_misses.json"
         if history.MISSES:
             miss.write_text(json.dumps(history.MISSES, ensure_ascii=False, indent=1))
@@ -315,6 +331,12 @@ def cmd_status(args):
                    SUM(e.ex_time IS NULL) no_ex
             FROM entries e JOIN races r USING(race_id) GROUP BY r.date, r.jcd
             HAVING no_class > 0 OR no_finish > 12 OR no_ex > 0 ORDER BY r.date DESC LIMIT 40""")]
+    hl = config.DATA_DIR / "history_log.json"
+    if hl.exists():
+        rows = json.loads(hl.read_text())
+        st["history_log_tail"] = rows[-15:]
+        secs = [r["sec"] for r in rows[-100:]]
+        st["history_sec_per_day_avg"] = round(sum(secs) / len(secs), 1) if secs else None
     miss = config.DATA_DIR / "parse_misses.json"
     if miss.exists():
         st["parse_misses"] = json.loads(miss.read_text())[:80]
