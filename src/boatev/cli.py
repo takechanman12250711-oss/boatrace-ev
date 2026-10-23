@@ -49,6 +49,8 @@ def cmd_history(args):
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             con.commit()
             log(date, f"races={len({r['race_id'] for r in races})} entries={len(entries)}")
+        if history.MISSES:
+            (config.DATA_DIR / "parse_misses.json").write_text(json.dumps(history.MISSES, ensure_ascii=False, indent=1))
 
 
 def store_odds(con, rid, date, jcd, rno):
@@ -268,6 +270,16 @@ def cmd_status(args):
             "sample": q("""SELECT e.race_id, e.boat, e.name, e.class, e.nat_win, e.motor_2, e.ex_time, e.course, e.st, e.finish
                            FROM entries e ORDER BY e.race_id DESC, e.boat LIMIT 6"""),
         }
+    # 着順・級別が欠けているレース（場ごと）
+    with db.session() as con:
+        st["gaps"] = [dict(r) for r in con.execute("""
+            SELECT r.date, r.jcd, COUNT(*) entries, SUM(e.class IS NULL) no_class, SUM(e.finish IS NULL) no_finish,
+                   SUM(e.ex_time IS NULL) no_ex
+            FROM entries e JOIN races r USING(race_id) GROUP BY r.date, r.jcd
+            HAVING no_class > 0 OR no_finish > 12 OR no_ex > 0 ORDER BY r.date DESC LIMIT 40""")]
+    miss = config.DATA_DIR / "parse_misses.json"
+    if miss.exists():
+        st["parse_misses"] = json.loads(miss.read_text())[:80]
     if config.MODEL_PATH.exists():
         from .model import Model
         st["model"] = Model.load().metrics

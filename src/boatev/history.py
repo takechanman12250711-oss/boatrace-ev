@@ -44,6 +44,14 @@ def _extract_lzh(blob: bytes) -> bytes:
         return b"".join(x.read_bytes() for x in Path(d).iterdir() if x.suffix.upper() == ".TXT")
 
 
+MISSES: list[dict] = []   # 読めなかった行（調査用）
+
+
+def _miss(kind, date, line):
+    if len(MISSES) < 300:
+        MISSES.append({"kind": kind, "date": date, "line": line})
+
+
 def _lines(text: str):
     for raw in text.splitlines():
         yield unicodedata.normalize("NFKC", raw).rstrip()
@@ -81,6 +89,8 @@ def parse_b(text: str, date: str):
             })
             continue
         m = B_ENTRY.match(line)
+        if not m and jcd and rno and re.match(r"^[1-6]\s\d{4}", line):
+            _miss("B", date, line)
         if m and jcd and rno:
             g = m.groups()
             entries.append({
@@ -110,6 +120,8 @@ def parse_k(text: str, date: str):
         if m:
             jcd, rno = m.group(1), None
             continue
+        if re.match(r"^\s*\d{1,2}R\s", line) and not re.match(r"^\s*(\d{1,2})R\s+(.+?)\s+H(\d{4})m\s+(.*)$", line):
+            _miss("K-header", date, line)
         m = re.match(r"^\s*(\d{1,2})R\s+(.+?)\s+H(\d{4})m\s+(.*)$", line)
         if m and jcd:
             rno = int(m.group(1))
@@ -126,6 +138,8 @@ def parse_k(text: str, date: str):
         if not (jcd and rno):
             continue
         m = K_ENTRY.match(line)
+        if not m and re.match(r"^\s*\S{1,2}\s+[1-6]\s+\d{4}\s", line):
+            _miss("K", date, line)
         if m and re.fullmatch(r"\d{2}|[A-Z]\d?|\S", m.group(1)):
             fin, boat, rid_, _, motor, boat_no, rest = m.groups()
             tok = rest.split()
