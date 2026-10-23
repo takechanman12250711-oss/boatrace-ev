@@ -5,6 +5,7 @@ on:
     inputs:
       from: { description: "開始日 YYYYMMDD", required: true, default: "20220101" }
       to:   { description: "終了日 YYYYMMDD", required: true, default: "20261022" }
+permissions: { contents: write }
 concurrency: { group: boatev-db, cancel-in-progress: false }
 jobs:
   backfill:
@@ -22,8 +23,15 @@ jobs:
           key: boatev-db-${{ github.run_id }}
           restore-keys: boatev-db-
       - run: python -m boatev.cli backfill-odds --from ${{ inputs.from }} --to ${{ inputs.to }} --max-minutes 320
+      - run: python -m boatev.cli status
+        if: always()
       - uses: actions/cache/save@v4
         if: always()
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
+          git add docs/data && git commit -m "backfill odds status" && git pull --rebase && git push || echo "no changes"

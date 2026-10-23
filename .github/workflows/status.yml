@@ -1,0 +1,25 @@
+# 手動：DBの取込状況を docs/data/status.json に書き出す
+name: status
+on: { workflow_dispatch: {} }
+concurrency: { group: boatev-db, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    env: { PYTHONPATH: src, TZ: Asia/Tokyo }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: boatev-db-status-${{ github.run_id }}
+          restore-keys: boatev-db-
+      - run: python -m boatev.cli status
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
+          git add docs/data && git commit -m "status" && git pull --rebase && git push || echo "no changes"

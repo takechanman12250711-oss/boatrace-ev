@@ -244,6 +244,38 @@ def cmd_results(args):
     _save_site(site)
 
 
+def cmd_status(args):
+    """DBの中身の件数と抜けをdocs/data/status.jsonに書く（Actionsのログを見なくても状況がわかるように）。"""
+    with db.session() as con:
+        q = lambda sql: [dict(r) for r in con.execute(sql)]
+        st = {
+            "generated_at": now().isoformat(timespec="seconds"),
+            "totals": q("""SELECT (SELECT COUNT(*) FROM races) races, (SELECT COUNT(*) FROM entries) entries,
+                                  (SELECT COUNT(*) FROM payouts) payouts,
+                                  (SELECT COUNT(DISTINCT race_id) FROM odds) races_with_odds,
+                                  (SELECT MIN(date) FROM races) first_date, (SELECT MAX(date) FROM races) last_date""")[0],
+            # 各列がどれだけ埋まっているか（0%の列は読み取り失敗の疑い）
+            "fill_rate": q("""SELECT ROUND(AVG(racer_id IS NOT NULL),3) racer_id, ROUND(AVG(class IS NOT NULL),3) class,
+                                     ROUND(AVG(nat_win IS NOT NULL),3) nat_win, ROUND(AVG(motor_2 IS NOT NULL),3) motor_2,
+                                     ROUND(AVG(ex_time IS NOT NULL),3) ex_time, ROUND(AVG(course IS NOT NULL),3) course,
+                                     ROUND(AVG(st IS NOT NULL),3) st, ROUND(AVG(finish IS NOT NULL),3) finish
+                              FROM entries""")[0],
+            "recent_days": q("""SELECT r.date, COUNT(DISTINCT r.jcd) venues, COUNT(DISTINCT r.race_id) races,
+                                       COUNT(e.boat) entries, SUM(e.finish IS NOT NULL) finished,
+                                       (SELECT COUNT(*) FROM payouts p JOIN races r2 USING(race_id) WHERE r2.date=r.date AND p.bet_type='3連単') tri_payouts
+                                FROM races r LEFT JOIN entries e USING(race_id)
+                                GROUP BY r.date ORDER BY r.date DESC LIMIT 14"""),
+            "sample": q("""SELECT e.race_id, e.boat, e.name, e.class, e.nat_win, e.motor_2, e.ex_time, e.course, e.st, e.finish
+                           FROM entries e ORDER BY e.race_id DESC, e.boat LIMIT 6"""),
+        }
+    if config.MODEL_PATH.exists():
+        from .model import Model
+        st["model"] = Model.load().metrics
+    config.SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (config.SITE_DATA_DIR / "status.json").write_text(json.dumps(st, ensure_ascii=False, indent=1, default=str))
+    print(json.dumps(st["totals"], ensure_ascii=False))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="boatev")
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -254,6 +286,7 @@ def main(argv=None):
     p = sp.add_parser("backtest"); p.add_argument("--test-from", required=True); p.set_defaults(f=cmd_backtest)
     p = sp.add_parser("predict"); p.add_argument("--date"); p.add_argument("--within", type=int, default=0); p.set_defaults(f=cmd_predict)
     p = sp.add_parser("results"); p.add_argument("--date"); p.set_defaults(f=cmd_results)
+    p = sp.add_parser("status"); p.set_defaults(f=cmd_status)
     p = sp.add_parser("debug-page"); p.add_argument("url"); p.set_defaults(f=lambda a: print(__import__("boatev.http", fromlist=["get"]).get(a.url)[:5000]))
     args = ap.parse_args(argv)
     args.f(args)

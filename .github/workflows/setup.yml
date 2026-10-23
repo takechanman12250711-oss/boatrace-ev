@@ -29,12 +29,15 @@ jobs:
           python -m boatev.cli history --from ${{ inputs.from }} --to $TO
       - run: python -m boatev.cli train
       - run: python -m boatev.cli backtest --test-from ${{ inputs.test_from }} || true
+      - run: python -m boatev.cli status
+        if: always()
       - uses: actions/cache/save@v4
         if: always()
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
       - name: commit report
+        if: always()
         run: |
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
           git add docs/data && git commit -m "backtest report" && git push || echo "no changes"
