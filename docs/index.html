@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>買い目分析</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16181d;--sub:#6b7280;--line:#e5e7eb;--accent:#0b6bcb;--hit:#0f8a4b;--miss:#b4231b}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--ink:#e8eaed;--sub:#9aa1ad;--line:#2a2f38;--accent:#5aa6ff;--hit:#3ccf87;--miss:#ff6b61}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+header{position:sticky;top:0;background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--line);z-index:2}
+h1{font-size:17px;margin:0 0 8px}select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+main{padding:12px 16px 40px;max-width:760px;margin:auto}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}.tile b{display:block;font-size:18px}.tile span{color:var(--sub);font-size:12px}
+.race{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.rh h2{font-size:16px;margin:0}.rh small{color:var(--sub)}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid currentColor}.hit{color:var(--hit)}.miss{color:var(--miss)}.none{color:var(--sub)}
+.bars{margin:10px 0}.bar{display:grid;grid-template-columns:22px 1fr 44px;gap:6px;align-items:center;font-size:13px;margin:3px 0}
+.bn{width:22px;height:22px;border-radius:5px;display:grid;place-items:center;font-weight:700;font-size:12px;border:1px solid var(--line)}
+.b1{background:#fff;color:#000}.b2{background:#111;color:#fff}.b3{background:#e0332b;color:#fff}.b4{background:#1d5fd1;color:#fff}.b5{background:#f2cf1d;color:#000}.b6{background:#1b9a4a;color:#fff}
+.track{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.fill{height:100%;background:var(--accent)}
+.nm{color:var(--sub);font-size:12px;grid-column:2/4;margin-top:-2px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}th,td{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+th{color:var(--sub);font-weight:500}tr.won td{color:var(--hit);font-weight:700}
+.empty{color:var(--sub);text-align:center;padding:40px 0}
+details summary{cursor:pointer;color:var(--sub);font-size:13px;margin-top:6px}
+.note{color:var(--sub);font-size:12px;margin-top:20px}
+</style>
+</head>
+<body>
+<header><h1>ボートレース 買い目分析</h1>
+<select id="date"></select> <select id="filter"><option value="picks">推奨あり</option><option value="all">全レース</option></select></header>
+<main><div id="sum" class="sum"></div><div id="list"></div><div id="bt"></div>
+<p class="note">期待値 = 的中確率 × オッズ。オッズは予想時点の値で、締切までに変動します。結果は保証されません。</p></main>
+<script>
+const $=s=>document.querySelector(s), yen=n=>n.toLocaleString('ja-JP')+'円', pct=x=>(x*100).toFixed(1)+'%';
+async function j(u){try{const r=await fetch(u,{cache:'no-store'});return r.ok?r.json():null}catch(e){return null}}
+async function init(){
+  const idx=await j('data/index.json'); const dates=idx?.dates||[];
+  $('#date').innerHTML=dates.map(d=>`<option value="${d}">${d.slice(0,4)}/${d.slice(4,6)}/${d.slice(6)}</option>`).join('');
+  $('#date').onchange=$('#filter').onchange=load; await load(); bt();
+}
+async function load(){
+  const d=$('#date').value; if(!d){$('#list').innerHTML='<p class="empty">まだ予想データがありません</p>';return}
+  const data=await j(`data/${d}.json`); const races=Object.values(data?.races||{}).filter(r=>r.entries)
+    .sort((a,b)=>(a.deadline||'').localeCompare(b.deadline||'')||a.race_id.localeCompare(b.race_id));
+  let st=0,rt=0,done=0; races.forEach(r=>{if(r.result){st+=r.result.stake;rt+=r.result.return;done++}});
+  $('#sum').innerHTML=`<div class="tile"><span>購入</span><b>${yen(st)}</b></div><div class="tile"><span>払戻</span><b>${yen(rt)}</b></div><div class="tile"><span>回収率</span><b>${st?Math.round(rt/st*100)+'%':'-'}</b></div>`;
+  const show=$('#filter').value==='all'?races:races.filter(r=>r.picks?.length);
+  $('#list').innerHTML=show.length?show.map(card).join(''):'<p class="empty">該当レースなし</p>';
+}
+function card(r){
+  const res=r.result, won=new Set((res?.payouts||[]).map(p=>p.type+p.combo));
+  const badge=!res?'<span class="badge none">結果待ち</span>':res.return>0?`<span class="badge hit">的中 ${yen(res.return)}</span>`:'<span class="badge miss">不的中</span>';
+  const mx=Math.max(...r.entries.map(e=>e.win_prob));
+  const bars=r.entries.map(e=>`<div class="bar"><div class="bn b${e.boat}">${e.boat}</div><div class="track"><div class="fill" style="width:${e.win_prob/mx*100}%"></div></div><div>${pct(e.win_prob)}</div>
+    <div class="nm">${e.name||''} ${e.class||''}${e.course!==e.boat?` ・${e.course}コース進入`:''}${e.ex_time?` ・展示${e.ex_time.toFixed(2)}`:''}</div></div>`).join('');
+  const row=b=>`<tr class="${won.has(b.type+b.combo)?'won':''}"><td>${b.type}</td><td>${b.combo}</td><td>${pct(b.prob)}</td><td>${b.odds??'-'}</td><td>${b.ev?b.ev.toFixed(2):'-'}</td>${b.stake!==undefined?`<td>${b.stake}</td>`:''}</tr>`;
+  const picks=r.picks?.length?`<table><tr><th>券種</th><th>買い目</th><th>確率</th><th>オッズ</th><th>期待値</th><th>金額</th></tr>${r.picks.map(row).join('')}</table>`:'<p class="nm">期待値の基準を満たす買い目なし（見送り）</p>';
+  return `<div class="race"><div class="rh"><h2>${r.venue} ${r.rno}R</h2><small>${r.deadline?'締切 '+r.deadline:''}</small>${badge}</div>
+    <div class="bars">${bars}</div>${picks}${res?.['3連単']?`<p class="nm">結果 3連単 ${res['3連単']}</p>`:''}
+    <details><summary>確率上位の3連単</summary><table><tr><th>券種</th><th>買い目</th><th>確率</th><th>オッズ</th><th>期待値</th></tr>${(r.top3t||[]).map(row).join('')}</table></details></div>`;
+}
+async function bt(){
+  const b=await j('data/backtest.json'); if(!b?.holdout) return;
+  const h=b.holdout,p=b.best_params;
+  $('#bt').innerHTML=`<div class="race"><div class="rh"><h2>バックテスト（${b.periods.holdout_from}〜）</h2></div>
+  <table><tr><th>指標</th><th></th><th>値</th></tr><tr><td>買い目数</td><td></td><td>${h.bets}</td></tr><tr><td>的中率</td><td></td><td>${pct(h.hit_rate)}</td></tr>
+  <tr><td>回収率</td><td></td><td>${Math.round(h.roi*100)}%</td></tr><tr><td>条件</td><td></td><td>期待値≥${p.ev_th}・混合${p.blend}・オッズ≤${p.max_odds}</td></tr></table></div>`;
+}
+init();
+</script>
+</body>
+</html>

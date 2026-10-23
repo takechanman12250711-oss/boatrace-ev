@@ -1,0 +1,40 @@
+# 初回のみ手動実行：過去データ取込 → 学習 → バックテスト
+name: setup (history + train)
+on:
+  workflow_dispatch:
+    inputs:
+      from: { description: "取込開始日 YYYYMMDD", required: true, default: "20250101" }
+      to:   { description: "取込終了日 YYYYMMDD（空なら昨日）", required: false }
+      test_from: { description: "バックテスト開始日 YYYYMMDD", required: true, default: "20260701" }
+concurrency: { group: boatev-db, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env: { PYTHONPATH: src, TZ: Asia/Tokyo }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: boatev-db-${{ github.run_id }}
+          restore-keys: boatev-db-
+      - name: history
+        run: |
+          TO="${{ inputs.to }}"; [ -z "$TO" ] && TO=$(date -d yesterday +%Y%m%d)
+          python -m boatev.cli history --from ${{ inputs.from }} --to $TO
+      - run: python -m boatev.cli train
+      - run: python -m boatev.cli backtest --test-from ${{ inputs.test_from }} || true
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data
+          key: boatev-db-${{ github.run_id }}
+      - name: commit report
+        run: |
+          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
+          git add docs/data && git commit -m "backtest report" && git push || echo "no changes"

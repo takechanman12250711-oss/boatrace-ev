@@ -1,0 +1,29 @@
+# 過去オッズの補完（手動）。1回あたり約5時間で打ち切り、再実行すると続きから取る
+name: backfill odds
+on:
+  workflow_dispatch:
+    inputs:
+      from: { description: "開始日 YYYYMMDD", required: true, default: "20220101" }
+      to:   { description: "終了日 YYYYMMDD", required: true, default: "20261022" }
+concurrency: { group: boatev-db, cancel-in-progress: false }
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env: { PYTHONPATH: src, TZ: Asia/Tokyo }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: boatev-db-${{ github.run_id }}
+          restore-keys: boatev-db-
+      - run: python -m boatev.cli backfill-odds --from ${{ inputs.from }} --to ${{ inputs.to }} --max-minutes 320
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data
+          key: boatev-db-${{ github.run_id }}
