@@ -1,0 +1,1 @@
+{"model": {"win_top1_acc": 0.5227, "win_logloss": 1.3108, "tri_logloss": 4.0788, "tri_top1_acc": 0.0682, "tri_logloss_uniform": 4.7875, "lam2": 0.7500000000000002, "lam3": 0.5, "train_races": 636, "valid_races": 132, "valid_from": "20261019"}, "note": "オッズ付きのレースが少なく、しきい値を調整できません"}
