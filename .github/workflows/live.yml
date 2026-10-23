@@ -20,11 +20,15 @@ jobs:
           path: data
           key: boatev-db-${{ github.run_id }}
           restore-keys: boatev-db-
-      - run: test -f data/model.pkl || (echo "先に setup を実行してください" && exit 1)
-      - run: python -m boatev.cli predict --within 20
-      - run: python -m boatev.cli results
+      - id: ready
+        run: |
+          if [ -f data/model.pkl ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "モデル未作成のためスキップ（先に setup を実行）"; fi
+      - if: steps.ready.outputs.ok == '1'
+        run: python -m boatev.cli predict --within 20
+      - if: steps.ready.outputs.ok == '1'
+        run: python -m boatev.cli results
       - uses: actions/cache/save@v4
-        if: always()
+        if: always() && steps.ready.outputs.ok == '1'
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
