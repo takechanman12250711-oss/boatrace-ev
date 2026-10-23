@@ -123,7 +123,7 @@ def parse_k(text: str, date: str):
         if m:
             jcd, rno = m.group(1), None
             continue
-        if re.match(r"^\s*\d{1,2}R\s", line) and not re.match(r"^\s*(\d{1,2})R\s+(.+?)\s+H(\d{4})m\s+(.*)$", line):
+        if re.match(r"^\s*\d{1,2}R\s", line) and not re.match(r"^\s*\d{1,2}R\s+\d-\d", line) and not re.match(r"^\s*(\d{1,2})R\s+(.+?)\s+H(\d{4})m\s+(.*)$", line):
             _miss("K-header", date, line)
         m = re.match(r"^\s*(\d{1,2})R\s+(.+?)\s+H(\d{4})m\s+(.*)$", line)
         if m and jcd:

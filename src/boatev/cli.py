@@ -292,6 +292,8 @@ def cmd_status(args):
                                   (SELECT COUNT(DISTINCT race_id) FROM odds) races_with_odds,
                                   (SELECT MIN(date) FROM races) first_date, (SELECT MAX(date) FROM races) last_date""")[0],
             # 各列がどれだけ埋まっているか（0%の列は読み取り失敗の疑い）
+            "days_loaded": q("""SELECT COUNT(DISTINCT date) days, SUM(k) days_with_kimarite FROM
+                                 (SELECT date, MAX(kimarite IS NOT NULL) k FROM races GROUP BY date)""")[0],
             "kimarite": q("""SELECT kimarite, COUNT(*) n FROM races GROUP BY kimarite ORDER BY n DESC"""),
             "fill_rate": q("""SELECT ROUND(AVG(racer_id IS NOT NULL),3) racer_id, ROUND(AVG(class IS NOT NULL),3) class,
                                      ROUND(AVG(nat_win IS NOT NULL),3) nat_win, ROUND(AVG(motor_2 IS NOT NULL),3) motor_2,

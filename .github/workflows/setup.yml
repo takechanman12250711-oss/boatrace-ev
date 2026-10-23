@@ -41,4 +41,4 @@ jobs:
         if: always()
         run: |
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
-          git add docs/data && git commit -m "backtest report" && git push || echo "no changes"
+          git add docs/data && git commit -m "setup report" && git pull --rebase && git push || echo "no changes"
