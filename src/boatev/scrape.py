@@ -253,6 +253,13 @@ def result(date: str, jcd: str, rno: int):
             if e["boat"] == boat:
                 e["course"], e["st"] = course, st_value(t.get_text()) if t else None
 
+    kim = None
+    for th in s.find_all(["th", "td"]):
+        if norm(th.get_text()) == "決まり手":
+            cell = th.find_parent("table").select_one("tbody td") if th.find_parent("table") else None
+            m = re.search(r"(逃げ|まくり差し|差し|まくり|抜き|恵まれ)", norm(cell.get_text())) if cell else None
+            kim = m.group(1) if m else None
+            break
     payouts, current = [], None
     for tr in s.select("table tr"):
         text = norm(tr.get_text(" "))
@@ -270,4 +277,4 @@ def result(date: str, jcd: str, rno: int):
                 "payout": int(pay.group(1).replace(",", "")),
                 "popularity": int(pop[0]) if pop else None,
             })
-    return entries, payouts
+    return entries, payouts, kim

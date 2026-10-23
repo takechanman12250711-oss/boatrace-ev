@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS races (
     date TEXT, jcd TEXT, rno INTEGER,
     title TEXT, grade TEXT, distance INTEGER, deadline TEXT,
     weather TEXT, wind_dir TEXT, wind_speed REAL, wave REAL,
-    temp REAL, water_temp REAL
+    temp REAL, water_temp REAL,
+    kimarite TEXT                   -- 決まり手（1着艇の）
 );
 CREATE TABLE IF NOT EXISTS entries (
     race_id TEXT, boat INTEGER,
@@ -48,7 +49,20 @@ def connect() -> sqlite3.Connection:
     con = sqlite3.connect(config.DB_PATH)
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
+    _migrate(con)
     return con
+
+
+MIGRATIONS = {"races": {"kimarite": "TEXT"}}
+
+
+def _migrate(con):
+    """既存DB（Actionsのキャッシュ）に後から足した列を追加する。"""
+    for table, cols in MIGRATIONS.items():
+        have = {r[1] for r in con.execute(f"PRAGMA table_info({table})")}
+        for col, typ in cols.items():
+            if col not in have:
+                con.execute(f"ALTER TABLE {table} ADD COLUMN {col} {typ}")
 
 
 @contextmanager

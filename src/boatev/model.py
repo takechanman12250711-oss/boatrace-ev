@@ -43,7 +43,8 @@ def combo_names(kind: str) -> list[str]:
 
 
 class Model:
-    def __init__(self):
+    def __init__(self, features: list[str] | None = None):
+        self.features = list(features or FEATURES)
         self.clf = HistGradientBoostingClassifier(
             max_iter=500, learning_rate=0.04, max_leaf_nodes=31, min_samples_leaf=40,
             l2_regularization=1.0, early_stopping=True, validation_fraction=0.1, random_state=0,
@@ -53,15 +54,15 @@ class Model:
 
     # -- 1着確率（レース内正規化）
     def win_probs(self, df: pd.DataFrame) -> np.ndarray:
-        raw = self.clf.predict_proba(df[FEATURES])[:, 1]
+        raw = self.clf.predict_proba(df[self._feats()])[:, 1]
         s = pd.Series(raw, index=df.index)
         return (s / s.groupby(df["race_id"]).transform("sum")).values
 
-    def fit(self, df: pd.DataFrame, valid_share: float = 0.2):
+    def fit(self, df: pd.DataFrame, valid_share: float = 0.2, refit: bool = True):
         dates = np.sort(df["date"].unique())
         cut = dates[int(len(dates) * (1 - valid_share))]
         tr, va = df[df["date"] < cut], df[df["date"] >= cut]
-        self.clf.fit(tr[FEATURES], (tr["finish"] == 1).astype(int))
+        self.clf.fit(tr[self._feats()], (tr["finish"] == 1).astype(int))
 
         va = va.assign(p=self.win_probs(va))
         races = [(g["p"].values, g["finish"].values) for _, g in va.groupby("race_id")]
@@ -69,8 +70,12 @@ class Model:
         self.metrics = self._evaluate(races) | {"train_races": tr["race_id"].nunique(),
                                                 "valid_races": len(races), "valid_from": cut}
         # 最終モデルは全期間で学習し直す
-        self.clf.fit(df[FEATURES], (df["finish"] == 1).astype(int))
+        if refit:
+            self.clf.fit(df[self._feats()], (df["finish"] == 1).astype(int))
         return self
+
+    def _feats(self):
+        return getattr(self, "features", FEATURES)  # 旧バージョンのpickle互換
 
     @staticmethod
     def _ll(races, lam2, lam3):

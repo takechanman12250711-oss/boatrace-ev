@@ -105,6 +105,7 @@ def parse_b(text: str, date: str):
 
 
 # ---------------------------------------------------------------- 競走成績
+KIMARITE = re.compile(r"(逃げ|まくり差し|差し|まくり|抜き|恵まれ)")
 K_ENTRY = re.compile(r"^\s*(\S{1,2})\s+([1-6])\s+(\d{4})\s+(\D+?)\s+(\d+)\s+(\d+)\s*(.*)$")
 K_PAY = re.compile(r"^\s*(3連単|2連単)\s+(\d-\d(?:-\d)?)\s+(\d+)(?:\s+人気\s+(\d+))?")
 
@@ -116,6 +117,7 @@ def _race_time(tok: str):
 
 def parse_k(text: str, date: str):
     races, entries, payouts, jcd, rno = [], [], [], None, None
+    need_kim = False  # このレースの決まり手をまだ見つけていない
     for line in _lines(text):
         m = re.match(r"^(\d{2})KBGN", line)
         if m:
@@ -129,7 +131,10 @@ def parse_k(text: str, date: str):
             rest = m.group(4)
             wd = re.search(r"風\s+(\S+)\s+(\d+)m", rest)
             wv = re.search(r"波\s+(\d+)cm", rest)
+            km = KIMARITE.search(rest)
+            need_kim = km is None
             races.append({
+                "kimarite": km.group(1) if km else None,
                 "race_id": race_id(date, jcd, rno), "date": date, "jcd": jcd, "rno": rno,
                 "distance": int(m.group(3)), "weather": rest.split()[0] if rest.split() else None,
                 "wind_dir": wd.group(1) if wd else None, "wind_speed": _f(wd.group(2)) if wd else None,
@@ -138,6 +143,10 @@ def parse_k(text: str, date: str):
             continue
         if not (jcd and rno):
             continue
+        if need_kim and races and not K_ENTRY.match(line):
+            km = KIMARITE.search(line)   # 見出しの次の行に書かれている形式にも対応
+            if km:
+                races[-1]["kimarite"], need_kim = km.group(1), False
         m = K_ENTRY.match(line)
         if not m and re.match(r"^\s*\S{1,2}\s+[1-6]\s+\d{4}\s", line):
             _miss("K", date, line)
@@ -149,6 +158,9 @@ def parse_k(text: str, date: str):
                 st = _f(tok[2].lstrip("F"))
                 if st is not None and tok[2].startswith("F"):
                     st = -st
+            if fin == "01" and need_kim:
+                _miss("K-kimarite", date, races[-1]["race_id"] if races else "")
+                need_kim = False
             entries.append({
                 "race_id": race_id(date, jcd, rno), "boat": int(boat), "racer_id": int(rid_),
                 "finish": int(fin) if fin.isdigit() else None,

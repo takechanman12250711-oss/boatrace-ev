@@ -82,7 +82,8 @@ def collect_race(con, date, jcd, rno, *, before=True, odds=True, result=False):
     if odds:
         got = store_odds(con, rid, date, jcd, rno)
     if result:
-        res, pays = scrape.result(date, jcd, rno)
+        res, pays, kim = scrape.result(date, jcd, rno)
+        db.upsert(con, "races", [{"race_id": rid, "kimarite": kim}], ("race_id",))
         db.upsert(con, "entries", res, ("race_id", "boat"))
         db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
     con.commit()
@@ -131,6 +132,25 @@ def cmd_train(args):
     m = Model().fit(df)
     m.save()
     print(json.dumps(m.metrics, ensure_ascii=False, indent=2))
+
+
+def cmd_compare_features(args):
+    """日和型の指標を入れる前後で、検証期間の精度を比べる。"""
+    from .model import Model
+    from .features import FEATURES
+
+    new = FEATURES[FEATURES.index("r_nige"):]
+    with db.session() as con:
+        df = features.full_races(features.build(features.load(con, args.date_from)))
+    out = {}
+    for name, feats in (("基本のみ", [f for f in FEATURES if f not in new]), ("日和型を追加", FEATURES)):
+        m = Model(feats).fit(df, refit=False)
+        out[name] = {k: m.metrics[k] for k in ("win_top1_acc", "win_logloss", "tri_logloss", "tri_top1_acc")}
+        log(name, out[name])
+    out["races"] = int(df["race_id"].nunique())
+    config.SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (config.SITE_DATA_DIR / "feature_compare.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    print(json.dumps(out, ensure_ascii=False, indent=1))
 
 
 def cmd_backtest(args):
@@ -234,9 +254,10 @@ def cmd_results(args):
         for rid, r in site["races"].items():
             if "result" in r or "jcd" not in r:
                 continue
-            ents, pays = scrape.result(date, r["jcd"], r["rno"])
+            ents, pays, kim = scrape.result(date, r["jcd"], r["rno"])
             if not pays:
                 continue
+            db.upsert(con, "races", [{"race_id": rid, "kimarite": kim}], ("race_id",))
             db.upsert(con, "entries", ents, ("race_id", "boat"))
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             paymap = {(p["bet_type"], p["combo"]): p["payout"] for p in pays}
@@ -260,6 +281,7 @@ def cmd_status(args):
                                   (SELECT COUNT(DISTINCT race_id) FROM odds) races_with_odds,
                                   (SELECT MIN(date) FROM races) first_date, (SELECT MAX(date) FROM races) last_date""")[0],
             # 各列がどれだけ埋まっているか（0%の列は読み取り失敗の疑い）
+            "kimarite": q("""SELECT kimarite, COUNT(*) n FROM races GROUP BY kimarite ORDER BY n DESC"""),
             "fill_rate": q("""SELECT ROUND(AVG(racer_id IS NOT NULL),3) racer_id, ROUND(AVG(class IS NOT NULL),3) class,
                                      ROUND(AVG(nat_win IS NOT NULL),3) nat_win, ROUND(AVG(motor_2 IS NOT NULL),3) motor_2,
                                      ROUND(AVG(ex_time IS NOT NULL),3) ex_time, ROUND(AVG(course IS NOT NULL),3) course,
@@ -298,6 +320,7 @@ def main(argv=None):
     p = sp.add_parser("collect"); p.add_argument("--date", required=True); p.add_argument("--to"); p.set_defaults(f=cmd_collect)
     p = sp.add_parser("backfill-odds"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.set_defaults(f=cmd_backfill_odds)
     p = sp.add_parser("train"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_train)
+    p = sp.add_parser("compare-features"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_compare_features)
     p = sp.add_parser("backtest"); p.add_argument("--test-from", required=True); p.set_defaults(f=cmd_backtest)
     p = sp.add_parser("predict"); p.add_argument("--date"); p.add_argument("--within", type=int, default=0); p.set_defaults(f=cmd_predict)
     p = sp.add_parser("results"); p.add_argument("--date"); p.set_defaults(f=cmd_results)

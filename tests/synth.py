@@ -39,6 +39,9 @@ def make(con, days=120, venues=("01", "12", "24")):
                                  "ex_time": round(float(ex[b]), 2), "course": b + 1, "st": round(abs(rng.normal(.15, .04)), 2),
                                  "finish": int(fin[b])})
                 db.upsert(con, "entries", ents, ("race_id", "boat"))
+                wc = int(np.where(fin == 1)[0][0]) + 1
+                kim = "逃げ" if wc == 1 else str(rng.choice(["差し", "まくり", "まくり差し"]))
+                db.upsert(con, "races", [{"race_id": rid, "kimarite": kim}], ("race_id",))
                 # 市場：真の強さ＋ノイズから作ったオッズ（控除率25%）
                 mk = np.exp(score + rng.normal(0, .5, 6)); mk /= mk.sum()
                 for kind, label, n in (("3t", "3連単", 3), ("2t", "2連単", 2)):
