@@ -1,0 +1,165 @@
+{
+ "generated_at": "2026-10-24T00:24:31+09:00",
+ "totals": {
+  "races": 1068,
+  "entries": 6408,
+  "payouts": 2112,
+  "races_with_odds": 0,
+  "first_date": "20261015",
+  "last_date": "20261021"
+ },
+ "fill_rate": {
+  "racer_id": 1.0,
+  "class": 0.942,
+  "nat_win": 0.942,
+  "motor_2": 0.942,
+  "ex_time": 0.986,
+  "course": 0.986,
+  "st": 0.986,
+  "finish": 0.973
+ },
+ "recent_days": [
+  {
+   "date": "20261021",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 853,
+   "tri_payouts": 144
+  },
+  {
+   "date": "20261020",
+   "venues": 12,
+   "races": 144,
+   "entries": 864,
+   "finished": 850,
+   "tri_payouts": 144
+  },
+  {
+   "date": "20261019",
+   "venues": 11,
+   "races": 132,
+   "entries": 792,
+   "finished": 781,
+   "tri_payouts": 132
+  },
+  {
+   "date": "20261018",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 920,
+   "tri_payouts": 156
+  },
+  {
+   "date": "20261017",
+   "venues": 14,
+   "races": 168,
+   "entries": 1008,
+   "finished": 992,
+   "tri_payouts": 168
+  },
+  {
+   "date": "20261016",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 918,
+   "tri_payouts": 156
+  },
+  {
+   "date": "20261015",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 918,
+   "tri_payouts": 156
+  }
+ ],
+ "sample": [
+  {
+   "race_id": "20261021_23_12",
+   "boat": 1,
+   "name": "上條暢嵩",
+   "class": "A1",
+   "nat_win": 7.44,
+   "motor_2": 60.0,
+   "ex_time": 6.73,
+   "course": 1,
+   "st": 0.05,
+   "finish": 1
+  },
+  {
+   "race_id": "20261021_23_12",
+   "boat": 2,
+   "name": "松井繁",
+   "class": "A1",
+   "nat_win": 6.85,
+   "motor_2": 6.67,
+   "ex_time": 6.74,
+   "course": 2,
+   "st": 0.02,
+   "finish": 4
+  },
+  {
+   "race_id": "20261021_23_12",
+   "boat": 3,
+   "name": "佐藤翼",
+   "class": "A1",
+   "nat_win": 6.61,
+   "motor_2": 38.89,
+   "ex_time": 6.67,
+   "course": 3,
+   "st": 0.03,
+   "finish": 3
+  },
+  {
+   "race_id": "20261021_23_12",
+   "boat": 4,
+   "name": "仲谷颯仁",
+   "class": "A1",
+   "nat_win": 7.64,
+   "motor_2": 50.0,
+   "ex_time": 6.71,
+   "course": 4,
+   "st": -0.01,
+   "finish": null
+  },
+  {
+   "race_id": "20261021_23_12",
+   "boat": 5,
+   "name": "山田康二",
+   "class": "A1",
+   "nat_win": 8.05,
+   "motor_2": 42.11,
+   "ex_time": 6.65,
+   "course": 5,
+   "st": 0.03,
+   "finish": 2
+  },
+  {
+   "race_id": "20261021_23_12",
+   "boat": 6,
+   "name": "栗城匠",
+   "class": "A1",
+   "nat_win": 6.61,
+   "motor_2": 33.33,
+   "ex_time": 6.74,
+   "course": 6,
+   "st": 0.04,
+   "finish": 5
+  }
+ ],
+ "model": {
+  "win_top1_acc": 0.5972,
+  "win_logloss": 1.2548,
+  "tri_logloss": 3.8856,
+  "tri_top1_acc": 0.0694,
+  "tri_logloss_uniform": 4.7875,
+  "lam2": 0.6000000000000001,
+  "lam3": 0.6000000000000001,
+  "train_races": 768,
+  "valid_races": 288,
+  "valid_from": "20261020"
+ }
+}
