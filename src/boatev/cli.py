@@ -49,8 +49,11 @@ def cmd_history(args):
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             con.commit()
             log(date, f"races={len({r['race_id'] for r in races})} entries={len(entries)}")
+        miss = config.DATA_DIR / "parse_misses.json"
         if history.MISSES:
-            (config.DATA_DIR / "parse_misses.json").write_text(json.dumps(history.MISSES, ensure_ascii=False, indent=1))
+            miss.write_text(json.dumps(history.MISSES, ensure_ascii=False, indent=1))
+        elif miss.exists():
+            miss.unlink()
 
 
 def store_odds(con, rid, date, jcd, rno):
