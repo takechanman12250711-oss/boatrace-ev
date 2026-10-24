@@ -15,6 +15,7 @@ jobs:
     env: { PYTHONPATH: src, TZ: Asia/Tokyo }
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip }
       - run: pip install -r requirements.txt && mkdir -p docs/data/logs && echo "=== $(date "+%F %T") ${{ github.workflow }} run ${{ github.run_id }}" >> docs/data/logs/setup.log
@@ -42,4 +43,5 @@ jobs:
         run: |
           tail -n 400 docs/data/logs/setup.log > /tmp/l && mv /tmp/l docs/data/logs/setup.log
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
-          git add docs/data && git commit -m "setup report" && git pull --rebase && git push || echo "no changes"
+          git add docs/data && git commit -m "setup report" || { echo "no changes"; exit 0; }
+          for i in 1 2 3 4 5; do git fetch -q origin main && git rebase -X theirs origin/main && git push && exit 0; git rebase --abort 2>/dev/null; sleep $((i*5)); done; echo "push failed"; exit 1
