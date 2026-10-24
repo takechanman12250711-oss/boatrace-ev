@@ -1,0 +1,47 @@
+=== 2026-10-24 12:48:55 setup (history + train) run 40059809572
+基本のみ {'win_top1_acc': 0.5719, 'win_logloss': 1.1801, 'tri_logloss': 3.8419, 'tri_top1_acc': 0.0933}
+日和型を追加 {'win_top1_acc': 0.5746, 'win_logloss': 1.1707, 'tri_logloss': 3.8385, 'tri_top1_acc': 0.0901}
+{
+ "基本のみ": {
+  "win_top1_acc": 0.5719,
+  "win_logloss": 1.1801,
+  "tri_logloss": 3.8419,
+  "tri_top1_acc": 0.0933
+ },
+ "日和型を追加": {
+  "win_top1_acc": 0.5746,
+  "win_logloss": 1.1707,
+  "tri_logloss": 3.8385,
+  "tri_top1_acc": 0.0901
+ },
+ "races": 156183
+}
+学習データ: 267095 レース
+{
+  "win_top1_acc": 0.5773,
+  "win_logloss": 1.1668,
+  "tri_logloss": 3.8372,
+  "tri_top1_acc": 0.0902,
+  "tri_logloss_uniform": 4.7875,
+  "lam2": 0.6499999999999999,
+  "lam3": 0.44999999999999996,
+  "train_races": 213370,
+  "valid_races": 53725,
+  "valid_from": "20251106"
+}
+{
+  "model": {
+    "win_top1_acc": 0.5756,
+    "win_logloss": 1.1715,
+    "tri_logloss": 3.8463,
+    "tri_top1_acc": 0.0891,
+    "tri_logloss_uniform": 4.7875,
+    "lam2": 0.6499999999999999,
+    "lam3": 0.44999999999999996,
+    "train_races": 200137,
+    "valid_races": 48994,
+    "valid_from": "20250806"
+  },
+  "note": "オッズ付きのレースが少なく、しきい値を調整できません"
+}
+{"races": 270777, "entries": 1624662, "payouts": 534312, "races_with_odds": 160, "first_date": "20220101", "last_date": "20261024"}

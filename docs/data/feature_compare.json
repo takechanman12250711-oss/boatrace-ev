@@ -1,0 +1,15 @@
+{
+ "基本のみ": {
+  "win_top1_acc": 0.5719,
+  "win_logloss": 1.1801,
+  "tri_logloss": 3.8419,
+  "tri_top1_acc": 0.0933
+ },
+ "日和型を追加": {
+  "win_top1_acc": 0.5746,
+  "win_logloss": 1.1707,
+  "tri_logloss": 3.8385,
+  "tri_top1_acc": 0.0901
+ },
+ "races": 156183
+}
