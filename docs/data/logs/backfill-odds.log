@@ -91,3 +91,60 @@ If you want or need to use an HTML parser on this document, you can make this wa
 20261002 2050/13238
 時間切れで中断（2083 レース取得）。再実行すると続きから取ります
 {"races": 270777, "entries": 1624662, "payouts": 534312, "races_with_odds": 3262, "first_date": "20220101", "last_date": "20261024"}
+=== 2026-10-25 00:44:52 backfill odds run 40108355236
+未取得 11167 レース
+/home/runner/work/boatrace-ev/boatrace-ev/src/boatev/scrape.py:39: XMLParsedAsHTMLWarning: It looks like you're using an HTML parser to parse an XML document.
+
+Assuming this really is an XML document, what you're doing might work, but you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the Python package 'lxml' installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
+
+If you want or need to use an HTML parser on this document, you can make this warning go away by filtering it. To do that, run this code before calling the BeautifulSoup constructor:
+
+    from bs4 import XMLParsedAsHTMLWarning
+    import warnings
+
+    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+
+  return BeautifulSoup(html, "lxml") if html else None
+20261002 50/11167
+20261002 100/11167
+20261001 150/11167
+20261001 200/11167
+20261001 250/11167
+20260930 300/11167
+20260930 350/11167
+20260930 400/11167
+20260929 450/11167
+20260929 500/11167
+20260929 550/11167
+20260928 600/11167
+20260928 650/11167
+20260928 700/11167
+20260927 750/11167
+20260927 800/11167
+20260927 850/11167
+20260926 900/11167
+20260926 950/11167
+20260926 1000/11167
+20260925 1050/11167
+20260925 1100/11167
+20260925 1150/11167
+20260924 1200/11167
+20260924 1250/11167
+20260924 1300/11167
+20260923 1350/11167
+20260923 1400/11167
+20260923 1450/11167
+20260922 1500/11167
+20260922 1550/11167
+20260922 1600/11167
+20260922 1650/11167
+20260921 1700/11167
+20260921 1750/11167
+20260921 1800/11167
+20260920 1850/11167
+20260920 1900/11167
+20260920 1950/11167
+20260919 2000/11167
+20260919 2050/11167
+時間切れで中断（2095 レース取得）。再実行すると続きから取ります
+{"races": 270777, "entries": 1624662, "payouts": 534312, "races_with_odds": 5298, "first_date": "20220101", "last_date": "20261024"}
