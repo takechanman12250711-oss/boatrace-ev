@@ -16,14 +16,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip }
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt && mkdir -p docs/data/logs && echo "=== $(date "+%F %T") ${{ github.workflow }} run ${{ github.run_id }}" >> docs/data/logs/backfill-odds.log
       - uses: actions/cache/restore@v4
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
           restore-keys: boatev-db-
-      - run: python -m boatev.cli backfill-odds --from ${{ inputs.from }} --to ${{ inputs.to }} --max-minutes 320
-      - run: python -m boatev.cli status
+      - run: python -m boatev.cli backfill-odds --from ${{ inputs.from }} --to ${{ inputs.to }} --max-minutes 320 2>&1 | tee -a docs/data/logs/backfill-odds.log
+      - run: python -m boatev.cli status 2>&1 | tee -a docs/data/logs/backfill-odds.log
         if: always()
       - uses: actions/cache/save@v4
         if: always()
@@ -33,5 +33,6 @@ jobs:
       - name: commit
         if: always()
         run: |
+          tail -n 400 docs/data/logs/backfill-odds.log > /tmp/l && mv /tmp/l docs/data/logs/backfill-odds.log
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
           git add docs/data && git commit -m "backfill odds status" && git pull --rebase && git push || echo "no changes"

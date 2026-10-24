@@ -8,7 +8,7 @@ permissions: { contents: write }
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     env: { PYTHONPATH: src, TZ: Asia/Tokyo }
     steps:
       - uses: actions/checkout@v4

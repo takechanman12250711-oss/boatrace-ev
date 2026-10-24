@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip }
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt && mkdir -p docs/data/logs && echo "=== $(date "+%F %T") ${{ github.workflow }} run ${{ github.run_id }}" >> docs/data/logs/setup.log
       - uses: actions/cache/restore@v4
         with:
           path: data
@@ -26,11 +26,11 @@ jobs:
       - name: history
         run: |
           TO="${{ inputs.to }}"; [ -z "$TO" ] && TO=$(date -d yesterday +%Y%m%d)
-          python -m boatev.cli history --from ${{ inputs.from }} --to $TO --max-minutes 240
-      - run: python -m boatev.cli compare-features --from 20240101 || true
-      - run: python -m boatev.cli train
-      - run: python -m boatev.cli backtest --test-from ${{ inputs.test_from }} || true
-      - run: python -m boatev.cli status
+          python -m boatev.cli history --from ${{ inputs.from }} --to $TO --max-minutes 240 2>&1 | tee -a docs/data/logs/setup.log
+      - run: python -m boatev.cli compare-features --from 20240101 2>&1 | tee -a docs/data/logs/setup.log || true
+      - run: python -m boatev.cli train 2>&1 | tee -a docs/data/logs/setup.log
+      - run: python -m boatev.cli backtest --test-from ${{ inputs.test_from }} 2>&1 | tee -a docs/data/logs/setup.log || true
+      - run: python -m boatev.cli status 2>&1 | tee -a docs/data/logs/setup.log
         if: always()
       - uses: actions/cache/save@v4
         if: always()
@@ -40,5 +40,6 @@ jobs:
       - name: commit report
         if: always()
         run: |
+          tail -n 400 docs/data/logs/setup.log > /tmp/l && mv /tmp/l docs/data/logs/setup.log
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
           git add docs/data && git commit -m "setup report" && git pull --rebase && git push || echo "no changes"

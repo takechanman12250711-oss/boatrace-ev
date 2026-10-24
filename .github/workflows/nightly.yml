@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip }
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt && mkdir -p docs/data/logs && echo "=== $(date "+%F %T") ${{ github.workflow }} run ${{ github.run_id }}" >> docs/data/logs/nightly.log
       - uses: actions/cache/restore@v4
         with:
           path: data
@@ -23,15 +23,15 @@ jobs:
       - name: collect yesterday
         run: |
           Y=$(date -d yesterday +%Y%m%d)
-          python -m boatev.cli history --from $Y --to $Y
-          python -m boatev.cli collect --date $Y
-          python -m boatev.cli results --date $Y
+          python -m boatev.cli history --from $Y --to $Y 2>&1 | tee -a docs/data/logs/nightly.log
+          python -m boatev.cli collect --date $Y 2>&1 | tee -a docs/data/logs/nightly.log
+          python -m boatev.cli results --date $Y 2>&1 | tee -a docs/data/logs/nightly.log
       - name: weekly retrain
         run: |
           [ "$(date +%u)" = "1" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ] || exit 0
-          python -m boatev.cli train
-          python -m boatev.cli backtest --test-from $(date -d '90 days ago' +%Y%m%d) || true
-      - run: python -m boatev.cli status
+          python -m boatev.cli train 2>&1 | tee -a docs/data/logs/nightly.log
+          python -m boatev.cli backtest --test-from $(date -d '90 days ago' +%Y%m%d) 2>&1 | tee -a docs/data/logs/nightly.log || true
+      - run: python -m boatev.cli status 2>&1 | tee -a docs/data/logs/nightly.log
         if: always()
       - uses: actions/cache/save@v4
         if: always()
@@ -41,5 +41,6 @@ jobs:
       - name: commit
         if: always()
         run: |
+          tail -n 400 docs/data/logs/nightly.log > /tmp/l && mv /tmp/l docs/data/logs/nightly.log
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
           git add docs/data && git commit -m "nightly $(date +%Y%m%d)" && git pull --rebase && git push || echo "no changes"

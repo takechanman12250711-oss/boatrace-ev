@@ -161,6 +161,14 @@ def cmd_train(args):
     print(json.dumps(m.metrics, ensure_ascii=False, indent=2))
 
 
+def _save_report(name, text):
+    """docs/data と data/reports（Actionsのキャッシュに残る）の両方に保存。
+    長時間ジョブでpushに失敗しても、次の status 実行で docs/data に戻せる。"""
+    for d in (config.SITE_DATA_DIR, config.DATA_DIR / "reports"):
+        d.mkdir(parents=True, exist_ok=True)
+        (d / name).write_text(text)
+
+
 def cmd_compare_features(args):
     """日和型の指標を入れる前後で、検証期間の精度を比べる。"""
     from .model import Model
@@ -176,7 +184,7 @@ def cmd_compare_features(args):
         log(name, out[name])
     out["races"] = int(df["race_id"].nunique())
     config.SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
-    (config.SITE_DATA_DIR / "feature_compare.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    _save_report("feature_compare.json", json.dumps(out, ensure_ascii=False, indent=1))
     print(json.dumps(out, ensure_ascii=False, indent=1))
 
 
@@ -187,7 +195,7 @@ def cmd_backtest(args):
         rep = backtest.run(con, args.test_from)
     print(json.dumps(rep, ensure_ascii=False, indent=2, default=str))
     (config.SITE_DATA_DIR).mkdir(parents=True, exist_ok=True)
-    (config.SITE_DATA_DIR / "backtest.json").write_text(json.dumps(rep, ensure_ascii=False, default=str))
+    _save_report("backtest.json", json.dumps(rep, ensure_ascii=False, default=str))
 
 
 # ---------------------------------------------------------------- 予想
@@ -344,6 +352,12 @@ def cmd_status(args):
         from .model import Model
         st["model"] = Model.load().metrics
     config.SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    rep_dir = config.DATA_DIR / "reports"
+    if rep_dir.exists():
+        for f in rep_dir.glob("*.json"):
+            dst = config.SITE_DATA_DIR / f.name
+            if not dst.exists() or dst.stat().st_mtime < f.stat().st_mtime:
+                dst.write_text(f.read_text())
     (config.SITE_DATA_DIR / "status.json").write_text(json.dumps(st, ensure_ascii=False, indent=1, default=str))
     print(json.dumps(st["totals"], ensure_ascii=False))
 
