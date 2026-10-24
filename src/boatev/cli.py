@@ -83,10 +83,12 @@ def cmd_history(args):
             miss.unlink()
 
 
-def store_odds(con, rid, date, jcd, rno):
+def store_odds(con, rid, date, jcd, rno, kinds=("3t", "2t")):
     ts = now().isoformat(timespec="seconds")
     got = {}
     for kind, label, fn in (("3t", "3連単", scrape.odds_3t), ("2t", "2連単", scrape.odds_2t)):
+        if kind not in kinds:
+            continue
         o = fn(date, jcd, rno)
         got[kind] = o
         db.upsert(con, "odds", ({"race_id": rid, "bet_type": label, "combo": c, "odds": v, "fetched_at": ts}
@@ -143,7 +145,7 @@ def cmd_backfill_odds(args):
             if args.max_minutes and time.monotonic() - t0 > args.max_minutes * 60:
                 log(f"時間切れで中断（{n - 1} レース取得）。再実行すると続きから取ります")
                 break
-            store_odds(con, r["race_id"], r["date"], r["jcd"], r["rno"])
+            store_odds(con, r["race_id"], r["date"], r["jcd"], r["rno"], kinds=tuple(args.kinds.split(",")))
             if n % 50 == 0:
                 con.commit()
                 log(r["date"], f"{n}/{len(rows)}")
@@ -367,7 +369,7 @@ def main(argv=None):
     sp = ap.add_subparsers(dest="cmd", required=True)
     p = sp.add_parser("history"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.add_argument("--force", action="store_true"); p.set_defaults(f=cmd_history)
     p = sp.add_parser("collect"); p.add_argument("--date", required=True); p.add_argument("--to"); p.set_defaults(f=cmd_collect)
-    p = sp.add_parser("backfill-odds"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.set_defaults(f=cmd_backfill_odds)
+    p = sp.add_parser("backfill-odds"); p.add_argument("--from", dest="date_from", required=True); p.add_argument("--to", dest="date_to", required=True); p.add_argument("--max-minutes", type=int, default=0); p.add_argument("--kinds", default="3t", help="3t / 2t / 3t,2t"); p.set_defaults(f=cmd_backfill_odds)
     p = sp.add_parser("train"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_train)
     p = sp.add_parser("compare-features"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_compare_features)
     p = sp.add_parser("backtest"); p.add_argument("--test-from", required=True); p.set_defaults(f=cmd_backtest)

@@ -24,7 +24,8 @@ jobs:
         run: |
           Y=$(date -d yesterday +%Y%m%d)
           python -m boatev.cli history --from $Y --to $Y 2>&1 | tee -a docs/data/logs/nightly.log
-          python -m boatev.cli collect --date $Y 2>&1 | tee -a docs/data/logs/nightly.log
+          # 公式サイトはActionsから1アクセス約9秒かかるため、成績はK/Bファイルから取り、サイトからは3連単オッズだけ取る
+          python -m boatev.cli backfill-odds --from $Y --to $Y --kinds 3t --max-minutes 90 2>&1 | tee -a docs/data/logs/nightly.log
           python -m boatev.cli results --date $Y 2>&1 | tee -a docs/data/logs/nightly.log
       - name: weekly retrain
         run: |
