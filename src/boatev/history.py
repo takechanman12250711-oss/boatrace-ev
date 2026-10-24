@@ -148,7 +148,7 @@ def parse_k(text: str, date: str):
             if km:
                 races[-1]["kimarite"], need_kim = km.group(1), False
         m = K_ENTRY.match(line)
-        if not m and re.match(r"^\s*\S{1,2}\s+[1-6]\s+\d{4}\s", line):
+        if not m and re.match(r"^\s*\S{1,2}\s+[1-6]\s+\d{4}\s", line) and not re.match(r"^\s*(単勝|複勝|\d連[単複]|拡連複)", line):
             _miss("K", date, line)
         if m and re.fullmatch(r"\d{2}|[A-Z]\d?|\S", m.group(1)):
             fin, boat, rid_, _, motor, boat_no, rest = m.groups()

@@ -88,7 +88,7 @@ class Model:
         return ll
 
     def _fit_lambdas(self, races):
-        grid = np.arange(0.5, 1.21, 0.05)
+        grid = np.arange(0.3, 1.21, 0.05)
         best = max(((a, b) for a in grid for b in grid if b <= a + 1e-9),
                    key=lambda ab: self._ll(races, *ab))
         return float(best[0]), float(best[1])
