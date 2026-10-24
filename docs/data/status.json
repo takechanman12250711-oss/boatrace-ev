@@ -1,41 +1,45 @@
 {
- "generated_at": "2026-10-24T08:19:38+09:00",
+ "generated_at": "2026-10-24T12:47:33+09:00",
  "totals": {
-  "races": 175956,
-  "entries": 1055736,
-  "payouts": 347060,
-  "races_with_odds": 155,
+  "races": 270777,
+  "entries": 1624662,
+  "payouts": 534312,
+  "races_with_odds": 160,
   "first_date": "20220101",
-  "last_date": "20261023"
+  "last_date": "20261024"
+ },
+ "days_loaded": {
+  "days": 1758,
+  "days_with_kimarite": 1757
  },
  "kimarite": [
   {
-   "kimarite": null,
-   "n": 175788
-  },
-  {
    "kimarite": "逃げ",
-   "n": 84
+   "n": 140199
   },
   {
    "kimarite": "まくり",
-   "n": 32
-  },
-  {
-   "kimarite": "まくり差し",
-   "n": 19
+   "n": 41331
   },
   {
    "kimarite": "差し",
-   "n": 16
+   "n": 33937
+  },
+  {
+   "kimarite": "まくり差し",
+   "n": 31370
   },
   {
    "kimarite": "抜き",
-   "n": 14
+   "n": 18067
+  },
+  {
+   "kimarite": null,
+   "n": 3571
   },
   {
    "kimarite": "恵まれ",
-   "n": 3
+   "n": 2302
   }
  ],
  "fill_rate": {
@@ -43,18 +47,34 @@
   "class": 1.0,
   "nat_win": 1.0,
   "motor_2": 1.0,
-  "ex_time": 0.984,
-  "course": 0.984,
-  "st": 0.984,
-  "finish": 0.972
+  "ex_time": 0.985,
+  "course": 0.985,
+  "st": 0.985,
+  "finish": 0.973
  },
  "recent_days": [
+  {
+   "date": "20261024",
+   "venues": 9,
+   "races": 105,
+   "entries": 630,
+   "finished": 0,
+   "tri_payouts": 0
+  },
   {
    "date": "20261023",
    "venues": 14,
    "races": 168,
    "entries": 1008,
    "finished": 996,
+   "tri_payouts": 168
+  },
+  {
+   "date": "20261022",
+   "venues": 14,
+   "races": 168,
+   "entries": 1008,
+   "finished": 992,
    "tri_payouts": 168
   },
   {
@@ -114,129 +134,217 @@
    "tri_payouts": 156
   },
   {
-   "date": "20250207",
-   "venues": 11,
-   "races": 132,
-   "entries": 792,
-   "finished": 670,
-   "tri_payouts": 113
-  },
-  {
-   "date": "20250206",
-   "venues": 11,
-   "races": 132,
-   "entries": 792,
-   "finished": 707,
-   "tri_payouts": 120
-  },
-  {
-   "date": "20250205",
-   "venues": 12,
-   "races": 144,
-   "entries": 864,
-   "finished": 598,
-   "tri_payouts": 101
-  },
-  {
-   "date": "20250204",
+   "date": "20261014",
    "venues": 13,
    "races": 156,
    "entries": 936,
-   "finished": 846,
-   "tri_payouts": 144
+   "finished": 927,
+   "tri_payouts": 156
   },
   {
-   "date": "20250203",
-   "venues": 15,
-   "races": 180,
-   "entries": 1080,
-   "finished": 1071,
-   "tri_payouts": 180
+   "date": "20261013",
+   "venues": 11,
+   "races": 132,
+   "entries": 792,
+   "finished": 780,
+   "tri_payouts": 132
   },
   {
-   "date": "20250202",
-   "venues": 15,
-   "races": 180,
-   "entries": 1080,
-   "finished": 1066,
-   "tri_payouts": 180
+   "date": "20261012",
+   "venues": 14,
+   "races": 168,
+   "entries": 1008,
+   "finished": 994,
+   "tri_payouts": 168
+  },
+  {
+   "date": "20261011",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 924,
+   "tri_payouts": 156
   }
  ],
  "sample": [
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 1,
-   "name": "稲田浩二",
-   "class": "A1",
-   "nat_win": 6.91,
-   "motor_2": 38.3,
-   "ex_time": 6.84,
-   "course": 1,
-   "st": 0.22,
-   "finish": 2
+   "name": "品田直樹",
+   "class": "A2",
+   "nat_win": 5.33,
+   "motor_2": 45.71,
+   "ex_time": 6.82,
+   "course": null,
+   "st": null,
+   "finish": null
   },
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 2,
-   "name": "黄金井力",
+   "name": "吉武真也",
    "class": "B1",
-   "nat_win": 5.16,
-   "motor_2": 34.83,
-   "ex_time": 6.93,
-   "course": 2,
-   "st": 0.21,
-   "finish": 5
+   "nat_win": 4.06,
+   "motor_2": 52.94,
+   "ex_time": 6.8,
+   "course": null,
+   "st": null,
+   "finish": null
   },
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 3,
-   "name": "大庭元明",
+   "name": "吉田祐貴",
    "class": "B1",
-   "nat_win": 5.15,
-   "motor_2": 31.46,
-   "ex_time": 6.9,
-   "course": 3,
-   "st": 0.19,
-   "finish": 6
+   "nat_win": 3.7,
+   "motor_2": 17.76,
+   "ex_time": 6.89,
+   "course": null,
+   "st": null,
+   "finish": null
   },
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 4,
-   "name": "岡瀬正人",
-   "class": "A2",
-   "nat_win": 5.65,
-   "motor_2": 34.48,
-   "ex_time": 6.92,
-   "course": 4,
-   "st": 0.06,
-   "finish": 3
+   "name": "蒲原健太",
+   "class": "B1",
+   "nat_win": 4.83,
+   "motor_2": 37.5,
+   "ex_time": 6.89,
+   "course": null,
+   "st": null,
+   "finish": null
   },
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 5,
-   "name": "小野寺智",
-   "class": "A2",
-   "nat_win": 5.2,
-   "motor_2": 36.71,
-   "ex_time": 6.9,
-   "course": 5,
-   "st": 0.01,
-   "finish": 1
+   "name": "出口飛龍",
+   "class": "B2",
+   "nat_win": 1.26,
+   "motor_2": 23.81,
+   "ex_time": 6.98,
+   "course": null,
+   "st": null,
+   "finish": null
   },
   {
-   "race_id": "20261023_24_12",
+   "race_id": "20261024_14_09",
    "boat": 6,
-   "name": "清水敦揮",
+   "name": "佐々木和伸",
    "class": "A2",
-   "nat_win": 6.91,
-   "motor_2": 47.87,
-   "ex_time": 6.92,
-   "course": 6,
-   "st": 0.01,
-   "finish": 4
+   "nat_win": 6.25,
+   "motor_2": 30.39,
+   "ex_time": 6.87,
+   "course": null,
+   "st": null,
+   "finish": null
   }
  ],
  "gaps": [
+  {
+   "date": "20261024",
+   "jcd": "04",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 72
+  },
+  {
+   "date": "20261024",
+   "jcd": "05",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 66
+  },
+  {
+   "date": "20261024",
+   "jcd": "06",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 72
+  },
+  {
+   "date": "20261024",
+   "jcd": "09",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 72
+  },
+  {
+   "date": "20261024",
+   "jcd": "10",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 66
+  },
+  {
+   "date": "20261024",
+   "jcd": "11",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 66
+  },
+  {
+   "date": "20261024",
+   "jcd": "12",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 72
+  },
+  {
+   "date": "20261024",
+   "jcd": "13",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 72,
+   "no_ex": 66
+  },
+  {
+   "date": "20261024",
+   "jcd": "14",
+   "entries": 54,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 48
+  },
+  {
+   "date": "20261022",
+   "jcd": "05",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 4,
+   "no_ex": 2
+  },
+  {
+   "date": "20261022",
+   "jcd": "11",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 2,
+   "no_ex": 1
+  },
+  {
+   "date": "20261022",
+   "jcd": "14",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 5,
+   "no_ex": 2
+  },
+  {
+   "date": "20261022",
+   "jcd": "20",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 3,
+   "no_ex": 1
+  },
   {
    "date": "20261021",
    "jcd": "03",
@@ -334,642 +442,736 @@
    "no_ex": 1
   },
   {
-   "date": "20250207",
-   "jcd": "03",
+   "date": "20261014",
+   "jcd": "14",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 2,
+   "no_ex": 1
+  },
+  {
+   "date": "20261013",
+   "jcd": "14",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 5,
+   "no_ex": 1
+  },
+  {
+   "date": "20261012",
+   "jcd": "14",
    "entries": 72,
    "no_class": 0,
    "no_finish": 4,
-   "no_ex": 1
-  },
-  {
-   "date": "20250207",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
-   "no_ex": 1
-  },
-  {
-   "date": "20250207",
-   "jcd": "15",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 36,
-   "no_ex": 36
-  },
-  {
-   "date": "20250207",
-   "jcd": "20",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250207",
-   "jcd": "21",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 6,
-   "no_ex": 6
-  },
-  {
-   "date": "20250206",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250205",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250205",
-   "jcd": "10",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 48,
-   "no_ex": 48
-  },
-  {
-   "date": "20250205",
-   "jcd": "11",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
-   "no_ex": 1
-  },
-  {
-   "date": "20250205",
-   "jcd": "15",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250205",
-   "jcd": "20",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 66,
-   "no_ex": 66
-  },
-  {
-   "date": "20250204",
-   "jcd": "03",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 4,
-   "no_ex": 1
-  },
-  {
-   "date": "20250204",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250204",
-   "jcd": "11",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
    "no_ex": 2
   },
   {
-   "date": "20250204",
-   "jcd": "20",
+   "date": "20261012",
+   "jcd": "18",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 1,
+   "no_ex": 1
+  },
+  {
+   "date": "20261011",
+   "jcd": "06",
    "entries": 72,
    "no_class": 0,
    "no_finish": 2,
    "no_ex": 1
   },
   {
-   "date": "20250203",
+   "date": "20261009",
+   "jcd": "01",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 1,
+   "no_ex": 1
+  },
+  {
+   "date": "20261009",
    "jcd": "08",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 4,
+   "no_ex": 1
+  },
+  {
+   "date": "20261009",
+   "jcd": "23",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 2,
+   "no_ex": 1
+  },
+  {
+   "date": "20261008",
+   "jcd": "01",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 1,
+   "no_ex": 1
+  },
+  {
+   "date": "20261007",
+   "jcd": "07",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 2,
+   "no_ex": 1
+  },
+  {
+   "date": "20261006",
+   "jcd": "02",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 1,
+   "no_ex": 1
+  },
+  {
+   "date": "20261005",
+   "jcd": "05",
    "entries": 72,
    "no_class": 0,
    "no_finish": 3,
    "no_ex": 1
   },
   {
-   "date": "20250202",
-   "jcd": "10",
+   "date": "20261003",
+   "jcd": "18",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 1,
+   "no_finish": 3,
    "no_ex": 1
   },
   {
-   "date": "20250202",
-   "jcd": "11",
+   "date": "20261002",
+   "jcd": "07",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 1,
+   "no_finish": 4,
    "no_ex": 1
   },
   {
-   "date": "20250202",
-   "jcd": "12",
+   "date": "20261002",
+   "jcd": "15",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 1,
+   "no_finish": 4,
    "no_ex": 1
-  },
-  {
-   "date": "20250202",
-   "jcd": "14",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 1,
-   "no_ex": 1
-  },
-  {
-   "date": "20250202",
-   "jcd": "20",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
-   "no_ex": 1
-  },
-  {
-   "date": "20250131",
-   "jcd": "19",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
-   "no_ex": 2
-  },
-  {
-   "date": "20250130",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250130",
-   "jcd": "14",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 30,
-   "no_ex": 30
-  },
-  {
-   "date": "20250130",
-   "jcd": "20",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 2,
-   "no_ex": 1
-  },
-  {
-   "date": "20250129",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250129",
-   "jcd": "20",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
-  },
-  {
-   "date": "20250128",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 72,
-   "no_ex": 72
   }
  ],
+ "history_log_tail": [
+  {
+   "date": "20261008",
+   "sec": 17.7,
+   "at": "2026-10-24T11:29:29+09:00",
+   "races": 144,
+   "http": {
+    "requests": 1217,
+    "errors": 2,
+    "seconds": 11203.7,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261009",
+   "sec": 18.5,
+   "at": "2026-10-24T11:29:48+09:00",
+   "races": 144,
+   "http": {
+    "requests": 1219,
+    "errors": 2,
+    "seconds": 11222.2,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261010",
+   "sec": 18.5,
+   "at": "2026-10-24T11:30:06+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1221,
+    "errors": 2,
+    "seconds": 11240.6,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261011",
+   "sec": 18.5,
+   "at": "2026-10-24T11:30:25+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1223,
+    "errors": 2,
+    "seconds": 11259.0,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261012",
+   "sec": 18.5,
+   "at": "2026-10-24T11:30:43+09:00",
+   "races": 168,
+   "http": {
+    "requests": 1225,
+    "errors": 2,
+    "seconds": 11277.4,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261013",
+   "sec": 19.5,
+   "at": "2026-10-24T11:31:03+09:00",
+   "races": 132,
+   "http": {
+    "requests": 1227,
+    "errors": 2,
+    "seconds": 11296.8,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261014",
+   "sec": 19.5,
+   "at": "2026-10-24T11:31:22+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2269,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261015",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:22+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2271,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261016",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:22+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2273,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261017",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:23+09:00",
+   "races": 168,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2275,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261018",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:23+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2277,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261019",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:23+09:00",
+   "races": 132,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2279,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261020",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:23+09:00",
+   "races": 144,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2281,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261021",
+   "sec": 0.1,
+   "at": "2026-10-24T11:31:23+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1229,
+    "errors": 2,
+    "seconds": 11316.2,
+    "cache_hits": 2283,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  },
+  {
+   "date": "20261022",
+   "sec": 19.5,
+   "at": "2026-10-24T11:31:42+09:00",
+   "races": 168,
+   "http": {
+    "requests": 1231,
+    "errors": 2,
+    "seconds": 11335.5,
+    "cache_hits": 2283,
+    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
+   }
+  }
+ ],
+ "history_sec_per_day_avg": 17.7,
  "parse_misses": [
   {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  2-1-3   11160    1-2-3     480    2-1    3230    1-2     320"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  2-1-3    2470    1-2-3     610    2-1    1500    1-2     850"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  1-2-5    3330    1-2-5     630    1-2    1180    1-2     530"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  1-3-2    1650    1-2-3     700    1-3     230    1-3     130"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  3-5-1    4080    1-3-5     550    3-5    1340    3-5     940"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  4-3-2   22630    2-3-4    1950    4-3    5630    3-4    5690"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  4-3-1    5350    1-3-4     240    4-3    2460    3-4     610"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  4-5-1   14910    1-4-5    2780    4-5    4350    4-5    5250"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  2-6-1   11470    1-2-6    1570    2-6    2340    2-6    1670"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  1-3-5     610    1-3-5     300    1-3     300    1-3     240"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-2-3     680    1-2-3     480    1-2     140    1-2     190"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  5-1-4   24300    1-4-5    1010    5-1    3860    1-5    1040"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  3-2-1   16950    1-2-3     390    3-2    5160    2-3    3050"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  1-3-2     750    1-2-3     370    1-3     240    1-3     230"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  1-3-2     910    1-2-3     340    1-3     300    1-3     130"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  1-2-3     820    1-2-3     390    1-2     280    1-2     260"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  1-3-2     890    1-2-3     270    1-3     400    1-3     400"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  1-2-3    1030    1-2-3     350    1-2     440    1-2     520"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  1-3-5    1160    1-3-5     700    1-3     250    1-3     200"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  1-6-5    9320    1-5-6    2050    1-6    2550    1-6    2290"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  1-4-5    2580    1-4-5    1270    1-4     580    1-4     400"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  1-4-2    2000    1-2-4     530    1-4     690    1-4     680"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-4-2    2450    1-2-4     620    1-4     770    1-4     830"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  1-5-2    3430    1-2-5    1160    1-5     960    1-5     890"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  1-3-4     920    1-3-4     580    1-3     360    1-3     250"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  1-2-3    1570    1-2-3     590    1-2     490    1-2     270"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  3-1-6    2030    1-3-6     800    3-1     470    1-3     220"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  4-3-2    6410    2-3-4    2030    4-3    1490    3-4    1380"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  3-5-6    9610    3-5-6    2880    3-5    3160    3-5    1710"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  4-5-2    2400    2-4-5     600    4-5    1460    4-5    1500"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  2-4-6    5020    2-4-6    1480    2-4     760    2-4     300"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  1-2-3    1180    1-2-3     500    1-2     550    1-2     540"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  3-1-4    1260    1-3-4     240    3-1     430    1-3     220"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  1-2-4     620    1-2-4     240    1-2     250    1-2     250"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-3-2     910    1-2-3     300    1-3     300    1-3     330"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  5-1-4   14860    1-4-5    1410    5-1    4540    1-5     810"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  2-1-4   10850    1-2-4    1020    2-1    4580    1-2     760"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  4-5-1     790    1-4-5     250    4-5     380    4-5     670"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  3-4-2   12410    2-3-4    4520    3-4    3730    3-4    1870"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  4-1-6    3400    1-4-6     440    4-1    1450    1-4     270"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  1-2-3     860    1-2-3     560    1-2     400    1-2     170"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  4-6-2     640    2-4-6     320    4-6     340    4-6     380"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  3-5-2    6390    2-3-5    1500    3-5    2220    3-5    1640"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  1-2-3     510    1-2-3     170    1-2     270    1-2     170"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  5-4-6   13270    4-5-6    4480    5-4    3390    4-5    1910"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  1-3-5    2310    1-3-5    1350    1-3     220    1-3     330"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-6-4   11920    1-4-6    1470    1-6    3720    1-6    6770"
-  },
-  {
-   "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  1-5-6    4670    1-5-6    2550    1-5     690    1-5     660"
+   "kind": "K",
+   "date": "20220101",
+   "line": "        複勝     5         1280  4         1500"
   },
   {
    "kind": "K",
-   "date": "20261023",
-   "line": "        複勝     3         1200  5          520"
+   "date": "20220102",
+   "line": "        複勝     6         2230  5          330"
+  },
+  {
+   "kind": "K",
+   "date": "20220103",
+   "line": "        複勝     6         3180  3          140"
+  },
+  {
+   "kind": "K",
+   "date": "20220103",
+   "line": "        複勝     1         1090  6          900"
+  },
+  {
+   "kind": "K",
+   "date": "20220103",
+   "line": "        複勝     6         4780  1          360"
+  },
+  {
+   "kind": "K",
+   "date": "20220104",
+   "line": "        複勝     6         1120  2          420"
+  },
+  {
+   "kind": "K",
+   "date": "20220104",
+   "line": "        複勝     5         8640  3         3360"
+  },
+  {
+   "kind": "K",
+   "date": "20220104",
+   "line": "        複勝     6         1460  4          190"
+  },
+  {
+   "kind": "K",
+   "date": "20220104",
+   "line": "        複勝     5         1090  3          410"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  2-1-6    3630    1-2-6     770    2-1     910    1-2     320"
+   "date": "20220104",
+   "line": "           4R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  5-1-3   12700    1-3-5    1240    5-1    2460    1-5    1440"
+   "date": "20220104",
+   "line": "           5R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  3-2-1    4660    1-2-3     330    3-2    1240    2-3     670"
+   "date": "20220104",
+   "line": "           6R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  2-5-4    1300    2-4-5     330    2-5     460    2-5     320"
+   "date": "20220104",
+   "line": "           7R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  1-2-4     360    1-2-4     160    1-2     230    1-2     140"
+   "date": "20220104",
+   "line": "           8R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  1-6-4   10960    1-4-6    2750    1-6    1510    1-6    1260"
+   "date": "20220104",
+   "line": "           9R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  1-4-3    2800    1-3-4     690    1-4     840    1-4     320"
+   "date": "20220104",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  1-2-5    3830    1-2-5    2020    1-2     580    1-2     400"
+   "date": "20220104",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  2-1-6    5790    1-2-6    2140    2-1    1090    1-2     460"
+   "date": "20220104",
+   "line": "          12R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  2-1-3    1460    1-2-3     210    2-1     700    1-2     170"
+   "date": "20220104",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-3-2     970    1-2-3     410    1-3     230    1-3     130"
+   "date": "20220104",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  3-1-4    2220    1-3-4     300    3-1    1020    1-3     200"
+   "date": "20220104",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K",
+   "date": "20220105",
+   "line": "        複勝     5         1070  4          510"
+  },
+  {
+   "kind": "K",
+   "date": "20220105",
+   "line": "        複勝     3         1640  1          380"
+  },
+  {
+   "kind": "K",
+   "date": "20220105",
+   "line": "        複勝     5         1070  4          320"
+  },
+  {
+   "kind": "K",
+   "date": "20220105",
+   "line": "        複勝     4         1400  1         1210"
+  },
+  {
+   "kind": "K",
+   "date": "20220106",
+   "line": "        複勝     4         1720  6          950"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  3-1-5    4330    1-3-5     270    3-1    1360    1-3     170"
+   "date": "20220106",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  1-4-6     840    1-4-6     590    1-4     370    1-4     290"
+   "date": "20220106",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  1-3-2    1160    1-2-3     310    1-3     530    1-3     480"
+   "date": "20220106",
+   "line": "          12R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  1-5-3    2020    1-3-5     710    1-5     630    1-5     490"
+   "date": "20220106",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  1-2-3    1330    1-2-3     790    1-2     310    1-2     230"
+   "date": "20220106",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  4-2-6    6260    2-4-6    1520    4-2    2590    2-4     840"
+   "date": "20220106",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K",
+   "date": "20220107",
+   "line": "        複勝     6         2880  2          770"
+  },
+  {
+   "kind": "K",
+   "date": "20220107",
+   "line": "        複勝     4         2380  6          360"
+  },
+  {
+   "kind": "K",
+   "date": "20220109",
+   "line": "        複勝     4         1020  1          200"
+  },
+  {
+   "kind": "K",
+   "date": "20220109",
+   "line": "        複勝     2         1030  4          550"
+  },
+  {
+   "kind": "K",
+   "date": "20220109",
+   "line": "        複勝     5         1150  2          550"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  1-5-4    4900    1-4-5     990    1-5    1200    1-5    1010"
+   "date": "20220111",
+   "line": "           9R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           8R  1-3-5    2340    1-3-5    1230    1-3     460    1-3     400"
+   "date": "20220111",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           9R  3-2-4   11470    2-3-4    2010    3-2    2980    2-3    1630"
+   "date": "20220111",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          10R  2-6-3   36360    2-3-6    6490    2-6    4180    2-6    5330"
+   "date": "20220111",
+   "line": "          12R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          11R  1-2-3    1320    1-2-3     510    1-2     320    1-2     520"
+   "date": "20220111",
+   "line": "           4R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "          12R  1-2-3     410    1-2-3     300    1-2     160    1-2     160"
+   "date": "20220111",
+   "line": "           5R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           1R  1-5-4    2320    1-4-5     880    1-5     640    1-5     460"
+   "date": "20220111",
+   "line": "           6R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           2R  1-3-2     410    1-2-3     280    1-3     220    1-3     250"
+   "date": "20220111",
+   "line": "           7R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           3R  2-1-3    1160    1-2-3     220    2-1     890    1-2     290"
+   "date": "20220111",
+   "line": "           8R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           4R  4-1-5    1510    1-4-5     430    4-1     650    1-4     220"
+   "date": "20220111",
+   "line": "           9R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           5R  1-3-2    1300    1-2-3     490    1-3     650    1-3     470"
+   "date": "20220111",
+   "line": "          10R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           6R  1-3-5    2280    1-3-5    1410    1-3     350    1-3     290"
+   "date": "20220111",
+   "line": "          11R  中 止"
   },
   {
    "kind": "K-header",
-   "date": "20261023",
-   "line": "           7R  2-1-4     830    1-2-4     170    2-1     490    1-2     260"
+   "date": "20220111",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K",
+   "date": "20220111",
+   "line": "        複勝     5         1080  4          270"
+  },
+  {
+   "kind": "K",
+   "date": "20220111",
+   "line": "        複勝     1         1030  3          390"
+  },
+  {
+   "kind": "K",
+   "date": "20220112",
+   "line": "        複勝     6         1310  4          870"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220112",
+   "line": "           9R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220112",
+   "line": "          10R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220112",
+   "line": "          11R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220112",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K",
+   "date": "20220112",
+   "line": "        複勝     4         1030  5          790"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           1R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           2R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           3R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           4R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           5R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           6R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           7R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           8R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           9R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          10R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          11R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           8R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "           9R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          10R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          11R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220113",
+   "line": "          12R  中 止"
+  },
+  {
+   "kind": "K",
+   "date": "20220114",
+   "line": "        複勝     3         1020  1          160"
+  },
+  {
+   "kind": "K",
+   "date": "20220114",
+   "line": "        複勝     3         1050  5         1290"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220114",
+   "line": "           1R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220114",
+   "line": "           2R  中 止"
+  },
+  {
+   "kind": "K-header",
+   "date": "20220114",
+   "line": "           3R  中 止"
   }
  ],
  "model": {
-  "win_top1_acc": 0.5868,
-  "win_logloss": 1.2644,
-  "tri_logloss": 3.8918,
-  "tri_top1_acc": 0.0799,
+  "win_top1_acc": 0.5773,
+  "win_logloss": 1.1668,
+  "tri_logloss": 3.8392,
+  "tri_top1_acc": 0.0902,
   "tri_logloss_uniform": 4.7875,
-  "lam2": 0.7000000000000002,
-  "lam3": 0.6500000000000001,
-  "train_races": 768,
-  "valid_races": 288,
-  "valid_from": "20261020"
+  "lam2": 0.6500000000000001,
+  "lam3": 0.5,
+  "train_races": 213370,
+  "valid_races": 53725,
+  "valid_from": "20251106"
  }
 }
