@@ -36,12 +36,19 @@ def _payouts(con) -> dict:
             for r in con.execute("SELECT race_id, bet_type, combo, payout FROM payouts")}
 
 
+_PROB_CACHE: dict = {}
+
+
 def simulate(races, odds, payouts, lam2, lam3, **params):
+    from .model import order_probs
     rows = []
     for rid, p in races:
         if rid not in odds:
             continue
-        res = analyze_race(p, odds[rid], lam2, lam3, bankroll=100_000, **params)
+        key = (rid, lam2, lam3)
+        if key not in _PROB_CACHE:
+            _PROB_CACHE[key] = order_probs(np.asarray(p), lam2, lam3)
+        res = analyze_race(p, odds[rid], lam2, lam3, bankroll=100_000, probs=_PROB_CACHE[key], **params)
         for b in res["picks"]:
             pay = payouts.get((rid, b["type"], b["combo"]), 0)
             stake = 100  # 評価は均等買い（100円）で行い、資金配分の影響と分ける
