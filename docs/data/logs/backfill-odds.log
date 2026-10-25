@@ -1,19 +1,3 @@
-=== 2026-10-24 13:25:30 backfill odds run 40062256006
-未取得 55981 レース
-/home/runner/work/boatrace-ev/boatrace-ev/src/boatev/scrape.py:39: XMLParsedAsHTMLWarning: It looks like you're using an HTML parser to parse an XML document.
-
-Assuming this really is an XML document, what you're doing might work, but you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the Python package 'lxml' installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
-
-If you want or need to use an HTML parser on this document, you can make this warning go away by filtering it. To do that, run this code before calling the BeautifulSoup constructor:
-
-    from bs4 import XMLParsedAsHTMLWarning
-    import warnings
-
-    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-
-  return BeautifulSoup(html, "lxml") if html else None
-20261022 50/55981
-20261022 100/55981
 20261022 150/55981
 20261021 200/55981
 20261021 250/55981
@@ -383,3 +367,34 @@ If you want or need to use an HTML parser on this document, you can make this wa
 20260728 2150/2902
 時間切れで中断（2162 レース取得）。再実行すると続きから取ります
 {"races": 270840, "entries": 1625040, "payouts": 534648, "races_with_odds": 13755, "first_date": "20220101", "last_date": "20261024"}
+=== 2026-10-26 06:22:02 backfill odds run 40235118719
+未取得 837 レース
+/home/runner/work/boatrace-ev/boatrace-ev/src/boatev/scrape.py:39: XMLParsedAsHTMLWarning: It looks like you're using an HTML parser to parse an XML document.
+
+Assuming this really is an XML document, what you're doing might work, but you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the Python package 'lxml' installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
+
+If you want or need to use an HTML parser on this document, you can make this warning go away by filtering it. To do that, run this code before calling the BeautifulSoup constructor:
+
+    from bs4 import XMLParsedAsHTMLWarning
+    import warnings
+
+    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+
+  return BeautifulSoup(html, "lxml") if html else None
+20260921 50/837
+20260728 100/837
+20260728 150/837
+20260727 200/837
+20260727 250/837
+20260727 300/837
+20260726 350/837
+20260726 400/837
+20260726 450/837
+20260725 500/837
+20260725 550/837
+20260725 600/837
+20260725 650/837
+20260724 700/837
+20260724 750/837
+20260724 800/837
+{"races": 271008, "entries": 1626048, "payouts": 534982, "races_with_odds": 14662, "first_date": "20220101", "last_date": "20261025"}
