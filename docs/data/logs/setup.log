@@ -140,3 +140,105 @@
   }
 }
 {"races": 270840, "entries": 1625040, "payouts": 534648, "races_with_odds": 7530, "first_date": "20220101", "last_date": "20261024"}
+=== 2026-10-26 08:18:57 setup (history + train) run 40244157026
+基本のみ {'win_top1_acc': 0.5713, 'win_logloss': 1.1801, 'tri_logloss': 3.8416, 'tri_top1_acc': 0.0924}
+日和型を追加 {'win_top1_acc': 0.5744, 'win_logloss': 1.1691, 'tri_logloss': 3.8354, 'tri_top1_acc': 0.0908}
+{
+ "基本のみ": {
+  "win_top1_acc": 0.5713,
+  "win_logloss": 1.1801,
+  "tri_logloss": 3.8416,
+  "tri_top1_acc": 0.0924
+ },
+ "日和型を追加": {
+  "win_top1_acc": 0.5744,
+  "win_logloss": 1.1691,
+  "tri_logloss": 3.8354,
+  "tri_top1_acc": 0.0908
+ },
+ "races": 156518
+}
+学習データ: 267430 レース
+{
+  "win_top1_acc": 0.5771,
+  "win_logloss": 1.166,
+  "tri_logloss": 3.8362,
+  "tri_top1_acc": 0.0891,
+  "tri_logloss_uniform": 4.7875,
+  "lam2": 0.6499999999999999,
+  "lam3": 0.44999999999999996,
+  "train_races": 213622,
+  "valid_races": 53808,
+  "valid_from": "20251108"
+}
+{
+  "model": {
+    "win_top1_acc": 0.575,
+    "win_logloss": 1.1716,
+    "tri_logloss": 3.8468,
+    "tri_top1_acc": 0.089,
+    "tri_logloss_uniform": 4.7875,
+    "lam2": 0.6499999999999999,
+    "lam3": 0.39999999999999997,
+    "train_races": 203283,
+    "valid_races": 49491,
+    "valid_from": "20250825"
+  },
+  "best_params": {
+    "ev_th": 1.2,
+    "blend": 0.3,
+    "max_odds": 50
+  },
+  "tune": {
+    "ev_th": 1.2,
+    "blend": 0.3,
+    "max_odds": 50,
+    "races": 52,
+    "bets": 63,
+    "hits": 4,
+    "avg_hit_odds": 42.7,
+    "roi_ci95": [
+      0.601,
+      5.737
+    ],
+    "roi_without_top3": 0.527,
+    "hit_rate": 0.0635,
+    "roi": 2.7111,
+    "profit": 10780
+  },
+  "holdout": {
+    "races": 72,
+    "bets": 86,
+    "hits": 0,
+    "avg_hit_odds": null,
+    "roi_ci95": [
+      0.0,
+      0.0
+    ],
+    "roi_without_top3": 0.0,
+    "hit_rate": 0.0,
+    "roi": 0.0,
+    "profit": -8600
+  },
+  "holdout_by_ev": {
+    "(1.2, 1.5]": {
+      "races": 72,
+      "bets": 86,
+      "hits": 0,
+      "avg_hit_odds": null,
+      "roi_ci95": [
+        0.0,
+        0.0
+      ],
+      "roi_without_top3": 0.0,
+      "hit_rate": 0.0,
+      "roi": 0.0,
+      "profit": -8600
+    }
+  },
+  "periods": {
+    "test_from": "20260724",
+    "holdout_from": "20260909"
+  }
+}
+{"races": 271008, "entries": 1626048, "payouts": 534982, "races_with_odds": 14662, "first_date": "20220101", "last_date": "20261025"}

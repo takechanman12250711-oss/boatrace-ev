@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:16:14+09:00",
+ "generated_at": "2026-10-26T08:39:56+09:00",
  "totals": {
   "races": 271008,
   "entries": 1626048,
@@ -760,13 +760,6 @@
   }
  ],
  "history_sec_per_day_avg": 17.7,
- "parse_misses": [
-  {
-   "kind": "K-header",
-   "date": "20261025",
-   "line": "          12R  中 止"
-  }
- ],
  "model": {
   "win_top1_acc": 0.5771,
   "win_logloss": 1.166,
