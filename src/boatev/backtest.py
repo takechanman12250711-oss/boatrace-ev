@@ -58,10 +58,26 @@ def simulate(races, odds, payouts, lam2, lam3, **params):
     return pd.DataFrame(rows)
 
 
+def roi_ci(bets: pd.DataFrame, n_boot: int = 2000, seed: int = 0):
+    """レース単位のブートストラップで回収率の95%区間。高配当頼みだと幅が広くなる。"""
+    if bets.empty:
+        return None
+    g = bets.groupby("race_id")[["stake", "ret"]].sum().values
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(g), size=(n_boot, len(g)))
+    s = g[idx]
+    rois = s[..., 1].sum(1) / s[..., 0].sum(1)
+    return [round(float(np.percentile(rois, 2.5)), 3), round(float(np.percentile(rois, 97.5)), 3)]
+
+
 def summarize(bets: pd.DataFrame) -> dict:
     if bets.empty:
         return {"bets": 0}
+    hits = bets[bets["hit"]]
     return {"races": int(bets["race_id"].nunique()), "bets": len(bets),
+            "hits": int(len(hits)), "avg_hit_odds": round(float(hits["ret"].mean() / 100), 1) if len(hits) else None,
+            "roi_ci95": roi_ci(bets),
+            "roi_without_top3": round(float((bets["ret"].sum() - hits["ret"].nlargest(3).sum()) / bets["stake"].sum()), 4),
             "hit_rate": round(bets["hit"].mean(), 4),
             "roi": round(bets["ret"].sum() / bets["stake"].sum(), 4),
             "profit": int(bets["ret"].sum() - bets["stake"].sum())}
