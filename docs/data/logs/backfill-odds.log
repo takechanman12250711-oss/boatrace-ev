@@ -324,3 +324,62 @@ If you want or need to use an HTML parser on this document, you can make this wa
 20260811 2150/4977
 時間切れで中断（2158 レース取得）。再実行すると続きから取ります
 {"races": 270840, "entries": 1625040, "payouts": 534648, "races_with_odds": 11690, "first_date": "20220101", "last_date": "20261024"}
+=== 2026-10-26 00:12:51 backfill odds run 40205833745
+未取得 2902 レース
+/home/runner/work/boatrace-ev/boatrace-ev/src/boatev/scrape.py:39: XMLParsedAsHTMLWarning: It looks like you're using an HTML parser to parse an XML document.
+
+Assuming this really is an XML document, what you're doing might work, but you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the Python package 'lxml' installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
+
+If you want or need to use an HTML parser on this document, you can make this warning go away by filtering it. To do that, run this code before calling the BeautifulSoup constructor:
+
+    from bs4 import XMLParsedAsHTMLWarning
+    import warnings
+
+    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+
+  return BeautifulSoup(html, "lxml") if html else None
+20260921 50/2902
+20260811 100/2902
+20260811 150/2902
+20260810 200/2902
+20260810 250/2902
+20260810 300/2902
+20260809 350/2902
+20260809 400/2902
+20260809 450/2902
+20260808 500/2902
+20260808 550/2902
+20260808 600/2902
+20260807 650/2902
+20260807 700/2902
+20260807 750/2902
+20260806 800/2902
+20260806 850/2902
+20260806 900/2902
+20260805 950/2902
+20260805 1000/2902
+20260804 1050/2902
+20260804 1100/2902
+20260804 1150/2902
+20260803 1200/2902
+20260803 1250/2902
+20260803 1300/2902
+20260802 1350/2902
+20260802 1400/2902
+20260802 1450/2902
+20260801 1500/2902
+20260801 1550/2902
+20260801 1600/2902
+20260731 1650/2902
+20260731 1700/2902
+20260731 1750/2902
+20260730 1800/2902
+20260730 1850/2902
+20260730 1900/2902
+20260729 1950/2902
+20260729 2000/2902
+20260729 2050/2902
+20260728 2100/2902
+20260728 2150/2902
+時間切れで中断（2162 レース取得）。再実行すると続きから取ります
+{"races": 270840, "entries": 1625040, "payouts": 534648, "races_with_odds": 13755, "first_date": "20220101", "last_date": "20261024"}
