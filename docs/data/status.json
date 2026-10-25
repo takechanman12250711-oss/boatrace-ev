@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-25T11:58:03+09:00",
+ "generated_at": "2026-10-25T12:16:37+09:00",
  "totals": {
   "races": 270840,
   "entries": 1625040,
@@ -762,14 +762,14 @@
  "history_sec_per_day_avg": 17.7,
  "model": {
   "win_top1_acc": 0.5773,
-  "win_logloss": 1.1668,
-  "tri_logloss": 3.8372,
+  "win_logloss": 1.1657,
+  "tri_logloss": 3.8357,
   "tri_top1_acc": 0.0902,
   "tri_logloss_uniform": 4.7875,
   "lam2": 0.6499999999999999,
   "lam3": 0.44999999999999996,
-  "train_races": 213370,
-  "valid_races": 53725,
-  "valid_from": "20251106"
+  "train_races": 213490,
+  "valid_races": 53773,
+  "valid_from": "20251107"
  }
 }

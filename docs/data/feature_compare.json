@@ -1,15 +1,15 @@
 {
  "基本のみ": {
-  "win_top1_acc": 0.5719,
-  "win_logloss": 1.1801,
-  "tri_logloss": 3.8419,
-  "tri_top1_acc": 0.0933
+  "win_top1_acc": 0.5715,
+  "win_logloss": 1.1803,
+  "tri_logloss": 3.8418,
+  "tri_top1_acc": 0.0929
  },
  "日和型を追加": {
-  "win_top1_acc": 0.5746,
-  "win_logloss": 1.1707,
-  "tri_logloss": 3.8385,
-  "tri_top1_acc": 0.0901
+  "win_top1_acc": 0.5744,
+  "win_logloss": 1.1703,
+  "tri_logloss": 3.8383,
+  "tri_top1_acc": 0.0899
  },
- "races": 156183
+ "races": 156351
 }
