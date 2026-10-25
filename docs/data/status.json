@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-10-25T12:16:37+09:00",
+ "generated_at": "2026-10-25T17:39:30+09:00",
  "totals": {
   "races": 270840,
   "entries": 1625040,
   "payouts": 534648,
-  "races_with_odds": 7530,
+  "races_with_odds": 9615,
   "first_date": "20220101",
   "last_date": "20261024"
  },
