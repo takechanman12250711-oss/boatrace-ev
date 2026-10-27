@@ -11,7 +11,7 @@
 header{position:sticky;top:0;background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--line);z-index:2}
 h1{font-size:17px;margin:0 0 8px}select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 main{padding:12px 16px 40px;max-width:760px;margin:auto}
-.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.rtag.t1{background:#7c3aed}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}.tile b{display:block;font-size:18px}.tile span{color:var(--sub);font-size:12px}
 .race{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
 .rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.rh h2{font-size:16px;margin:0}.rh small{color:var(--sub)}
@@ -36,12 +36,13 @@ details summary{cursor:pointer;color:var(--sub);font-size:13px;margin-top:6px}
 <header><h1>ボートレース 買い目分析</h1>
 <select id="date"></select> <select id="filter"><option value="picks">推奨あり</option><option value="all">全レース</option></select></header>
 <main><p class="sec">通算（記録した全日）</p><div id="total" class="sum"></div><p class="sec">この日</p><div id="sum" class="sum"></div><div id="list"></div><div id="bt"></div>
-<p class="note">本線＝期待値で選んだ買い目。ロマン＝100倍以上の3連単で期待値2.0以上を最初に満たした1点（1日1点まで。当たりにくいので、本線とは成績を分けています）。どちらも1点100円で記録。期待値 = 的中確率 × オッズ。オッズは予想時点の値で、締切までに変動します。結果は保証されません。</p></main>
+<p class="note">本線＝期待値で選んだ買い目。中穴＝50〜100倍、大穴＝100倍以上の3連単で、期待値2.0以上を最初に満たした1点（それぞれ1日1点まで。当たりにくいので、本線とは成績を分けています）。どちらも1点100円で記録。期待値 = 的中確率 × オッズ。オッズは予想時点の値で、締切までに変動します。結果は保証されません。</p></main>
 <script>
 const $=s=>document.querySelector(s), yen=n=>n.toLocaleString('ja-JP')+'円', pct=x=>(x*100).toFixed(1)+'%';
 async function j(u){try{const r=await fetch(u,{cache:'no-store'});return r.ok?r.json():null}catch(e){return null}}
-function tally(races){const t={s:0,r:0,rs:0,rr:0,rh:0,n:0};races.forEach(x=>{const z=x.result;if(!z)return;t.n++;t.s+=z.stake||0;t.r+=z.return||0;t.rs+=z.roman_stake||0;t.rr+=z.roman_return||0;if(z.roman_return>0)t.rh++});return t}
-function tiles(t){const pc=(a,b)=>b?Math.round(a/b*100)+'%':'-';return `<div class="tile"><span>本線 回収率</span><b>${pc(t.r,t.s)}</b><span>${yen(t.s)}→${yen(t.r)}</span></div><div class="tile"><span>ロマン 回収率</span><b>${pc(t.rr,t.rs)}</b><span>${yen(t.rs)}→${yen(t.rr)}</span></div><div class="tile"><span>ロマン的中</span><b>${t.rh}本</b><span>${t.n}レース確定</span></div>`}
+const TIERS=['中穴','大穴'];
+function tally(races){const t={s:0,r:0,n:0};TIERS.forEach(k=>t[k]={s:0,r:0,h:0});races.forEach(x=>{const z=x.result;if(!z)return;t.n++;t.s+=z.stake||0;t.r+=z.return||0;Object.entries(z.romans||{}).forEach(([k,v])=>{if(!t[k])return;t[k].s+=v.stake;t[k].r+=v.return;if(v.return>0)t[k].h++})});return t}
+function tiles(t){const pc=(a,b)=>b?Math.round(a/b*100)+'%':'-';return `<div class="tile"><span>本線 回収率</span><b>${pc(t.r,t.s)}</b><span>${yen(t.s)}→${yen(t.r)}</span><span>${t.n}レース確定</span></div>`+TIERS.map(k=>`<div class="tile"><span>${k} 回収率</span><b>${pc(t[k].r,t[k].s)}</b><span>${yen(t[k].s)}→${yen(t[k].r)}</span><span>的中${t[k].h}本</span></div>`).join('')}
 async function total(dates){const all=[];for(const d of dates){const x=await j(`data/${d}.json`);Object.values(x?.races||{}).forEach(r=>all.push(r))}$('#total').innerHTML=tiles(tally(all))}
 async function init(){
   const idx=await j('data/index.json'); const dates=idx?.dates||[];
@@ -54,19 +55,18 @@ async function load(){
     .sort((a,b)=>(a.deadline||'').localeCompare(b.deadline||'')||a.race_id.localeCompare(b.race_id));
   const t=tally(races);
   $('#sum').innerHTML=tiles(t);
-  const show=$('#filter').value==='all'?races:races.filter(r=>r.picks?.length||r.roman);
+  const show=$('#filter').value==='all'?races:races.filter(r=>r.picks?.length||Object.keys(r.romans||{}).length);
   $('#list').innerHTML=show.length?show.map(card).join(''):'<p class="empty">該当レースなし</p>';
 }
 function card(r){
   const res=r.result, won=new Set((res?.payouts||[]).map(p=>p.type+p.combo));
-  const badge=!res?'<span class="badge none">結果待ち</span>':(res.return>0||res.roman_return>0)?`<span class="badge hit">的中 ${yen((res.return||0)+(res.roman_return||0))}</span>`:'<span class="badge miss">不的中</span>';
+  const badge=!res?'<span class="badge none">結果待ち</span>':(res.return>0||Object.values(res.romans||{}).some(v=>v.return>0))?`<span class="badge hit">的中 ${yen((res.return||0)+Object.values(res.romans||{}).reduce((a,v)=>a+v.return,0))}</span>`:'<span class="badge miss">不的中</span>';
   const mx=Math.max(...r.entries.map(e=>e.win_prob));
   const bars=r.entries.map(e=>`<div class="bar"><div class="bn b${e.boat}">${e.boat}</div><div class="track"><div class="fill" style="width:${e.win_prob/mx*100}%"></div></div><div>${pct(e.win_prob)}</div>
     <div class="nm">${e.name||''} ${e.class||''}${e.course!==e.boat?` ・${e.course}コース進入`:''}${e.ex_time?` ・展示${e.ex_time.toFixed(2)}`:''}</div></div>`).join('');
   const row=b=>`<tr class="${won.has(b.type+b.combo)?'won':''}"><td>${b.type}</td><td>${b.combo}</td><td>${pct(b.prob)}</td><td>${b.odds??'-'}</td><td>${b.ev?b.ev.toFixed(2):'-'}</td>${b.stake!==undefined?`<td>${b.stake}</td>`:''}</tr>`;
   const picks=r.picks?.length?`<table><tr><th>券種</th><th>買い目</th><th>確率</th><th>オッズ</th><th>期待値</th><th>金額</th></tr>${r.picks.map(row).join('')}</table>`:'<p class="nm">本線：期待値の基準を満たす買い目なし（見送り）</p>';
-  const rm=r.roman, rwon=rm&&won.has(rm.type+rm.combo);
-  const roman=rm?`<div class="roman ${rwon?'won':''}"><div><span class="rtag">ロマン</span><b>${rm.combo}</b> <span class="nm">${rm.odds}倍・確率${pct(rm.prob)}・期待値${rm.ev.toFixed(2)}</span></div><div>${rwon?'的中！'+yen(res.roman_return):'100円'}</div></div>`:'';
+  const roman=Object.entries(r.romans||{}).map(([k,rm])=>{const rw=won.has(rm.type+rm.combo);return `<div class="roman ${rw?'won':''}"><div><span class="rtag">${k}</span><b>${rm.combo}</b> <span class="nm">${rm.odds}倍・確率${pct(rm.prob)}・期待値${rm.ev.toFixed(2)}</span></div><div>${rw?'的中！'+yen(res.romans?.[k]?.return||0):'100円'}</div></div>`}).join('');
   return `<div class="race"><div class="rh"><h2>${r.venue} ${r.rno}R</h2><small>${r.deadline?'締切 '+r.deadline:''}</small>${badge}</div>
     <div class="bars">${bars}</div>${picks}${roman}${res?.['3連単']?`<p class="nm">結果 3連単 ${res['3連単']}</p>`:''}
     <details><summary>確率上位の3連単</summary><table><tr><th>券種</th><th>買い目</th><th>確率</th><th>オッズ</th><th>期待値</th></tr>${(r.top3t||[]).map(row).join('')}</table></details></div>`;
@@ -76,7 +76,7 @@ async function bt(){
   const h=b.holdout,p=b.best_params;
   $('#bt').innerHTML=`<div class="race"><div class="rh"><h2>バックテスト（${b.periods.holdout_from}〜）</h2></div>
   <table><tr><th>指標</th><th></th><th>値</th></tr><tr><td>買い目数</td><td></td><td>${h.bets}</td></tr><tr><td>的中率</td><td></td><td>${pct(h.hit_rate)}</td></tr>
-  <tr><td>回収率</td><td></td><td>${Math.round(h.roi*100)}%</td></tr><tr><td>条件</td><td></td><td>期待値≥${p.ev_th}・混合${p.blend}・オッズ≤${p.max_odds}</td></tr>${b.roman?.bets?`<tr><td>ロマン枠</td><td></td><td>${b.roman.bets}点・${b.roman.hits}本的中・回収率${Math.round(b.roman.roi*100)}%</td></tr>`:''}</table></div>`;
+  <tr><td>回収率</td><td></td><td>${Math.round(h.roi*100)}%</td></tr><tr><td>条件</td><td></td><td>期待値≥${p.ev_th}・混合${p.blend}・オッズ≤${p.max_odds}</td></tr>${TIERS.map(k=>{const d=b.roman_daily?.[k]?.['2.0'];return d?.bets?`<tr><td>${k}（1日1点）</td><td></td><td>${d.bets}点・${d.hits}本的中・回収率${Math.round(d.roi*100)}%</td></tr>`:''}).join('')}</table></div>`;
 }
 init();
 </script>

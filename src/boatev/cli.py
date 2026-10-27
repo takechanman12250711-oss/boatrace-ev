@@ -246,7 +246,7 @@ def predict_races(con, model, targets, date):
                          "ex_time": None if r["ex_time"] != r["ex_time"] else float(r["ex_time"]),
                          "win_prob": round(float(pi), 4)} for (_, r), pi in zip(g.iterrows(), p)],
             "picks": [_r4(b) for b in res["picks"]],
-            "roman": _r4(res["roman"]),
+            "romans": {k: _r4(v) for k, v in res["romans"].items()},
             "top3t": [_r4(b) for b in top],
             "predicted_at": now().isoformat(timespec="seconds"),
         }
@@ -313,15 +313,17 @@ def cmd_predict(args):
             targets.append((r["jcd"], r["rno"], odds))
             site["races"].setdefault(r["race_id"], {})["deadline"] = r["deadline"]
         log(f"予想対象 {len(targets)} レース")
-        roman_used = sum(1 for x in site["races"].values() if x.get("roman"))
+        used = {name: sum(1 for x in site["races"].values() if (x.get("romans") or {}).get(name))
+                for name in config.ROMAN_TIERS}
         for rid, v in sorted(predict_races(con, model, targets, date).items(),
                              key=lambda kv: (site["races"][kv[0]].get("deadline") or "", kv[0])):
-            # ロマンは「期待値 ROMAN_DAILY_EV 以上」を最初に満たしたレースだけ（1日 ROMAN_PER_DAY 点まで）
-            rm = v.get("roman")
-            if rm and rm["ev"] >= config.ROMAN_DAILY_EV and roman_used < config.ROMAN_PER_DAY:
-                roman_used += 1
-            else:
-                v["roman"] = None
+            # ロマンは枠ごとに「期待値 ROMAN_DAILY_EV 以上」を最初に満たしたレースだけ（1日 ROMAN_PER_DAY 点まで）
+            keep = {}
+            for name, rm in v.get("romans", {}).items():
+                if rm and rm["ev"] >= config.ROMAN_DAILY_EV[name] and used[name] < config.ROMAN_PER_DAY:
+                    used[name] += 1
+                    keep[name] = rm
+            v["romans"] = keep
             site["races"][rid] = site["races"].get(rid, {}) | v
     if targets:
         # 締切前オッズを残しておく（後で「実戦に近い」バックテストに使える）
@@ -348,11 +350,11 @@ def cmd_results(args):
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             paymap = {(p["bet_type"], p["combo"]): p["payout"] for p in pays}
             ret = lambda bets: int(sum(paymap.get((b["type"], b["combo"]), 0) * b["stake"] / 100 for b in bets))
-            picks, roman = r.get("picks", []), [r["roman"]] if r.get("roman") else []
+            picks = r.get("picks", [])
             r["result"] = {"3連単": next((p["combo"] for p in pays if p["bet_type"] == "3連単"), None),
                            "payouts": [{"type": p["bet_type"], "combo": p["combo"], "payout": p["payout"]} for p in pays],
                            "stake": sum(b["stake"] for b in picks), "return": ret(picks),
-                           "roman_stake": sum(b["stake"] for b in roman), "roman_return": ret(roman)}
+                           "romans": {k: {"stake": b["stake"], "return": ret([b])} for k, b in (r.get("romans") or {}).items()}}
             con.commit()
     _save_site(site)
 

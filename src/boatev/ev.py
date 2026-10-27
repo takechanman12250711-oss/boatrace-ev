@@ -59,18 +59,24 @@ def analyze_race(win_p, odds: dict[str, dict[str, float]], lam2: float, lam3: fl
     picks = picks[:max_points]
     for r in picks:
         r["tag"], r["stake"] = "本線", config.FLAT_STAKE
-    roman = pick_roman(table, {r["combo"] for r in picks if r["type"] == "3連単"})
-    return {"win_prob": [float(x) for x in np.asarray(win_p)], "table": table, "picks": picks, "roman": roman}
+    used = {r["combo"] for r in picks if r["type"] == "3連単"}
+    romans = {}
+    for name, (lo, hi) in config.ROMAN_TIERS.items():
+        rm = pick_roman(table, used, lo, hi, name)
+        if rm:
+            romans[name] = rm
+            used.add(rm["combo"])
+    return {"win_prob": [float(x) for x in np.asarray(win_p)], "table": table, "picks": picks, "romans": romans}
 
 
-def pick_roman(table, exclude=()):
-    """ロマン枠：100倍以上の3連単のうち、期待値が最も高い1点（基準に届かなければ出さない）。"""
+def pick_roman(table, exclude, lo, hi, name):
+    """ロマン枠：lo倍以上hi倍未満の3連単のうち、期待値が最も高い1点（基準に届かなければ出さない）。"""
     cands = [r for r in table if r["type"] == "3連単" and r["odds"] and r["ev"]
-             and config.ROMAN_MIN_ODDS <= r["odds"] <= config.ROMAN_MAX_ODDS
+             and lo <= r["odds"] < hi
              and r["prob"] >= config.ROMAN_MIN_PROB and r["ev"] >= config.ROMAN_EV
              and r["combo"] not in exclude]
     if not cands:
         return None
     best = dict(max(cands, key=lambda r: r["ev"]))
-    best["tag"], best["stake"] = "ロマン", config.FLAT_STAKE
+    best["tag"], best["stake"] = name, config.FLAT_STAKE
     return best
