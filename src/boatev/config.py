@@ -45,4 +45,6 @@ FLAT_STAKE = 100
 ROMAN_MIN_ODDS = 100     # 100倍以上
 ROMAN_MAX_ODDS = 2000
 ROMAN_MIN_PROB = 0.002   # 確率0.2%未満（500回に1回未満）は出さない
-ROMAN_EV = 1.3           # 期待値1.3以上
+ROMAN_EV = 1.3           # ロマン候補になる期待値の下限（バックテスト用）
+ROMAN_DAILY_EV = 2.0     # 予想で出すのはこの期待値以上だけ
+ROMAN_PER_DAY = 1        # 1日に出すロマンの上限

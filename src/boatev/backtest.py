@@ -120,8 +120,19 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
     # ロマン枠は条件を調整していないので、テスト期間全体で成績を見る
     roman_bets = simulate(races, odds, pays, model.lam2, model.lam3, roman=True, **params)
     roman_bets = roman_bets[roman_bets["tag"] == "ロマン"] if not roman_bets.empty else roman_bets
-    roman_rep = summarize(roman_bets) | {"rule": f"3連単{config.ROMAN_MIN_ODDS:.0f}〜{config.ROMAN_MAX_ODDS:.0f}倍・確率{config.ROMAN_MIN_PROB:.1%}以上・期待値{config.ROMAN_EV}以上で最も期待値の高い1点"}
+    roman_rep = summarize(roman_bets) | {"rule": f"3連単{config.ROMAN_MIN_ODDS:.0f}〜{config.ROMAN_MAX_ODDS:.0f}倍・確率{config.ROMAN_MIN_PROB:.1%}以上・期待値{config.ROMAN_EV}以上で最も期待値の高い1点（毎レース）"}
+    # 1日1点版：期待値がしきい値以上のロマン候補のうち、その日最初に締切を迎えるレースの1点だけ
+    dl = {r["race_id"]: r["deadline"] or "99:99" for r in con.execute(
+        "SELECT race_id, deadline FROM races WHERE date >= ?", (test_from,))}
+    n_days = len({rid[:8] for rid, _ in races if rid in odds})
+    roman_daily = {}
+    if not roman_bets.empty:
+        rb = roman_bets.assign(date=roman_bets["race_id"].str[:8], dl=roman_bets["race_id"].map(dl).fillna("99:99"))
+        for th in (1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0):
+            day = rb[rb["ev"] >= th].sort_values(["date", "dl", "race_id"]).groupby("date").head(config.ROMAN_PER_DAY)
+            roman_daily[str(th)] = summarize(day) | {"days_with_pick": int(day["date"].nunique()), "days": n_days}
     return {"model": model.metrics, "best_params": params, "tune": best, "roman": roman_rep,
+            "roman_daily": roman_daily,
             "selection": f"買い目{MIN_TUNE_BETS}点以上の条件のうち、回収率95%区間の下限が最大のもの",
             "grid": sorted(grid, key=lambda g: -(g.get("roi") or 0)),
             "holdout": summarize(hold_bets), "holdout_by_ev": by_ev,

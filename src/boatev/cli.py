@@ -313,7 +313,15 @@ def cmd_predict(args):
             targets.append((r["jcd"], r["rno"], odds))
             site["races"].setdefault(r["race_id"], {})["deadline"] = r["deadline"]
         log(f"予想対象 {len(targets)} レース")
-        for rid, v in predict_races(con, model, targets, date).items():
+        roman_used = sum(1 for x in site["races"].values() if x.get("roman"))
+        for rid, v in sorted(predict_races(con, model, targets, date).items(),
+                             key=lambda kv: (site["races"][kv[0]].get("deadline") or "", kv[0])):
+            # ロマンは「期待値 ROMAN_DAILY_EV 以上」を最初に満たしたレースだけ（1日 ROMAN_PER_DAY 点まで）
+            rm = v.get("roman")
+            if rm and rm["ev"] >= config.ROMAN_DAILY_EV and roman_used < config.ROMAN_PER_DAY:
+                roman_used += 1
+            else:
+                v["roman"] = None
             site["races"][rid] = site["races"].get(rid, {}) | v
     if targets:
         # 締切前オッズを残しておく（後で「実戦に近い」バックテストに使える）
