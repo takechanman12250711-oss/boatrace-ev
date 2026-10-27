@@ -15,6 +15,7 @@ from . import features
 from .ev import analyze_race
 from .model import Model
 
+MIN_TUNE_BETS = 300
 TYPE_KEY = {"3連単": "3t", "2連単": "2t"}
 
 
@@ -102,11 +103,13 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
     for ev_th, blend, max_odds in itertools.product([1.0, 1.1, 1.2, 1.3, 1.5], [0.3, 0.5, 0.7, 1.0], [50, 100, 200]):
         s = summarize(simulate(tune, odds, pays, model.lam2, model.lam3,
                                ev_th=ev_th, blend=blend, max_odds=max_odds))
-        if s.get("bets", 0) >= 30:
-            grid.append({"ev_th": ev_th, "blend": blend, "max_odds": max_odds} | s)
-    if not grid:
-        return {"model": model.metrics, "note": "オッズ付きのレースが少なく、しきい値を調整できません"}
-    best = max(grid, key=lambda g: g["roi"])
+        grid.append({"ev_th": ev_th, "blend": blend, "max_odds": max_odds} | s)
+    # 少ない買い目でたまたま高く出た条件を選ばないよう、
+    # 買い目300点以上の中から「回収率の95%区間の下限」が最も高い条件を選ぶ
+    ok = [g for g in grid if g.get("bets", 0) >= MIN_TUNE_BETS and g.get("roi_ci95")]
+    if not ok:
+        return {"model": model.metrics, "grid": grid, "note": "オッズ付きのレースが少なく、しきい値を調整できません"}
+    best = max(ok, key=lambda g: (g["roi_ci95"][0], g["roi"]))
     params = {k: best[k] for k in ("ev_th", "blend", "max_odds")}
     hold_bets = simulate(hold, odds, pays, model.lam2, model.lam3, **params)
 
@@ -115,5 +118,7 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
         hold_bets["ev_bin"] = pd.cut(hold_bets["ev"], [1, 1.2, 1.5, 2, 3, np.inf])
         by_ev = {str(k): summarize(v) for k, v in hold_bets.groupby("ev_bin", observed=True)}
     return {"model": model.metrics, "best_params": params, "tune": best,
+            "selection": f"買い目{MIN_TUNE_BETS}点以上の条件のうち、回収率95%区間の下限が最大のもの",
+            "grid": sorted(grid, key=lambda g: -(g.get("roi") or 0)),
             "holdout": summarize(hold_bets), "holdout_by_ev": by_ev,
             "periods": {"test_from": test_from, "holdout_from": cut}}
