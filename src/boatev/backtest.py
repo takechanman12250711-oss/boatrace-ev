@@ -11,7 +11,7 @@ import itertools
 import numpy as np
 import pandas as pd
 
-from . import features
+from . import config, features
 from .ev import analyze_race
 from .model import Model
 
@@ -40,7 +40,7 @@ def _payouts(con) -> dict:
 _PROB_CACHE: dict = {}
 
 
-def simulate(races, odds, payouts, lam2, lam3, **params):
+def simulate(races, odds, payouts, lam2, lam3, roman=False, **params):
     from .model import order_probs
     rows = []
     for rid, p in races:
@@ -50,10 +50,10 @@ def simulate(races, odds, payouts, lam2, lam3, **params):
         if key not in _PROB_CACHE:
             _PROB_CACHE[key] = order_probs(np.asarray(p), lam2, lam3)
         res = analyze_race(p, odds[rid], lam2, lam3, bankroll=100_000, probs=_PROB_CACHE[key], **params)
-        for b in res["picks"]:
+        for b in res["picks"] + ([res["roman"]] if roman and res["roman"] else []):
             pay = payouts.get((rid, b["type"], b["combo"]), 0)
             stake = 100  # 評価は均等買い（100円）で行い、資金配分の影響と分ける
-            rows.append({"race_id": rid, "type": b["type"], "combo": b["combo"], "ev": b["ev"],
+            rows.append({"race_id": rid, "tag": b.get("tag", "本線"), "type": b["type"], "combo": b["combo"], "ev": b["ev"],
                          "prob": b["prob"], "odds": b["odds"], "stake": stake,
                          "ret": pay * stake / 100, "hit": pay > 0})
     return pd.DataFrame(rows)
@@ -117,7 +117,11 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
     if not hold_bets.empty:
         hold_bets["ev_bin"] = pd.cut(hold_bets["ev"], [1, 1.2, 1.5, 2, 3, np.inf])
         by_ev = {str(k): summarize(v) for k, v in hold_bets.groupby("ev_bin", observed=True)}
-    return {"model": model.metrics, "best_params": params, "tune": best,
+    # ロマン枠は条件を調整していないので、テスト期間全体で成績を見る
+    roman_bets = simulate(races, odds, pays, model.lam2, model.lam3, roman=True, **params)
+    roman_bets = roman_bets[roman_bets["tag"] == "ロマン"] if not roman_bets.empty else roman_bets
+    roman_rep = summarize(roman_bets) | {"rule": f"3連単{config.ROMAN_MIN_ODDS:.0f}〜{config.ROMAN_MAX_ODDS:.0f}倍・確率{config.ROMAN_MIN_PROB:.1%}以上・期待値{config.ROMAN_EV}以上で最も期待値の高い1点"}
+    return {"model": model.metrics, "best_params": params, "tune": best, "roman": roman_rep,
             "selection": f"買い目{MIN_TUNE_BETS}点以上の条件のうち、回収率95%区間の下限が最大のもの",
             "grid": sorted(grid, key=lambda g: -(g.get("roi") or 0)),
             "holdout": summarize(hold_bets), "holdout_by_ev": by_ev,

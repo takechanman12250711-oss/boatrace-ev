@@ -220,6 +220,10 @@ def _save_site(data):
     idx_path.write_text(json.dumps(idx))
 
 
+def _r4(d):
+    return {k: (round(v, 4) if isinstance(v, float) else v) for k, v in d.items()} if d else None
+
+
 def predict_races(con, model, targets, date):
     """targets: [(jcd, rno, odds)] → レースごとの分析結果"""
     from .ev import analyze_race
@@ -241,56 +245,93 @@ def predict_races(con, model, targets, date):
                          "course": int(r["course_f"]),
                          "ex_time": None if r["ex_time"] != r["ex_time"] else float(r["ex_time"]),
                          "win_prob": round(float(pi), 4)} for (_, r), pi in zip(g.iterrows(), p)],
-            "picks": [{k: (round(v, 4) if isinstance(v, float) else v) for k, v in b.items()} for b in res["picks"]],
-            "top3t": [{k: (round(v, 4) if isinstance(v, float) else v) for k, v in b.items()} for b in top],
+            "picks": [_r4(b) for b in res["picks"]],
+            "roman": _r4(res["roman"]),
+            "top3t": [_r4(b) for b in top],
             "predicted_at": now().isoformat(timespec="seconds"),
         }
     return out
 
 
+def _ensure_program(con, date):
+    """当日の番組表（締切時刻・選手・モーター）をDBに入れる。
+    公式の番組表ファイルを使えば、公式サイトへのアクセスなしで全レース分そろう。"""
+    have = con.execute("SELECT COUNT(*) FROM races WHERE date=? AND deadline IS NOT NULL", (date,)).fetchone()[0]
+    if have:
+        return
+    text = history._download_text("b", date)
+    if text:
+        races, entries = history.parse_b(text, date)
+        db.upsert(con, "races", races, ("race_id",))
+        db.upsert(con, "entries", entries, ("race_id", "boat"))
+        con.commit()
+        log(f"番組表ファイルから {len(races)} レース取込")
+        return
+    log("番組表ファイルがまだ無いため、公式サイトの出走表から取得")
+    for jcd in scrape.venues_of_day(date):
+        for rno in range(1, 13):
+            race_info, entries = scrape.racelist(date, jcd, rno)
+            if entries:
+                db.upsert(con, "races", [race_info], ("race_id",))
+                db.upsert(con, "entries", entries, ("race_id", "boat"))
+    con.commit()
+
+
+def _minutes_left(deadline):
+    h, m = map(int, deadline.split(":"))
+    return (now().replace(hour=h, minute=m, second=0, microsecond=0) - now()).total_seconds() / 60
+
+
 def cmd_predict(args):
+    """締切 2〜within 分前のレースを、まだ予想していなければ予想する。
+    1レースあたり公式サイトへのアクセスは2回（直前情報・3連単オッズ）だけ。"""
     from .model import Model
 
     date = args.date or now().strftime("%Y%m%d")
     model = Model.load()
     site = _load_site(date)
+    pre_path = config.SITE_DATA_DIR / "odds_pre" / f"{date}.json"
+    pre = json.loads(pre_path.read_text()) if pre_path.exists() else {}
     with db.session() as con:
+        _ensure_program(con, date)
+        rows = con.execute("SELECT race_id, jcd, rno, deadline FROM races WHERE date=? AND deadline IS NOT NULL "
+                           "ORDER BY deadline", (date,)).fetchall()
         targets = []
-        for jcd in scrape.venues_of_day(date):
-            for rno in range(1, 13):
-                rid = db.race_id(date, jcd, rno)
-                race = con.execute("SELECT deadline FROM races WHERE race_id=?", (rid,)).fetchone()
-                if race is None or race["deadline"] is None:
-                    race_info, entries = scrape.racelist(date, jcd, rno)
-                    if not entries:
-                        continue
-                    db.upsert(con, "races", [race_info], ("race_id",))
-                    db.upsert(con, "entries", entries, ("race_id", "boat"))
-                    deadline = race_info.get("deadline")
-                else:
-                    deadline = race["deadline"]
-                if args.within and deadline:
-                    h, m = map(int, deadline.split(":"))
-                    left = (now().replace(hour=h, minute=m, second=0, microsecond=0) - now()).total_seconds() / 60
-                    if not (0 < left <= args.within):
-                        continue
-                r = collect_race(con, date, jcd, rno, before=True, odds=True)
-                if r:
-                    targets.append((jcd, rno, r["_odds"]))
-                    site["races"].setdefault(rid, {})["deadline"] = deadline
+        for r in rows:
+            if site["races"].get(r["race_id"], {}).get("predicted_at"):
+                continue
+            if not (2 < _minutes_left(r["deadline"]) <= args.within):
+                continue
+            w, ex = scrape.beforeinfo(date, r["jcd"], r["rno"])
+            db.upsert(con, "races", [w], ("race_id",))
+            db.upsert(con, "entries", ex, ("race_id", "boat"))
+            odds = store_odds(con, r["race_id"], date, r["jcd"], r["rno"], kinds=("3t",))
+            con.commit()
+            if not odds.get("3t"):
+                continue
+            pre[r["race_id"]] = {"at": now().isoformat(timespec="seconds"), "3t": odds["3t"]}
+            targets.append((r["jcd"], r["rno"], odds))
+            site["races"].setdefault(r["race_id"], {})["deadline"] = r["deadline"]
         log(f"予想対象 {len(targets)} レース")
         for rid, v in predict_races(con, model, targets, date).items():
             site["races"][rid] = site["races"].get(rid, {}) | v
+    if targets:
+        # 締切前オッズを残しておく（後で「実戦に近い」バックテストに使える）
+        pre_path.parent.mkdir(parents=True, exist_ok=True)
+        pre_path.write_text(json.dumps(pre, separators=(",", ":")))
     _save_site(site)
 
 
 def cmd_results(args):
     date = args.date or now().strftime("%Y%m%d")
     site = _load_site(date)
+    today = date == now().strftime("%Y%m%d")
     with db.session() as con:
         for rid, r in site["races"].items():
             if "result" in r or "jcd" not in r:
                 continue
+            if today and r.get("deadline") and _minutes_left(r["deadline"]) > -5:
+                continue  # まだ結果が出ていない
             ents, pays, kim = scrape.result(date, r["jcd"], r["rno"])
             if not pays:
                 continue
@@ -298,11 +339,12 @@ def cmd_results(args):
             db.upsert(con, "entries", ents, ("race_id", "boat"))
             db.upsert(con, "payouts", pays, ("race_id", "bet_type", "combo"))
             paymap = {(p["bet_type"], p["combo"]): p["payout"] for p in pays}
-            stake = sum(b["stake"] for b in r.get("picks", []))
-            ret = sum(paymap.get((b["type"], b["combo"]), 0) * b["stake"] / 100 for b in r.get("picks", []))
+            ret = lambda bets: int(sum(paymap.get((b["type"], b["combo"]), 0) * b["stake"] / 100 for b in bets))
+            picks, roman = r.get("picks", []), [r["roman"]] if r.get("roman") else []
             r["result"] = {"3連単": next((p["combo"] for p in pays if p["bet_type"] == "3連単"), None),
                            "payouts": [{"type": p["bet_type"], "combo": p["combo"], "payout": p["payout"]} for p in pays],
-                           "stake": stake, "return": int(ret)}
+                           "stake": sum(b["stake"] for b in picks), "return": ret(picks),
+                           "roman_stake": sum(b["stake"] for b in roman), "roman_return": ret(roman)}
             con.commit()
     _save_site(site)
 

@@ -29,10 +29,20 @@ VENUES = {
 }
 
 # 買い目選定のしきい値（バックテストで調整する）
-EV_THRESHOLD = float(os.environ.get("BOATEV_EV", "1.20"))   # 期待値がこれ以上
+# 2026/10 最終バックテストで選ばれた条件（期待値1.5以上・オッズ200倍以下・モデルと市場を半々）
+EV_THRESHOLD = float(os.environ.get("BOATEV_EV", "1.5"))    # 期待値がこれ以上
 MIN_PROB = float(os.environ.get("BOATEV_MIN_PROB", "0.01"))  # 確率1%未満は除外
-MAX_ODDS = float(os.environ.get("BOATEV_MAX_ODDS", "150"))   # 高すぎるオッズはモデル誤差が大きい
+MAX_ODDS = float(os.environ.get("BOATEV_MAX_ODDS", "200"))   # 高すぎるオッズはモデル誤差が大きい
 MARKET_BLEND = float(os.environ.get("BOATEV_BLEND", "0.5"))  # モデルと市場確率の混合比（0=市場のみ,1=モデルのみ）
 KELLY_FRACTION = 0.1   # ケリー基準の何割を賭けるか
 MAX_BET_SHARE = 0.02   # 1点あたり資金の上限比率
 MAX_POINTS_PER_RACE = 6
+
+# 予想の記録は1点100円で統一（バックテストと同じ条件で比べるため）
+FLAT_STAKE = 100
+
+# ロマン枠：本線とは別に、高配当の3連単を1レース1点だけ出す。成績は本線と分けて記録する
+ROMAN_MIN_ODDS = 100     # 100倍以上
+ROMAN_MAX_ODDS = 2000
+ROMAN_MIN_PROB = 0.002   # 確率0.2%未満（500回に1回未満）は出さない
+ROMAN_EV = 1.3           # 期待値1.3以上

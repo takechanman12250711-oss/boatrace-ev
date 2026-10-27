@@ -25,7 +25,7 @@ jobs:
         run: |
           if [ -f data/model.pkl ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "モデル未作成のためスキップ（先に setup を実行）"; fi
       - if: steps.ready.outputs.ok == '1'
-        run: python -m boatev.cli predict --within 20
+        run: python -m boatev.cli predict --within 25
       - if: steps.ready.outputs.ok == '1'
         run: python -m boatev.cli results
       - uses: actions/cache/save@v4
