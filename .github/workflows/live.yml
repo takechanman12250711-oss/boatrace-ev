@@ -1,6 +1,6 @@
 # 予想のリレー実行。GitHubの予約実行（cron）は遅れたり動かなかったりするため、
 # 実行の終わりに「次の実行」を自分で起動してつなぐ。
-#   夜（22時〜8時50分）: 待機 → 時間になったら次の実行を起動
+#   夜（22時〜8時50分）に始まった実行: 8時50分まで待機してから予想（または時間切れで次の実行を起動）
 #   昼（8時50分〜22時）: 約3分おきに予想と結果反映 → 22時になったら nightly を起動
 #   nightly の最後に、また live を起動する（毎日これで一周する）
 name: live predict
@@ -32,10 +32,13 @@ jobs:
           end=$(( $(date +%s) + 335*60 ))
           echo "=== $(date '+%F %T') live run ${{ github.run_id }} 開始" >> $LOG
           next=live
+          start=$(date +%H%M)
+          # 昼に始まった実行だけが22時に nightly へ引き継ぐ。夜に始まった実行は8時50分まで待機する
+          daytime_run=0; [ "$start" -ge 0850 ] && [ "$start" -lt 2200 ] && daytime_run=1
           while [ "$(date +%s)" -lt "$end" ]; do
             hm=$(date +%H%M)
-            if [ "$hm" -ge 2200 ]; then next=nightly; break; fi
-            if [ "$hm" -lt 0850 ]; then sleep 300; continue; fi
+            if [ "$hm" -ge 2200 ] && [ "$daytime_run" = 1 ]; then next=nightly; break; fi
+            if [ "$hm" -ge 2200 ] || [ "$hm" -lt 0850 ]; then sleep 300; continue; fi
             if [ -f data/model.pkl ]; then
               python -m boatev.cli predict --within 25 >> $LOG 2>&1 || echo "$(date '+%T') predict エラー" >> $LOG
               python -m boatev.cli results >> $LOG 2>&1 || echo "$(date '+%T') results エラー" >> $LOG
