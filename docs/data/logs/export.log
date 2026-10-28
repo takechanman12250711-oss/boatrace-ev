@@ -1,0 +1,2 @@
+=== 2026-10-28 18:25:10 export run 40664019846
+書き出し 14968 レース {"all": {"races": 3725, "bets": 6995, "hits": 88, "avg_hit_odds": 95.8, "roi_ci95": [0.952, 1.478], "roi_without_top3": 1.1256, "hit_rate": 0.0126, "roi": 1.2051, "profit": 143470}, "holdout": {"races": 1871, "bets": 3564, "hits": 46, "avg_hit_odds": 90.8, "roi_ci95": [0.824, 1.552], "roi_without_top3": 1.0322, "hit_rate": 0.0129, "roi": 1.1719, "profit": 61280}}
