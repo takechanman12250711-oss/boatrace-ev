@@ -1,19 +1,18 @@
-# 開催時間中（日本時間 9〜22時）、1回の実行の中で約3分おきに予想と結果反映を繰り返す。
-# GitHubの10分おきスケジュールが動かないことがあるため、1回の実行を長く（最大約5時間50分）動かす方式にした。
-# 毎時スケジュールは「止まっていたら再開する」ための保険（実行中は順番待ちになり、終わったら引き継ぐ）。
+# 予想のリレー実行。GitHubの予約実行（cron）は遅れたり動かなかったりするため、
+# 実行の終わりに「次の実行」を自分で起動してつなぐ。
+#   夜（22時〜8時50分）: 待機 → 時間になったら次の実行を起動
+#   昼（8時50分〜22時）: 約3分おきに予想と結果反映 → 22時になったら nightly を起動
+#   nightly の最後に、また live を起動する（毎日これで一周する）
 name: live predict
 on:
-  schedule:
-    - cron: "50 23 * * *"     # JST 8:50
-    - cron: "20 0-12 * * *"   # JST 9:20〜21:20 毎時（保険）
   workflow_dispatch:
 concurrency: { group: boatev-db, cancel-in-progress: false }
-permissions: { contents: write }
+permissions: { contents: write, actions: write }
 jobs:
   live:
     runs-on: ubuntu-latest
     timeout-minutes: 355
-    env: { PYTHONPATH: src, TZ: Asia/Tokyo }
+    env: { PYTHONPATH: src, TZ: Asia/Tokyo, PYTHONWARNINGS: ignore, GH_TOKEN: "${{ github.token }}" }
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
@@ -26,17 +25,21 @@ jobs:
           key: boatev-db-${{ github.run_id }}
           restore-keys: boatev-db-
       - name: loop
+        id: loop
         run: |
-          test -f data/model.pkl || { echo "モデル未作成のためスキップ"; exit 0; }
           git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
           LOG=docs/data/logs/live.log
-          end=$(( $(date +%s) + 340*60 ))
+          end=$(( $(date +%s) + 335*60 ))
           echo "=== $(date '+%F %T') live run ${{ github.run_id }} 開始" >> $LOG
+          next=live
           while [ "$(date +%s)" -lt "$end" ]; do
-            h=$(date +%H)
-            if [ "$h" -lt 8 ] || [ "$h" -ge 22 ]; then echo "開催時間外なので終了" >> $LOG; break; fi
-            python -m boatev.cli predict --within 25 >> $LOG 2>&1 || echo "$(date '+%T') predict エラー" >> $LOG
-            python -m boatev.cli results >> $LOG 2>&1 || echo "$(date '+%T') results エラー" >> $LOG
+            hm=$(date +%H%M)
+            if [ "$hm" -ge 2200 ]; then next=nightly; break; fi
+            if [ "$hm" -lt 0850 ]; then sleep 300; continue; fi
+            if [ -f data/model.pkl ]; then
+              python -m boatev.cli predict --within 25 >> $LOG 2>&1 || echo "$(date '+%T') predict エラー" >> $LOG
+              python -m boatev.cli results >> $LOG 2>&1 || echo "$(date '+%T') results エラー" >> $LOG
+            fi
             tail -n 400 $LOG > /tmp/l && mv /tmp/l $LOG
             git add docs/data
             if git commit -qm "predict $(date +%H:%M)"; then
@@ -44,8 +47,18 @@ jobs:
             fi
             sleep 180
           done
+          echo "next=$next" >> $GITHUB_OUTPUT
+          echo "=== $(date '+%F %T') 終了。次は $next" >> $LOG
+          git add docs/data && git commit -qm "live end $(date +%H:%M)" && { for i in 1 2 3; do git fetch -q origin main && git rebase -q -X theirs origin/main && git push -q && break; git rebase --abort 2>/dev/null; sleep 5; done; } || true
       - uses: actions/cache/save@v4
         if: always()
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
+      - name: start next run
+        if: always()
+        run: |
+          W=${{ steps.loop.outputs.next || 'live' }}
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/$W.yml/dispatches" -d '{"ref":"main"}'
+          echo "started $W"
