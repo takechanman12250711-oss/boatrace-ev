@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>いいとこ取りボード</title>
+<!--
+  チャッピー（展開の読み）と boatrace-ev（期待値の買い目）を1画面で並べる。
+  - 買い目は boatrace-ev のものだけ。チャッピーの展開は「レースの見立て」として添える
+    （展開で買い目を絞っても回収率は上がらなかったため。計画書「案Aの結果」参照）
+  - チャッピーの2着・3着や買い目は note の有料部分なので、ここには出さない（展開名と1着予想だけ）
+  - どちらのデータも読むだけ。両アプリの予想・設定は変えない
+-->
+<style>
+:root{--roman:#c2410c;--bg:#f6f7f9;--card:#fff;--ink:#16181d;--sub:#6b7280;--line:#e5e7eb;--accent:#0b6bcb;--hit:#0f8a4b;--miss:#b4231b;--chappy:#7c3aed;--chappy-soft:#f3effe}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--ink:#e8eaed;--sub:#9aa1ad;--line:#2a2f38;--accent:#5aa6ff;--hit:#3ccf87;--miss:#ff6b61;--roman:#fb923c;--chappy:#b39bff;--chappy-soft:#221c36}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+header{position:sticky;top:0;background:var(--bg);padding:12px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);z-index:2}
+h1{font-size:17px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+h1 a{font-size:12px;font-weight:400;color:var(--accent);text-decoration:none}
+.ctl{display:flex;flex-wrap:wrap;gap:6px}
+select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+main{padding:12px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px));max-width:760px;margin:auto}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.tile b{display:block;font-size:18px;font-variant-numeric:tabular-nums}.tile span{display:block;color:var(--sub);font-size:11px}
+.sec{font-size:13px;color:var(--sub);margin:4px 0 6px}
+.race{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.rh h2{font-size:16px;margin:0}.rh small{color:var(--sub)}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}.hit{color:var(--hit)}.miss{color:var(--miss)}.none{color:var(--sub)}
+.view{margin:10px 0 8px;padding:8px 10px;border-radius:10px;background:var(--chappy-soft);display:flex;gap:10px;align-items:center}
+.view .who{font-size:11px;font-weight:700;color:var(--chappy);letter-spacing:.04em;white-space:nowrap}
+.view .what{min-width:0}.view .what b{font-size:15px;display:block}.view .what .sub{display:block;color:var(--sub);font-size:13px;margin-top:2px}
+.view.off{background:transparent;border:1px dashed var(--line)}.view.off .who{color:var(--sub)}
+.bn{display:inline-grid;width:22px;height:22px;border-radius:5px;place-items:center;font-weight:700;font-size:12px;border:1px solid var(--line);vertical-align:-5px;margin:0 2px}
+.b1{background:#fff;color:#000}.b2{background:#111;color:#fff}.b3{background:#e0332b;color:#fff}.b4{background:#1d5fd1;color:#fff}.b5{background:#f2cf1d;color:#000}.b6{background:#1b9a4a;color:#fff}
+.probs{display:flex;gap:4px;margin:8px 0 2px}.probs div{flex:1;text-align:center;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
+.probs .top{color:var(--ink);font-weight:700}
+.tb{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;font-variant-numeric:tabular-nums}
+th,td{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th:first-child,td:first-child{text-align:left}
+th{color:var(--sub);font-weight:500}tr.won td{color:var(--hit);font-weight:700}
+.roman{margin-top:8px;padding:8px 10px;border-radius:10px;border:1px dashed var(--roman);display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px}
+.roman b{font-size:15px}.roman.won{border-style:solid;color:var(--hit)}
+.rtag{font-size:11px;padding:1px 8px;border-radius:99px;background:var(--roman);color:#fff;margin-right:6px}
+.nm{color:var(--sub);font-size:12px;margin:6px 0 0}
+.empty{color:var(--sub);text-align:center;padding:40px 0}
+.note{color:var(--sub);font-size:12px;margin-top:20px}
+.warn{color:var(--miss);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>いいとこ取りボード <a href="./">買い目分析の画面へ</a></h1>
+  <div class="ctl">
+    <select id="date" aria-label="日付"></select>
+    <select id="filter" aria-label="表示するレース">
+      <option value="picks">買い目あり</option>
+      <option value="chappy">チャッピーの展開あり</option>
+      <option value="all">全レース</option>
+    </select>
+  </div>
+</header>
+<main>
+  <p class="sec">この日</p>
+  <div id="sum" class="sum"></div>
+  <p id="chappyState" class="nm"></p>
+  <div id="list"><p class="empty">読み込み中…</p></div>
+  <p class="note">
+    買い目はboatrace-ev（期待値＝的中確率×オッズで選んだ3連単、1点100円で記録）。
+    紫の欄はチャッピーの展開の見立てで、買い目を決める材料には使っていません（過去の比較で、チャッピーの1着予想と合う買い目に絞っても回収率は上がりませんでした）。
+    チャッピーの2着・3着や買い目はnoteの有料記事で公開しています。
+    オッズは予想時点の値で、締切までに変わります。予想は参考情報です。舟券の購入は20歳以上・自己責任でお願いします。
+  </p>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const yen = n => (n || 0).toLocaleString('ja-JP') + '円';
+const pct = x => (x * 100).toFixed(1) + '%';
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const boat = n => `<span class="bn b${n}">${n}</span>`;
+async function j(u, opt) { try { const r = await fetch(u, opt || {cache: 'no-store'}); return r.ok ? r.json() : null } catch (e) { return null } }
+
+// チャッピーの公開インデックス（同じ github.io 上）から、その日の展開名と1着予想だけを取り出す
+const CHAPPY = '/chappy-boatrace-ai/data/predictions/';
+async function chappyFor(date) {
+  const man = await j(CHAPPY + 'index-manifest.json');
+  if (!man?.collections) return {ok: false, map: new Map()};
+  const map = new Map();
+  for (const col of ['predictions', 'verificationPredictions']) {
+    const shards = man.collections[col]?.shards || [];
+    for (const s of shards) {
+      const lo = String(s.lastKey || '').slice(0, 8), hi = String(s.firstKey || '').slice(0, 8);
+      if (!(lo <= date && date <= hi)) continue;
+      const d = await j(CHAPPY + s.path, {cache: 'default'});
+      for (const r of d?.records || []) {
+        if (r.date !== date) continue;
+        const ms = r.prediction?.verificationEvidence?.mainScenario || {};
+        const head = Number(ms.headBoatNo || 0);
+        const label = ms.label || r.selection?.scenarioLabel || r.prediction?.raceFlow?.title;
+        if (!head || !label) continue;
+        const id = `${r.date}_${String(r.jcd).padStart(2, '0')}_${String(r.raceNo).padStart(2, '0')}`;
+        if (!map.has(id)) map.set(id, {head, label, savedAt: r.selectedAt, deadlineAt: r.deadlineAt});
+      }
+    }
+  }
+  return {ok: true, map};
+}
+
+function tally(races) {
+  const t = {s: 0, r: 0, n: 0, h: 0};
+  races.forEach(x => { const z = x.result; if (!z || !z.stake) return; t.n++; t.s += z.stake; t.r += z.return || 0; if ((z.return || 0) > 0) t.h++ });
+  return t;
+}
+function tiles(t, races, chappy) {
+  const pc = (a, b) => b ? Math.round(a / b * 100) + '%' : '-';
+  const withPicks = races.filter(r => r.picks?.length).length;
+  const withChappy = races.filter(r => chappy.has(r.race_id)).length;
+  return `<div class="tile"><span>本線 回収率</span><b>${pc(t.r, t.s)}</b><span>${yen(t.s)}→${yen(t.r)}</span></div>
+    <div class="tile"><span>買い目が出たレース</span><b>${withPicks}</b><span>結果確定 ${t.n}・的中 ${t.h}</span></div>
+    <div class="tile"><span>チャッピーの展開</span><b>${withChappy}</b><span>全${races.length}レース中</span></div>`;
+}
+
+function card(r, c) {
+  const res = r.result, won = new Set((res?.payouts || []).map(p => p.type + p.combo));
+  const ret = (res?.return || 0) + Object.values(res?.romans || {}).reduce((a, v) => a + (v.return || 0), 0);
+  const badge = !res ? '<span class="badge none">結果待ち</span>'
+    : ret > 0 ? `<span class="badge hit">的中 ${yen(ret)}</span>`
+    : (r.picks?.length || Object.keys(r.romans || {}).length) ? '<span class="badge miss">不的中</span>' : '<span class="badge none">見送り</span>';
+  const view = c
+    ? `<div class="view"><div class="who">チャッピー</div><div class="what"><b>${esc(c.label)}</b><span class="sub">${boat(c.head)}号艇を1着に予想</span></div></div>`
+    : '<div class="view off"><div class="who">チャッピー</div><div class="what"><span class="sub">このレースの展開予想はありません</span></div></div>';
+  const top = r.entries?.length ? Math.max(...r.entries.map(e => e.win_prob)) : 0;
+  const probs = r.entries?.length
+    ? `<div class="probs" aria-label="1着確率">${r.entries.map(e => `<div class="${e.win_prob === top ? 'top' : ''}">${boat(e.boat)}<br>${pct(e.win_prob)}</div>`).join('')}</div><p class="nm">boatrace-evの1着確率</p>`
+    : '';
+  const row = b => `<tr class="${won.has(b.type + b.combo) ? 'won' : ''}"><td>${esc(b.combo)}</td><td>${b.odds ?? '-'}</td><td>${pct(b.prob)}</td><td>${b.ev ? b.ev.toFixed(2) : '-'}</td></tr>`;
+  const picks = r.picks?.length
+    ? `<div class="tb"><table><tr><th>買い目（3連単）</th><th>オッズ</th><th>確率</th><th>期待値</th></tr>${r.picks.map(row).join('')}</table></div><p class="nm">${r.picks.length}点・${yen(100 * r.picks.length)}（1点100円）</p>`
+    : '<p class="nm">期待値の基準を満たす買い目なし（見送り）</p>';
+  const roman = Object.entries(r.romans || {}).map(([k, rm]) => {
+    const rw = won.has(rm.type + rm.combo);
+    return `<div class="roman ${rw ? 'won' : ''}"><div><span class="rtag">${esc(k)}</span><b>${esc(rm.combo)}</b> <span class="nm">${rm.odds}倍・期待値${rm.ev.toFixed(2)}</span></div><div>${rw ? '的中！' : '100円'}</div></div>`;
+  }).join('');
+  return `<div class="race"><div class="rh"><h2>${esc(r.venue)} ${r.rno}R</h2><small>${r.deadline ? '締切 ' + esc(r.deadline) : ''}</small>${badge}</div>
+    ${view}${probs}${picks}${roman}${res?.['3連単'] ? `<p class="nm">結果 3連単 ${esc(res['3連単'])}</p>` : ''}</div>`;
+}
+
+let cache = {date: null, chappy: null};
+async function load() {
+  const d = $('#date').value;
+  if (!d) { $('#list').innerHTML = '<p class="empty">まだ予想データがありません</p>'; return }
+  const data = await j(`data/${d}.json`);
+  const races = Object.values(data?.races || {}).filter(r => r.entries)
+    .sort((a, b) => (a.deadline || '').localeCompare(b.deadline || '') || a.race_id.localeCompare(b.race_id));
+  if (cache.date !== d) { cache = {date: d, chappy: await chappyFor(d)} }
+  const ch = cache.chappy;
+  $('#chappyState').innerHTML = ch.ok ? '' : '<span class="warn">チャッピーのデータを読み込めませんでした（時間をおいて開き直してください）</span>';
+  $('#sum').innerHTML = tiles(tally(races), races, ch.map);
+  const f = $('#filter').value;
+  const show = f === 'all' ? races
+    : f === 'chappy' ? races.filter(r => ch.map.has(r.race_id))
+    : races.filter(r => r.picks?.length || Object.keys(r.romans || {}).length);
+  $('#list').innerHTML = show.length ? show.map(r => card(r, ch.map.get(r.race_id))).join('') : '<p class="empty">該当レースなし</p>';
+}
+async function init() {
+  const idx = await j('data/index.json');
+  const dates = idx?.dates || [];
+  $('#date').innerHTML = dates.map(d => `<option value="${d}">${d.slice(0, 4)}/${d.slice(4, 6)}/${d.slice(6)}</option>`).join('');
+  $('#date').onchange = $('#filter').onchange = load;
+  await load();
+}
+init();
+</script>
+</body>
+</html>
