@@ -1,0 +1,39 @@
+# 最終バックテストの条件で、テスト期間の買い目をレースごとに書き出す（手動）。
+# チャッピーの展開予想と突き合わせる比較の材料。予想・設定・データベースは変えない。
+# データベースは読むだけ（キャッシュを復元するが保存しない）なので、
+# 試運転のリレー（live / nightly の boatev-db グループ）とは別グループで動かし、止めない。
+name: export backtest picks
+on:
+  workflow_dispatch:
+    inputs:
+      test_from: { description: "テスト開始日 YYYYMMDD", required: true, default: "20260724" }
+      holdout_from: { description: "評価期間の開始日 YYYYMMDD", required: true, default: "20260909" }
+concurrency: { group: boatev-export, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env: { PYTHONPATH: src, TZ: Asia/Tokyo, PYTHONWARNINGS: ignore }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt && mkdir -p docs/data/logs
+      - uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: boatev-db-${{ github.run_id }}
+          restore-keys: boatev-db-
+      - name: export
+        run: |
+          echo "=== $(date '+%F %T') export run ${{ github.run_id }}" >> docs/data/logs/export.log
+          python -m boatev.cli export-picks --test-from ${{ inputs.test_from }} --holdout-from ${{ inputs.holdout_from }} 2>&1 | tee -a docs/data/logs/export.log
+      - name: commit
+        if: always()
+        run: |
+          tail -n 200 docs/data/logs/export.log > /tmp/l && mv /tmp/l docs/data/logs/export.log
+          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
+          git add docs/data/backtest_picks.json docs/data/logs/export.log 2>/dev/null; git commit -m "export backtest picks" || { echo "no changes"; exit 0; }
+          for i in 1 2 3 4 5; do git fetch -q origin main && git rebase -X theirs origin/main && git push && exit 0; git rebase --abort 2>/dev/null; sleep $((i*5)); done; echo "push failed"; exit 1

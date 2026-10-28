@@ -84,6 +84,44 @@ def summarize(bets: pd.DataFrame) -> dict:
             "profit": int(bets["ret"].sum() - bets["stake"].sum())}
 
 
+def export_picks(con, test_from: str, holdout_from: str, params: dict) -> dict:
+    """バックテストと同じ条件で、テスト期間の買い目をレースごとに書き出す。
+
+    - 学習は test_from より前のデータだけ（run と同じ。random_state 固定なので同じモデルになる）
+    - 条件（ev_th / blend / max_odds）は最終バックテストで選ばれたものを固定で使う
+    - チャッピーの予想と突き合わせて「展開で絞る」効果を確かめるための材料。予想や設定は変えない
+    """
+    df = features.full_races(features.build(features.load(con)))
+    train, test = df[df["date"] < test_from], df[df["date"] >= test_from]
+    if train["race_id"].nunique() < 200 or test.empty:
+        raise SystemExit("データ不足：学習200レース以上と、テスト期間のデータが必要です")
+    model = Model().fit(train)
+    test = test.assign(p=model.win_probs(test))
+    races = [(rid, g.sort_values("boat")["p"].values) for rid, g in test.groupby("race_id")]
+    odds, pays = _odds_by_race(con, test["race_id"].unique()), _payouts(con)
+    tri = {rid: combo for (rid, kind, combo), _ in pays.items() if kind == "3連単"}
+    bets = simulate(races, odds, pays, model.lam2, model.lam3, **params)
+    by_race: dict = {}
+    if not bets.empty:
+        for r in bets.to_dict("records"):
+            by_race.setdefault(r["race_id"], []).append({
+                "type": r["type"], "combo": r["combo"], "ev": round(float(r["ev"]), 4),
+                "prob": round(float(r["prob"]), 5), "odds": r["odds"],
+                "hit": bool(r["hit"]), "ret": int(r["ret"])})
+    out = []
+    for rid, p in races:
+        if rid not in odds:
+            continue
+        out.append({"race_id": rid, "date": rid[:8], "holdout": rid[:8] >= holdout_from,
+                    "win_prob": [round(float(x), 4) for x in p],
+                    "trifecta": tri.get(rid), "picks": by_race.get(rid, [])})
+    hold = bets[bets["race_id"].str[:8] >= holdout_from] if not bets.empty else bets
+    return {"version": "backtest-picks-v1", "test_from": test_from, "holdout_from": holdout_from,
+            "params": params, "stake": 100, "model": model.metrics,
+            "summary": {"all": summarize(bets), "holdout": summarize(hold)},
+            "races": out}
+
+
 def run(con, test_from: str, tune_share: float = 0.5) -> dict:
     df = features.full_races(features.build(features.load(con)))
     train, test = df[df["date"] < test_from], df[df["date"] >= test_from]

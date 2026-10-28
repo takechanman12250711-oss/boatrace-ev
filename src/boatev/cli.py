@@ -200,6 +200,17 @@ def cmd_backtest(args):
     _save_report("backtest.json", json.dumps(rep, ensure_ascii=False, default=str))
 
 
+def cmd_export_picks(args):
+    """最終バックテストの条件で、テスト期間の買い目をレースごとに docs/data/backtest_picks.json へ。"""
+    from . import backtest
+
+    params = {"ev_th": config.EV_THRESHOLD, "blend": config.MARKET_BLEND, "max_odds": config.MAX_ODDS}
+    with db.session() as con:
+        rep = backtest.export_picks(con, args.test_from, args.holdout_from, params)
+    log("書き出し", len(rep["races"]), "レース", json.dumps(rep["summary"], ensure_ascii=False))
+    _save_report("backtest_picks.json", json.dumps(rep, ensure_ascii=False, separators=(",", ":"), default=str))
+
+
 # ---------------------------------------------------------------- 予想
 def _site_file(date):
     return config.SITE_DATA_DIR / f"{date}.json"
@@ -425,6 +436,7 @@ def main(argv=None):
     p = sp.add_parser("train"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_train)
     p = sp.add_parser("compare-features"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_compare_features)
     p = sp.add_parser("backtest"); p.add_argument("--test-from", required=True); p.set_defaults(f=cmd_backtest)
+    p = sp.add_parser("export-picks"); p.add_argument("--test-from", required=True); p.add_argument("--holdout-from", required=True); p.set_defaults(f=cmd_export_picks)
     p = sp.add_parser("predict"); p.add_argument("--date"); p.add_argument("--within", type=int, default=0); p.set_defaults(f=cmd_predict)
     p = sp.add_parser("results"); p.add_argument("--date"); p.set_defaults(f=cmd_results)
     p = sp.add_parser("status"); p.set_defaults(f=cmd_status)
