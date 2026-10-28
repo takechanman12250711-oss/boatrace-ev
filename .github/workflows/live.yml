@@ -1,40 +1,51 @@
-# 開催時間中10分おき：締切20分以内のレースを予想 → 終わったレースの結果を反映
+# 開催時間中（日本時間 9〜22時）、1回の実行の中で約3分おきに予想と結果反映を繰り返す。
+# GitHubの10分おきスケジュールが動かないことがあるため、1回の実行を長く（最大約5時間50分）動かす方式にした。
+# 毎時スケジュールは「止まっていたら再開する」ための保険（実行中は順番待ちになり、終わったら引き継ぐ）。
 name: live predict
 on:
-  schedule: [{ cron: "*/10 0-12 * * *" }]   # JST 9:00〜21:59
+  schedule:
+    - cron: "50 23 * * *"     # JST 8:50
+    - cron: "20 0-12 * * *"   # JST 9:20〜21:20 毎時（保険）
   workflow_dispatch:
 concurrency: { group: boatev-db, cancel-in-progress: false }
 permissions: { contents: write }
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 355
     env: { PYTHONPATH: src, TZ: Asia/Tokyo }
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip }
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt && mkdir -p docs/data/logs
       - uses: actions/cache/restore@v4
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
           restore-keys: boatev-db-
-      - id: ready
+      - name: loop
         run: |
-          if [ -f data/model.pkl ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "モデル未作成のためスキップ（先に setup を実行）"; fi
-      - if: steps.ready.outputs.ok == '1'
-        run: python -m boatev.cli predict --within 25
-      - if: steps.ready.outputs.ok == '1'
-        run: python -m boatev.cli results
+          test -f data/model.pkl || { echo "モデル未作成のためスキップ"; exit 0; }
+          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
+          LOG=docs/data/logs/live.log
+          end=$(( $(date +%s) + 340*60 ))
+          echo "=== $(date '+%F %T') live run ${{ github.run_id }} 開始" >> $LOG
+          while [ "$(date +%s)" -lt "$end" ]; do
+            h=$(date +%H)
+            if [ "$h" -lt 8 ] || [ "$h" -ge 22 ]; then echo "開催時間外なので終了" >> $LOG; break; fi
+            python -m boatev.cli predict --within 25 >> $LOG 2>&1 || echo "$(date '+%T') predict エラー" >> $LOG
+            python -m boatev.cli results >> $LOG 2>&1 || echo "$(date '+%T') results エラー" >> $LOG
+            tail -n 400 $LOG > /tmp/l && mv /tmp/l $LOG
+            git add docs/data
+            if git commit -qm "predict $(date +%H:%M)"; then
+              for i in 1 2 3 4 5; do git fetch -q origin main && git rebase -q -X theirs origin/main && git push -q && break; git rebase --abort 2>/dev/null; sleep $((i*5)); done
+            fi
+            sleep 180
+          done
       - uses: actions/cache/save@v4
-        if: always() && steps.ready.outputs.ok == '1'
+        if: always()
         with:
           path: data
           key: boatev-db-${{ github.run_id }}
-      - name: commit
-        run: |
-          git config user.name "boatev-bot"; git config user.email "boatev-bot@users.noreply.github.com"
-          git add docs/data && git commit -m "predict $(date +%H:%M)" || { echo "no changes"; exit 0; }
-          for i in 1 2 3 4 5; do git fetch -q origin main && git rebase -X theirs origin/main && git push && exit 0; git rebase --abort 2>/dev/null; sleep $((i*5)); done; echo "push failed"; exit 1
