@@ -1,4 +1,3 @@
-
     from bs4 import XMLParsedAsHTMLWarning
     import warnings
 
@@ -378,6 +377,7 @@
 予想対象 1 レース
 予想対象 0 レース
 予想対象 1 レース
+予想対象 0 レース
 予想対象 0 レース
 予想対象 0 レース
 予想対象 0 レース
