@@ -1,4 +1,3 @@
-
   return BeautifulSoup(html, "lxml") if html else None
 予想対象 0 レース
 /home/runner/work/boatrace-ev/boatrace-ev/src/boatev/scrape.py:39: XMLParsedAsHTMLWarning: It looks like you're using an HTML parser to parse an XML document.
@@ -386,6 +385,7 @@ If you want or need to use an HTML parser on this document, you can make this wa
 予想対象 1 レース
 予想対象 0 レース
 予想対象 1 レース
+予想対象 0 レース
 予想対象 0 レース
 予想対象 0 レース
 予想対象 0 レース
