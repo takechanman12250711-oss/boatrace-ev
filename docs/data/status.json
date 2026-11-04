@@ -1,21 +1,21 @@
 {
- "generated_at": "2026-11-03T22:22:25+09:00",
+ "generated_at": "2026-11-05T06:24:51+09:00",
  "totals": {
-  "races": 272352,
-  "entries": 1634112,
-  "payouts": 537600,
-  "races_with_odds": 15996,
+  "races": 272496,
+  "entries": 1634976,
+  "payouts": 537872,
+  "races_with_odds": 16140,
   "first_date": "20220101",
-  "last_date": "20261103"
+  "last_date": "20261104"
  },
  "days_loaded": {
-  "days": 1768,
-  "days_with_kimarite": 1768
+  "days": 1769,
+  "days_with_kimarite": 1769
  },
  "kimarite": [
   {
    "kimarite": "逃げ",
-   "n": 140610
+   "n": 140616
   },
   {
    "kimarite": "まくり",
@@ -35,7 +35,7 @@
   },
   {
    "kimarite": null,
-   "n": 4357
+   "n": 4495
   },
   {
    "kimarite": "恵まれ",
@@ -48,11 +48,19 @@
   "nat_win": 1.0,
   "motor_2": 1.0,
   "ex_time": 0.982,
-  "course": 0.982,
-  "st": 0.982,
-  "finish": 0.971
+  "course": 0.981,
+  "st": 0.981,
+  "finish": 0.97
  },
  "recent_days": [
+  {
+   "date": "20261104",
+   "venues": 12,
+   "races": 144,
+   "entries": 864,
+   "finished": 232,
+   "tri_payouts": 136
+  },
   {
    "date": "20261103",
    "venues": 13,
@@ -156,84 +164,76 @@
    "entries": 1008,
    "finished": 992,
    "tri_payouts": 168
-  },
-  {
-   "date": "20261021",
-   "venues": 13,
-   "races": 156,
-   "entries": 936,
-   "finished": 853,
-   "tri_payouts": 144
   }
  ],
  "sample": [
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 1,
-   "name": "渡邉雄朗",
+   "name": "北村征嗣",
    "class": "A1",
-   "nat_win": 6.26,
-   "motor_2": 28.13,
+   "nat_win": 6.22,
+   "motor_2": 29.25,
    "ex_time": null,
    "course": null,
    "st": null,
-   "finish": 2
+   "finish": null
   },
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 2,
-   "name": "松下哲也",
-   "class": "B1",
-   "nat_win": 4.77,
-   "motor_2": 42.39,
+   "name": "杉山裕也",
+   "class": "A2",
+   "nat_win": 7.2,
+   "motor_2": 37.93,
    "ex_time": null,
    "course": null,
    "st": null,
    "finish": null
   },
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 3,
-   "name": "木場悠介",
-   "class": "B1",
-   "nat_win": 5.43,
-   "motor_2": 28.87,
+   "name": "後藤翔之",
+   "class": "A2",
+   "nat_win": 6.53,
+   "motor_2": 36.46,
    "ex_time": null,
    "course": null,
    "st": null,
    "finish": null
   },
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 4,
-   "name": "北山康介",
+   "name": "真庭明志",
    "class": "A2",
-   "nat_win": 7.31,
-   "motor_2": 35.48,
+   "nat_win": 5.52,
+   "motor_2": 32.95,
    "ex_time": null,
    "course": null,
    "st": null,
    "finish": null
   },
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 5,
-   "name": "重富伸也",
-   "class": "B1",
-   "nat_win": 3.84,
-   "motor_2": 35.29,
+   "name": "木下雄介",
+   "class": "A2",
+   "nat_win": 5.92,
+   "motor_2": 44.83,
    "ex_time": null,
    "course": null,
    "st": null,
    "finish": null
   },
   {
-   "race_id": "20261103_24_12",
+   "race_id": "20261104_24_12",
    "boat": 6,
-   "name": "佐藤悠",
-   "class": "A2",
-   "nat_win": 5.88,
-   "motor_2": 30.1,
+   "name": "小山勉",
+   "class": "A1",
+   "nat_win": 6.33,
+   "motor_2": 18.75,
    "ex_time": null,
    "course": null,
    "st": null,
@@ -241,6 +241,102 @@
   }
  ],
  "gaps": [
+  {
+   "date": "20261104",
+   "jcd": "01",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 48,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "04",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 48,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "06",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 72
+  },
+  {
+   "date": "20261104",
+   "jcd": "08",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "09",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 60
+  },
+  {
+   "date": "20261104",
+   "jcd": "10",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 60
+  },
+  {
+   "date": "20261104",
+   "jcd": "15",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 46,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "17",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 55,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "19",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 56,
+   "no_ex": 72
+  },
+  {
+   "date": "20261104",
+   "jcd": "21",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 55,
+   "no_ex": 66
+  },
+  {
+   "date": "20261104",
+   "jcd": "22",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 55,
+   "no_ex": 54
+  },
+  {
+   "date": "20261104",
+   "jcd": "24",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 55,
+   "no_ex": 66
+  },
   {
    "date": "20261103",
    "jcd": "01",
@@ -464,102 +560,6 @@
    "no_class": 0,
    "no_finish": 45,
    "no_ex": 72
-  },
-  {
-   "date": "20261101",
-   "jcd": "04",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 55,
-   "no_ex": 72
-  },
-  {
-   "date": "20261101",
-   "jcd": "06",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 49,
-   "no_ex": 66
-  },
-  {
-   "date": "20261101",
-   "jcd": "07",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 66
-  },
-  {
-   "date": "20261101",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 55,
-   "no_ex": 60
-  },
-  {
-   "date": "20261101",
-   "jcd": "13",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 54
-  },
-  {
-   "date": "20261101",
-   "jcd": "14",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 60,
-   "no_ex": 60
-  },
-  {
-   "date": "20261101",
-   "jcd": "17",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 55,
-   "no_ex": 60
-  },
-  {
-   "date": "20261101",
-   "jcd": "18",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 55,
-   "no_ex": 66
-  },
-  {
-   "date": "20261101",
-   "jcd": "19",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 55,
-   "no_ex": 72
-  },
-  {
-   "date": "20261101",
-   "jcd": "21",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 60
-  },
-  {
-   "date": "20261101",
-   "jcd": "22",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 56,
-   "no_ex": 60
-  },
-  {
-   "date": "20261101",
-   "jcd": "24",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 56,
-   "no_ex": 66
   }
  ],
  "history_log_tail": [
