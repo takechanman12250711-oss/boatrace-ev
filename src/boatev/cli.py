@@ -248,7 +248,13 @@ def predict_races(con, model, targets, date):
         if len(g) != 6:
             continue
         p = model.win_probs(g)
-        res = analyze_race(p, odds, model.lam2, model.lam3)
+        raw3 = (odds or {}).get("3t") or {}
+        adj = dict(odds or {}, **{"3t": {c: (o / config.drift_factor(o) if o else o) for c, o in raw3.items()}})
+        res = analyze_race(p, adj, model.lam2, model.lam3)
+        # 表示は実際のオッズ、期待値は割り引いたオッズで計算した値
+        for b in res["picks"] + list(res["romans"].values()) + res["table"]:
+            if b["type"] == "3連単" and raw3.get(b["combo"]):
+                b["odds_adj"], b["odds"] = b["odds"], raw3[b["combo"]]
         top = sorted((r for r in res["table"] if r["type"] == "3連単"), key=lambda r: -r["prob"])[:10]
         out[rid] = {
             "race_id": rid, "jcd": jcd, "venue": config.VENUES[jcd], "rno": rno,
