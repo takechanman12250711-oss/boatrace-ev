@@ -122,6 +122,67 @@ def export_picks(con, test_from: str, holdout_from: str, params: dict) -> dict:
             "races": out}
 
 
+BUCKETS = (0, 10, 30, 100, 1e9)
+
+
+def _bucket(o):
+    return next(i for i in range(4) if BUCKETS[i] <= o < BUCKETS[i + 1])
+
+
+def drift_samples():
+    """試運転の記録から「締切前オッズ ÷ 確定オッズ」の実例を、オッズ帯ごとに集める（勝った組み合わせのみ）。"""
+    import glob, json, os
+    by_final, by_pre = [[] for _ in range(4)], [[] for _ in range(4)]
+    for f in sorted(glob.glob(str(config.SITE_DATA_DIR / "odds_pre" / "*.json"))):
+        date = os.path.basename(f)[:8]
+        day = config.SITE_DATA_DIR / f"{date}.json"
+        if not day.exists():
+            continue
+        pre, d = json.loads(open(f).read()), json.loads(day.read_text())
+        for rid, x in pre.items():
+            z = d["races"].get(rid, {}).get("result")
+            if not z or not z.get("3連単"):
+                continue
+            pay = next((q["payout"] for q in z["payouts"] if q["type"] == "3連単"), None)
+            o = x["3t"].get(z["3連単"])
+            if o and pay:
+                fin = pay / 100
+                by_final[_bucket(fin)].append(o / fin)
+                by_pre[_bucket(o)].append(o / fin)
+    return by_final, by_pre
+
+
+def drift_sim(races, odds, pays, model, params, ths=(1.5, 2.0, 2.5, 3.0)):
+    """過去3か月の確定オッズに、試運転で測った「締切前のずれ」をかけて買い目を選び直し、確定オッズで払い戻す。
+    scale=1.0 は約23分前のずれ、0.5 はその半分（締切数分前の想定）。補正ありは、締切前オッズをオッズ帯ごとの中央値で割り引く。"""
+    by_final, by_pre = drift_samples()
+    n = sum(len(x) for x in by_final)
+    if n < 200:
+        return {"note": f"ずれの実例が少ない（{n}件）"}
+    out = {"samples": n}
+    for scale in (1.0, 0.5):
+        meds = [float(np.median([1 + (r - 1) * scale for r in b])) if b else 1.0 for b in by_pre]
+        for corr in (False, True):
+            rng = np.random.default_rng(0)
+            pre_odds = {}
+            for rid, od in odds.items():
+                t3 = {}
+                for c, fo in (od.get("3t") or {}).items():
+                    if not fo:
+                        continue
+                    pool = by_final[_bucket(fo)] or [1.0]
+                    po = fo * (1 + (pool[rng.integers(len(pool))] - 1) * scale)
+                    t3[c] = po / meds[_bucket(po)] if corr else po
+                pre_odds[rid] = {"3t": t3}
+            for th in ths:
+                bets = simulate(races, pre_odds, pays, model.lam2, model.lam3, **(params | {"ev_th": th}))
+                key = f"ずれ{'23分前' if scale == 1.0 else '半分'}_{'補正あり' if corr else '補正なし'}_期待値{th}"
+                out[key] = summarize(bets)
+    out["median_by_pre_bucket"] = {f"{BUCKETS[i]}-{BUCKETS[i+1]:.0f}倍": round(float(np.median(b)), 3) if b else None
+                                   for i, b in enumerate(by_pre)}
+    return out
+
+
 def run(con, test_from: str, tune_share: float = 0.5) -> dict:
     df = features.full_races(features.build(features.load(con)))
     train, test = df[df["date"] < test_from], df[df["date"] >= test_from]
@@ -175,6 +236,7 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
             roman_daily[name][str(th)] = summarize(day) | {"days_with_pick": int(day["date"].nunique()), "days": n_days}
     return {"model": model.metrics, "best_params": params, "tune": best, "roman": roman_rep,
             "roman_daily": roman_daily,
+            "drift_sim": drift_sim(races, odds, pays, model, params),
             "selection": f"買い目{MIN_TUNE_BETS}点以上の条件のうち、回収率95%区間の下限が最大のもの",
             "grid": sorted(grid, key=lambda g: -(g.get("roi") or 0)),
             "holdout": summarize(hold_bets), "holdout_by_ev": by_ev,
