@@ -1,0 +1,300 @@
+      "bets": 39185,
+      "hits": 589,
+      "avg_hit_odds": 50.6,
+      "roi_ci95": [
+        0.692,
+        0.827
+      ],
+      "roi_without_top3": 0.7523,
+      "hit_rate": 0.015,
+      "roi": 0.7599,
+      "profit": -941010
+    },
+    {
+      "ev_th": 1.1,
+      "blend": 0.5,
+      "max_odds": 100,
+      "races": 7123,
+      "bets": 21446,
+      "hits": 296,
+      "avg_hit_odds": 55.0,
+      "roi_ci95": [
+        0.669,
+        0.851
+      ],
+      "roi_without_top3": 0.7457,
+      "hit_rate": 0.0138,
+      "roi": 0.7595,
+      "profit": -515670
+    },
+    {
+      "ev_th": 1.1,
+      "blend": 0.7,
+      "max_odds": 100,
+      "races": 8188,
+      "bets": 36323,
+      "hits": 540,
+      "avg_hit_odds": 51.1,
+      "roi_ci95": [
+        0.692,
+        0.827
+      ],
+      "roi_without_top3": 0.7509,
+      "hit_rate": 0.0149,
+      "roi": 0.7591,
+      "profit": -875150
+    },
+    {
+      "ev_th": 1.0,
+      "blend": 1.0,
+      "max_odds": 100,
+      "races": 8309,
+      "bets": 48415,
+      "hits": 771,
+      "avg_hit_odds": 47.5,
+      "roi_ci95": [
+        0.702,
+        0.816
+      ],
+      "roi_without_top3": 0.751,
+      "hit_rate": 0.0159,
+      "roi": 0.7572,
+      "profit": -1175610
+    },
+    {
+      "ev_th": 1.0,
+      "blend": 0.7,
+      "max_odds": 100,
+      "races": 8299,
+      "bets": 45423,
+      "hits": 705,
+      "avg_hit_odds": 48.8,
+      "roi_ci95": [
+        0.699,
+        0.819
+      ],
+      "roi_without_top3": 0.7504,
+      "hit_rate": 0.0155,
+      "roi": 0.7569,
+      "profit": -1104090
+    },
+    {
+      "ev_th": 1.1,
+      "blend": 1.0,
+      "max_odds": 100,
+      "races": 8301,
+      "bets": 44903,
+      "hits": 694,
+      "avg_hit_odds": 48.9,
+      "roi_ci95": [
+        0.698,
+        0.814
+      ],
+      "roi_without_top3": 0.7485,
+      "hit_rate": 0.0155,
+      "roi": 0.7551,
+      "profit": -1099760
+    },
+    {
+      "ev_th": 1.2,
+      "blend": 0.5,
+      "max_odds": 50,
+      "races": 1698,
+      "bets": 2361,
+      "hits": 49,
+      "avg_hit_odds": 35.9,
+      "roi_ci95": [
+        0.534,
+        0.958
+      ],
+      "roi_without_top3": 0.6834,
+      "hit_rate": 0.0208,
+      "roi": 0.7451,
+      "profit": -60180
+    },
+    {
+      "ev_th": 1.0,
+      "blend": 0.3,
+      "max_odds": 200,
+      "races": 5449,
+      "bets": 13696,
+      "hits": 158,
+      "avg_hit_odds": 64.2,
+      "roi_ci95": [
+        0.625,
+        0.858
+      ],
+      "roi_without_top3": 0.7147,
+      "hit_rate": 0.0115,
+      "roi": 0.7412,
+      "profit": -354490
+    },
+    {
+      "ev_th": 1.3,
+      "blend": 0.5,
+      "max_odds": 100,
+      "races": 3171,
+      "bets": 5679,
+      "hits": 69,
+      "avg_hit_odds": 60.7,
+      "roi_ci95": [
+        0.562,
+        0.929
+      ],
+      "roi_without_top3": 0.6868,
+      "hit_rate": 0.0122,
+      "roi": 0.7372,
+      "profit": -149270
+    },
+    {
+      "ev_th": 1.3,
+      "blend": 0.7,
+      "max_odds": 100,
+      "races": 6728,
+      "bets": 17784,
+      "hits": 226,
+      "avg_hit_odds": 57.0,
+      "roi_ci95": [
+        0.633,
+        0.825
+      ],
+      "roi_without_top3": 0.7083,
+      "hit_rate": 0.0127,
+      "roi": 0.7249,
+      "profit": -489320
+    },
+    {
+      "ev_th": 1.0,
+      "blend": 0.3,
+      "max_odds": 100,
+      "races": 5238,
+      "bets": 12206,
+      "hits": 147,
+      "avg_hit_odds": 58.7,
+      "roi_ci95": [
+        0.593,
+        0.828
+      ],
+      "roi_without_top3": 0.6828,
+      "hit_rate": 0.012,
+      "roi": 0.7068,
+      "profit": -357830
+    },
+    {
+      "ev_th": 1.2,
+      "blend": 0.5,
+      "max_odds": 100,
+      "races": 5158,
+      "bets": 11349,
+      "hits": 129,
+      "avg_hit_odds": 60.5,
+      "roi_ci95": [
+        0.563,
+        0.816
+      ],
+      "roi_without_top3": 0.6614,
+      "hit_rate": 0.0114,
+      "roi": 0.6873,
+      "profit": -354920
+    },
+    {
+      "ev_th": 1.5,
+      "blend": 0.7,
+      "max_odds": 100,
+      "races": 4105,
+      "bets": 7724,
+      "hits": 85,
+      "avg_hit_odds": 61.8,
+      "roi_ci95": [
+        0.53,
+        0.833
+      ],
+      "roi_without_top3": 0.643,
+      "hit_rate": 0.011,
+      "roi": 0.6801,
+      "profit": -247100
+    },
+    {
+      "ev_th": 1.3,
+      "blend": 0.3,
+      "max_odds": 50,
+      "races": 10,
+      "bets": 13,
+      "hits": 0,
+      "avg_hit_odds": null,
+      "roi_ci95": [
+        0.0,
+        0.0
+      ],
+      "roi_without_top3": 0.0,
+      "hit_rate": 0.0,
+      "roi": 0.0,
+      "profit": -1300
+    },
+    {
+      "ev_th": 1.5,
+      "blend": 0.3,
+      "max_odds": 50,
+      "races": 1,
+      "bets": 2,
+      "hits": 0,
+      "avg_hit_odds": null,
+      "roi_ci95": [
+        0.0,
+        0.0
+      ],
+      "roi_without_top3": 0.0,
+      "hit_rate": 0.0,
+      "roi": 0.0,
+      "profit": -200
+    }
+  ],
+  "holdout": {
+    "races": 425,
+    "bets": 646,
+    "hits": 14,
+    "avg_hit_odds": 66.9,
+    "roi_ci95": [
+      0.77,
+      2.327
+    ],
+    "roi_without_top3": 1.0224,
+    "hit_rate": 0.0217,
+    "roi": 1.4502,
+    "profit": 29080
+  },
+  "holdout_by_ev": {
+    "(1.2, 1.5]": {
+      "races": 424,
+      "bets": 634,
+      "hits": 13,
+      "avg_hit_odds": 68.0,
+      "roi_ci95": [
+        0.68,
+        2.214
+      ],
+      "roi_without_top3": 0.958,
+      "hit_rate": 0.0205,
+      "roi": 1.3938,
+      "profit": 24970
+    },
+    "(1.5, 2.0]": {
+      "races": 10,
+      "bets": 12,
+      "hits": 1,
+      "avg_hit_odds": 53.1,
+      "roi_ci95": [
+        0.0,
+        12.254
+      ],
+      "roi_without_top3": 0.0,
+      "hit_rate": 0.0833,
+      "roi": 4.425,
+      "profit": 4110
+    }
+  },
+  "periods": {
+    "test_from": "20260724",
+    "holdout_from": "20260915"
+  }
+}
