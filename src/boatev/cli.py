@@ -83,7 +83,7 @@ def cmd_history(args):
             miss.unlink()
 
 
-def store_odds(con, rid, date, jcd, rno, kinds=("3t", "2t")):
+def store_odds(con, rid, date, jcd, rno, kinds=("3t", "2t"), suffix=""):
     ts = now().isoformat(timespec="seconds")
     got = {}
     for kind, label, fn in (("3t", "3連単", scrape.odds_3t), ("2t", "2連単", scrape.odds_2t)):
@@ -91,7 +91,7 @@ def store_odds(con, rid, date, jcd, rno, kinds=("3t", "2t")):
             continue
         o = fn(date, jcd, rno)
         got[kind] = o
-        db.upsert(con, "odds", ({"race_id": rid, "bet_type": label, "combo": c, "odds": v, "fetched_at": ts}
+        db.upsert(con, "odds", ({"race_id": rid, "bet_type": label + suffix, "combo": c, "odds": v, "fetched_at": ts}
                                 for c, v in o.items()), ("race_id", "bet_type", "combo"))
     return got
 
@@ -311,18 +311,20 @@ def cmd_predict(args):
         for r in rows:
             if site["races"].get(r["race_id"], {}).get("predicted_at"):
                 continue
-            if not (2 < _minutes_left(r["deadline"]) <= args.within):
+            left = _minutes_left(r["deadline"])
+            if not (args.min_left < left <= args.within):
                 continue
             w, ex = scrape.beforeinfo(date, r["jcd"], r["rno"])
             db.upsert(con, "races", [w], ("race_id",))
             db.upsert(con, "entries", ex, ("race_id", "boat"))
-            odds = store_odds(con, r["race_id"], date, r["jcd"], r["rno"], kinds=("3t",))
+            # 締切前オッズは「3連単(締切前)」として保存し、確定オッズ（毎晩の蓄積で取る「3連単」）と分ける
+            odds = store_odds(con, r["race_id"], date, r["jcd"], r["rno"], kinds=("3t",), suffix="(締切前)")
             con.commit()
             if not odds.get("3t"):
                 continue
             pre[r["race_id"]] = {"at": now().isoformat(timespec="seconds"), "3t": odds["3t"]}
             targets.append((r["jcd"], r["rno"], odds))
-            site["races"].setdefault(r["race_id"], {})["deadline"] = r["deadline"]
+            site["races"].setdefault(r["race_id"], {}).update(deadline=r["deadline"], minutes_before=round(left, 1))
         log(f"予想対象 {len(targets)} レース")
         used = {name: sum(1 for x in site["races"].values() if (x.get("romans") or {}).get(name))
                 for name in config.ROMAN_TIERS}
@@ -437,7 +439,7 @@ def main(argv=None):
     p = sp.add_parser("compare-features"); p.add_argument("--from", dest="date_from"); p.set_defaults(f=cmd_compare_features)
     p = sp.add_parser("backtest"); p.add_argument("--test-from", required=True); p.set_defaults(f=cmd_backtest)
     p = sp.add_parser("export-picks"); p.add_argument("--test-from", required=True); p.add_argument("--holdout-from", required=True); p.set_defaults(f=cmd_export_picks)
-    p = sp.add_parser("predict"); p.add_argument("--date"); p.add_argument("--within", type=int, default=0); p.set_defaults(f=cmd_predict)
+    p = sp.add_parser("predict"); p.add_argument("--date"); p.add_argument("--within", type=float, default=8); p.add_argument("--min-left", dest="min_left", type=float, default=2.5); p.set_defaults(f=cmd_predict)
     p = sp.add_parser("results"); p.add_argument("--date"); p.set_defaults(f=cmd_results)
     p = sp.add_parser("status"); p.set_defaults(f=cmd_status)
     p = sp.add_parser("debug-page"); p.add_argument("url"); p.set_defaults(f=lambda a: print(__import__("boatev.http", fromlist=["get"]).get(a.url)[:5000]))
