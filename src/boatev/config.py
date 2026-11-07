@@ -63,3 +63,9 @@ def drift_factor(odds: float) -> float:
         if odds < hi:
             return k
     return 1.0
+
+# 的中重視枠：一番来そうな3連単（確率が一番高い1点）を、確率がしきい値以上のレースだけ1日数点。
+# 当たる回数を増やして「的中」を発信できるようにする枠。回収率は本線より下がりやすいので成績は分けて記録する。
+HONMEI_NAME = "的中"
+HONMEI_MIN_PROB = 0.15   # 当たる確率15%以上（約7回に1回）
+HONMEI_PER_DAY = 5

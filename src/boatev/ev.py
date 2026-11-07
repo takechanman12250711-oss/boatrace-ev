@@ -66,6 +66,12 @@ def analyze_race(win_p, odds: dict[str, dict[str, float]], lam2: float, lam3: fl
         if rm:
             romans[name] = rm
             used.add(rm["combo"])
+    tops = [r for r in table if r["type"] == "3連単" and r["odds"]]
+    if tops:
+        top = dict(max(tops, key=lambda r: r["prob"]))
+        if top["prob"] >= config.HONMEI_MIN_PROB:
+            top["tag"], top["stake"] = config.HONMEI_NAME, config.FLAT_STAKE
+            romans[config.HONMEI_NAME] = top
     return {"win_prob": [float(x) for x in np.asarray(win_p)], "table": table, "picks": picks, "romans": romans}
 
 

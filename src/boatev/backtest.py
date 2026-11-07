@@ -234,7 +234,19 @@ def run(con, test_from: str, tune_share: float = 0.5) -> dict:
         for th in (1.3, 1.5, 2.0, 2.5, 3.0, 4.0):
             day = rb[rb["ev"] >= th].sort_values(["date", "dl", "race_id"]).groupby("date").head(config.ROMAN_PER_DAY)
             roman_daily[name][str(th)] = summarize(day) | {"days_with_pick": int(day["date"].nunique()), "days": n_days}
-    return {"model": model.metrics, "best_params": params, "tune": best, "roman": roman_rep,
+    # 的中重視枠：確率しきい値ごとに、その日締切の早い順で HONMEI_PER_DAY 点まで
+    hb = allb[allb["tag"] == config.HONMEI_NAME] if not allb.empty else allb
+    honmei = {}
+    if not hb.empty:
+        hb = hb.assign(date=hb["race_id"].str[:8], dl=hb["race_id"].map(dl).fillna("99:99"))
+        for th in (0.10, 0.12, 0.15, 0.20, 0.25):
+            for per in (3, 5):
+                day = hb[hb["prob"] >= th].sort_values(["date", "dl", "race_id"]).groupby("date").head(per)
+                s_ = summarize(day)
+                honmei[f"確率{th}以上_1日{per}点"] = s_ | {
+                    "days": n_days, "hits_per_day": round(s_.get("hits", 0) / max(n_days, 1), 2),
+                    "days_with_hit": int(day[day["hit"]]["date"].nunique()) if not day.empty else 0}
+    return {"model": model.metrics, "best_params": params, "tune": best, "roman": roman_rep, "honmei": honmei,
             "roman_daily": roman_daily,
             "drift_sim": drift_sim(races, odds, pays, model, params),
             "selection": f"買い目{MIN_TUNE_BETS}点以上の条件のうち、回収率95%区間の下限が最大のもの",

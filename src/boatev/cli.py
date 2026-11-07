@@ -332,14 +332,18 @@ def cmd_predict(args):
             targets.append((r["jcd"], r["rno"], odds))
             site["races"].setdefault(r["race_id"], {}).update(deadline=r["deadline"], minutes_before=round(left, 1))
         log(f"予想対象 {len(targets)} レース")
-        used = {name: sum(1 for x in site["races"].values() if (x.get("romans") or {}).get(name))
-                for name in config.ROMAN_TIERS}
+        tiers = list(config.ROMAN_TIERS) + [config.HONMEI_NAME]
+        used = {name: sum(1 for x in site["races"].values() if (x.get("romans") or {}).get(name)) for name in tiers}
         for rid, v in sorted(predict_races(con, model, targets, date).items(),
                              key=lambda kv: (site["races"][kv[0]].get("deadline") or "", kv[0])):
             # ロマンは枠ごとに「期待値 ROMAN_DAILY_EV 以上」を最初に満たしたレースだけ（1日 ROMAN_PER_DAY 点まで）
             keep = {}
             for name, rm in v.get("romans", {}).items():
-                if rm and rm["ev"] >= config.ROMAN_DAILY_EV[name] and used[name] < config.ROMAN_PER_DAY:
+                if name == config.HONMEI_NAME:
+                    ok = rm and used[name] < config.HONMEI_PER_DAY      # 確率の条件は analyze_race で判定済み
+                else:
+                    ok = rm and rm["ev"] >= config.ROMAN_DAILY_EV[name] and used[name] < config.ROMAN_PER_DAY
+                if ok:
                     used[name] += 1
                     keep[name] = rm
             v["romans"] = keep
