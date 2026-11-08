@@ -49,7 +49,7 @@ def simulate(races, odds, payouts, lam2, lam3, roman=False, **params):
         key = (rid, lam2, lam3)
         if key not in _PROB_CACHE:
             _PROB_CACHE[key] = order_probs(np.asarray(p), lam2, lam3)
-        res = analyze_race(p, odds[rid], lam2, lam3, bankroll=100_000, probs=_PROB_CACHE[key], **params)
+        res = analyze_race(p, odds[rid], lam2, lam3, bankroll=100_000, probs=_PROB_CACHE[key], honmei_min=0.0, **params)  # 的中枠は全レースで出し、しきい値は下で比べる
         for b in res["picks"] + (list(res["romans"].values()) if roman else []):
             pay = payouts.get((rid, b["type"], b["combo"]), 0)
             stake = 100  # 評価は均等買い（100円）で行い、資金配分の影響と分ける

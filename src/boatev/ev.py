@@ -33,7 +33,7 @@ def kelly_stake(p: float, o: float, bankroll: float) -> int:
 def analyze_race(win_p, odds: dict[str, dict[str, float]], lam2: float, lam3: float, *,
                  bankroll: float = 100_000, ev_th: float | None = None, blend: float | None = None,
                  min_prob: float | None = None, max_odds: float | None = None, max_points: int | None = None,
-                 probs: dict | None = None):
+                 probs: dict | None = None, honmei_min: float | None = None):
     """1レース分：全組み合わせの確率・期待値と、推奨買い目を返す。"""
     ev_th = config.EV_THRESHOLD if ev_th is None else ev_th
     blend = config.MARKET_BLEND if blend is None else blend
@@ -69,7 +69,7 @@ def analyze_race(win_p, odds: dict[str, dict[str, float]], lam2: float, lam3: fl
     tops = [r for r in table if r["type"] == "3連単" and r["odds"]]
     if tops:
         top = dict(max(tops, key=lambda r: r["prob"]))
-        if top["prob"] >= config.HONMEI_MIN_PROB:
+        if top["prob"] >= (config.HONMEI_MIN_PROB if honmei_min is None else honmei_min):
             top["tag"], top["stake"] = config.HONMEI_NAME, config.FLAT_STAKE
             romans[config.HONMEI_NAME] = top
     return {"win_prob": [float(x) for x in np.asarray(win_p)], "table": table, "picks": picks, "romans": romans}
