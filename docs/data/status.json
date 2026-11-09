@@ -1,45 +1,45 @@
 {
- "generated_at": "2026-11-08T22:19:36+09:00",
+ "generated_at": "2026-11-09T22:41:16+09:00",
  "totals": {
-  "races": 273060,
-  "entries": 1638360,
-  "payouts": 538957,
-  "races_with_odds": 16690,
+  "races": 273192,
+  "entries": 1639152,
+  "payouts": 539221,
+  "races_with_odds": 16822,
   "first_date": "20220101",
-  "last_date": "20261108"
+  "last_date": "20261109"
  },
  "days_loaded": {
-  "days": 1773,
-  "days_with_kimarite": 1772
+  "days": 1774,
+  "days_with_kimarite": 1774
  },
  "kimarite": [
   {
    "kimarite": "逃げ",
-   "n": 140620
+   "n": 140696
   },
   {
    "kimarite": "まくり",
-   "n": 41448
+   "n": 41468
   },
   {
    "kimarite": "差し",
-   "n": 34039
+   "n": 34049
   },
   {
    "kimarite": "まくり差し",
-   "n": 31480
+   "n": 31498
   },
   {
    "kimarite": "抜き",
-   "n": 18116
+   "n": 18124
   },
   {
    "kimarite": null,
-   "n": 5053
+   "n": 5052
   },
   {
    "kimarite": "恵まれ",
-   "n": 2304
+   "n": 2305
   }
  ],
  "fill_rate": {
@@ -54,12 +54,20 @@
  },
  "recent_days": [
   {
+   "date": "20261109",
+   "venues": 11,
+   "races": 132,
+   "entries": 792,
+   "finished": 190,
+   "tri_payouts": 130
+  },
+  {
    "date": "20261108",
    "venues": 11,
    "races": 132,
    "entries": 792,
-   "finished": 174,
-   "tri_payouts": 130
+   "finished": 775,
+   "tri_payouts": 132
   },
   {
    "date": "20261107",
@@ -156,85 +164,77 @@
    "entries": 1008,
    "finished": 998,
    "tri_payouts": 168
-  },
-  {
-   "date": "20261026",
-   "venues": 12,
-   "races": 144,
-   "entries": 864,
-   "finished": 855,
-   "tri_payouts": 144
   }
  ],
  "sample": [
   {
-   "race_id": "20261108_23_12",
+   "race_id": "20261109_23_12",
    "boat": 1,
    "name": "茅原悠紀",
    "class": "A1",
    "nat_win": 7.54,
    "motor_2": 41.94,
-   "ex_time": 6.64,
+   "ex_time": 6.69,
    "course": null,
    "st": null,
    "finish": 2
   },
   {
-   "race_id": "20261108_23_12",
+   "race_id": "20261109_23_12",
    "boat": 2,
+   "name": "浜先真範",
+   "class": "A1",
+   "nat_win": 7.15,
+   "motor_2": 25.93,
+   "ex_time": 6.79,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261109_23_12",
+   "boat": 3,
+   "name": "入海馨",
+   "class": "A2",
+   "nat_win": 6.81,
+   "motor_2": 37.04,
+   "ex_time": 6.73,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261109_23_12",
+   "boat": 4,
+   "name": "安田政彦",
+   "class": "B1",
+   "nat_win": 5.22,
+   "motor_2": 41.38,
+   "ex_time": 6.71,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261109_23_12",
+   "boat": 5,
    "name": "後藤正宗",
    "class": "A1",
    "nat_win": 5.92,
    "motor_2": 41.38,
-   "ex_time": 6.68,
+   "ex_time": 6.76,
    "course": null,
    "st": null,
    "finish": null
   },
   {
-   "race_id": "20261108_23_12",
-   "boat": 3,
-   "name": "秋山広一",
-   "class": "A2",
-   "nat_win": 6.56,
-   "motor_2": 24.0,
-   "ex_time": 6.65,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261108_23_12",
-   "boat": 4,
-   "name": "福島勇樹",
-   "class": "A1",
-   "nat_win": 6.71,
-   "motor_2": 40.0,
-   "ex_time": 6.61,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261108_23_12",
-   "boat": 5,
-   "name": "長尾京志",
-   "class": "B1",
-   "nat_win": 4.72,
-   "motor_2": 16.67,
-   "ex_time": 6.75,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261108_23_12",
+   "race_id": "20261109_23_12",
    "boat": 6,
-   "name": "大庭元明",
-   "class": "B1",
-   "nat_win": 5.32,
-   "motor_2": 28.0,
-   "ex_time": 6.54,
+   "name": "古澤光紀",
+   "class": "A2",
+   "nat_win": 6.51,
+   "motor_2": 35.29,
+   "ex_time": 6.71,
    "course": null,
    "st": null,
    "finish": null
@@ -242,39 +242,31 @@
  ],
  "gaps": [
   {
-   "date": "20261108",
-   "jcd": "01",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 52,
-   "no_ex": 0
-  },
-  {
-   "date": "20261108",
+   "date": "20261109",
    "jcd": "02",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 52,
-   "no_ex": 0
+   "no_finish": 51,
+   "no_ex": 1
   },
   {
-   "date": "20261108",
-   "jcd": "03",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 0
-  },
-  {
-   "date": "20261108",
+   "date": "20261109",
    "jcd": "05",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 57,
+   "no_finish": 55,
    "no_ex": 0
   },
   {
-   "date": "20261108",
+   "date": "20261109",
+   "jcd": "07",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 0
+  },
+  {
+   "date": "20261109",
    "jcd": "08",
    "entries": 72,
    "no_class": 0,
@@ -282,23 +274,23 @@
    "no_ex": 0
   },
   {
-   "date": "20261108",
+   "date": "20261109",
    "jcd": "11",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 53,
-   "no_ex": 0
-  },
-  {
-   "date": "20261108",
-   "jcd": "12",
    "entries": 72,
    "no_class": 0,
    "no_finish": 55,
    "no_ex": 0
   },
   {
-   "date": "20261108",
+   "date": "20261109",
+   "jcd": "12",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 0
+  },
+  {
+   "date": "20261109",
    "jcd": "14",
    "entries": 72,
    "no_class": 0,
@@ -306,27 +298,35 @@
    "no_ex": 0
   },
   {
-   "date": "20261108",
-   "jcd": "19",
+   "date": "20261109",
+   "jcd": "17",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 59,
+   "no_finish": 56,
    "no_ex": 0
   },
   {
-   "date": "20261108",
+   "date": "20261109",
+   "jcd": "19",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 0
+  },
+  {
+   "date": "20261109",
    "jcd": "21",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 60,
+   "no_finish": 55,
    "no_ex": 6
   },
   {
-   "date": "20261108",
+   "date": "20261109",
    "jcd": "23",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 59,
+   "no_finish": 56,
    "no_ex": 6
   },
   {
@@ -564,19 +564,6 @@
  ],
  "history_log_tail": [
   {
-   "date": "20261013",
-   "sec": 19.5,
-   "at": "2026-10-24T11:31:03+09:00",
-   "races": 132,
-   "http": {
-    "requests": 1227,
-    "errors": 2,
-    "seconds": 11296.8,
-    "cache_hits": 2269,
-    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
-   }
-  },
-  {
    "date": "20261014",
    "sec": 19.5,
    "at": "2026-10-24T11:31:22+09:00",
@@ -757,19 +744,32 @@
     "cache_hits": 1,
     "last_error": null
    }
+  },
+  {
+   "date": "20261108",
+   "sec": 11.8,
+   "at": "2026-11-09T22:01:27+09:00",
+   "races": 132,
+   "http": {
+    "requests": 1,
+    "errors": 0,
+    "seconds": 10.6,
+    "cache_hits": 1,
+    "last_error": null
+   }
   }
  ],
- "history_sec_per_day_avg": 17.8,
+ "history_sec_per_day_avg": 17.7,
  "model": {
-  "win_top1_acc": 0.5771,
-  "win_logloss": 1.1658,
-  "tri_logloss": 3.8362,
-  "tri_top1_acc": 0.0898,
+  "win_top1_acc": 0.5761,
+  "win_logloss": 1.1667,
+  "tri_logloss": 3.8373,
+  "tri_top1_acc": 0.0899,
   "tri_logloss_uniform": 4.7875,
   "lam2": 0.6499999999999999,
   "lam3": 0.44999999999999996,
-  "train_races": 214869,
-  "valid_races": 53026,
-  "valid_from": "20251118"
+  "train_races": 215134,
+  "valid_races": 52894,
+  "valid_from": "20251120"
  }
 }
