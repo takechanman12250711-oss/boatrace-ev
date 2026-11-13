@@ -1,37 +1,37 @@
 {
- "generated_at": "2026-11-12T22:43:43+09:00",
+ "generated_at": "2026-11-13T22:37:04+09:00",
  "totals": {
-  "races": 273648,
-  "entries": 1641888,
-  "payouts": 540127,
-  "races_with_odds": 17277,
+  "races": 273804,
+  "entries": 1642824,
+  "payouts": 540441,
+  "races_with_odds": 17434,
   "first_date": "20220101",
-  "last_date": "20261112"
+  "last_date": "20261113"
  },
  "days_loaded": {
-  "days": 1777,
-  "days_with_kimarite": 1776
+  "days": 1778,
+  "days_with_kimarite": 1777
  },
  "kimarite": [
   {
    "kimarite": "逃げ",
-   "n": 140854
+   "n": 140948
   },
   {
    "kimarite": "まくり",
-   "n": 41514
+   "n": 41539
   },
   {
    "kimarite": "差し",
-   "n": 34086
+   "n": 34101
   },
   {
    "kimarite": "まくり差し",
-   "n": 31538
+   "n": 31557
   },
   {
    "kimarite": "抜き",
-   "n": 18143
+   "n": 18145
   },
   {
    "kimarite": null,
@@ -39,7 +39,7 @@
   },
   {
    "kimarite": "恵まれ",
-   "n": 2305
+   "n": 2306
   }
  ],
  "fill_rate": {
@@ -54,12 +54,20 @@
  },
  "recent_days": [
   {
+   "date": "20261113",
+   "venues": 13,
+   "races": 156,
+   "entries": 936,
+   "finished": 224,
+   "tri_payouts": 154
+  },
+  {
    "date": "20261112",
    "venues": 13,
    "races": 156,
    "entries": 936,
-   "finished": 219,
-   "tri_payouts": 153
+   "finished": 929,
+   "tri_payouts": 156
   },
   {
    "date": "20261111",
@@ -156,85 +164,77 @@
    "entries": 936,
    "finished": 230,
    "tri_payouts": 147
-  },
-  {
-   "date": "20261030",
-   "venues": 12,
-   "races": 144,
-   "entries": 864,
-   "finished": 211,
-   "tri_payouts": 141
   }
  ],
  "sample": [
   {
-   "race_id": "20261112_24_12",
+   "race_id": "20261113_24_12",
    "boat": 1,
-   "name": "白神優",
+   "name": "大須賀友",
    "class": "A1",
-   "nat_win": 6.3,
-   "motor_2": 39.13,
-   "ex_time": 6.81,
+   "nat_win": 6.65,
+   "motor_2": 40.78,
+   "ex_time": 6.82,
    "course": null,
    "st": null,
    "finish": 2
   },
   {
-   "race_id": "20261112_24_12",
+   "race_id": "20261113_24_12",
    "boat": 2,
-   "name": "藤田靖弘",
-   "class": "A2",
-   "nat_win": 5.38,
-   "motor_2": 20.43,
-   "ex_time": 6.85,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261112_24_12",
-   "boat": 3,
-   "name": "中嶋健一",
-   "class": "A2",
-   "nat_win": 6.14,
-   "motor_2": 33.33,
-   "ex_time": 6.79,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261112_24_12",
-   "boat": 4,
-   "name": "竹田辰也",
-   "class": "A1",
-   "nat_win": 6.45,
-   "motor_2": 27.0,
-   "ex_time": 6.88,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261112_24_12",
-   "boat": 5,
-   "name": "岩崎正哉",
-   "class": "A2",
-   "nat_win": 6.1,
-   "motor_2": 48.0,
-   "ex_time": 6.86,
-   "course": null,
-   "st": null,
-   "finish": null
-  },
-  {
-   "race_id": "20261112_24_12",
-   "boat": 6,
-   "name": "加藤政彦",
+   "name": "川崎智稔",
    "class": "B1",
-   "nat_win": 5.95,
-   "motor_2": 30.11,
-   "ex_time": 6.86,
+   "nat_win": 4.68,
+   "motor_2": 33.01,
+   "ex_time": 6.83,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261113_24_12",
+   "boat": 3,
+   "name": "丸尾義孝",
+   "class": "A1",
+   "nat_win": 6.29,
+   "motor_2": 30.53,
+   "ex_time": 6.9,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261113_24_12",
+   "boat": 4,
+   "name": "廣瀬真也",
+   "class": "B1",
+   "nat_win": 5.4,
+   "motor_2": 34.74,
+   "ex_time": 6.89,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261113_24_12",
+   "boat": 5,
+   "name": "村田修次",
+   "class": "A2",
+   "nat_win": 5.81,
+   "motor_2": 22.68,
+   "ex_time": 6.89,
+   "course": null,
+   "st": null,
+   "finish": null
+  },
+  {
+   "race_id": "20261113_24_12",
+   "boat": 6,
+   "name": "尾崎雄二",
+   "class": "A2",
+   "nat_win": 4.7,
+   "motor_2": 36.08,
+   "ex_time": 6.83,
    "course": null,
    "st": null,
    "finish": null
@@ -242,107 +242,107 @@
  ],
  "gaps": [
   {
-   "date": "20261112",
+   "date": "20261113",
    "jcd": "02",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 54,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "04",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 54,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "07",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "09",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "10",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 56,
-   "no_ex": 6
-  },
-  {
-   "date": "20261112",
-   "jcd": "13",
    "entries": 72,
    "no_class": 0,
    "no_finish": 53,
    "no_ex": 0
   },
   {
-   "date": "20261112",
-   "jcd": "16",
+   "date": "20261113",
+   "jcd": "03",
    "entries": 72,
    "no_class": 0,
-   "no_finish": 51,
+   "no_finish": 54,
    "no_ex": 0
   },
   {
-   "date": "20261112",
-   "jcd": "17",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 56,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "19",
+   "date": "20261113",
+   "jcd": "04",
    "entries": 72,
    "no_class": 0,
    "no_finish": 55,
    "no_ex": 0
   },
   {
-   "date": "20261112",
-   "jcd": "21",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 6
-  },
-  {
-   "date": "20261112",
-   "jcd": "22",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 52,
-   "no_ex": 0
-  },
-  {
-   "date": "20261112",
-   "jcd": "23",
-   "entries": 72,
-   "no_class": 0,
-   "no_finish": 57,
-   "no_ex": 6
-  },
-  {
-   "date": "20261112",
-   "jcd": "24",
+   "date": "20261113",
+   "jcd": "07",
    "entries": 72,
    "no_class": 0,
    "no_finish": 58,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "08",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 1
+  },
+  {
+   "date": "20261113",
+   "jcd": "09",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "10",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 57,
+   "no_ex": 6
+  },
+  {
+   "date": "20261113",
+   "jcd": "13",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "16",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 54,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "20",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "22",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 53,
+   "no_ex": 0
+  },
+  {
+   "date": "20261113",
+   "jcd": "23",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 55,
+   "no_ex": 6
+  },
+  {
+   "date": "20261113",
+   "jcd": "24",
+   "entries": 72,
+   "no_class": 0,
+   "no_finish": 59,
    "no_ex": 0
   },
   {
@@ -564,19 +564,6 @@
  ],
  "history_log_tail": [
   {
-   "date": "20261016",
-   "sec": 0.1,
-   "at": "2026-10-24T11:31:22+09:00",
-   "races": 156,
-   "http": {
-    "requests": 1229,
-    "errors": 2,
-    "seconds": 11316.2,
-    "cache_hits": 2273,
-    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
-   }
-  },
-  {
    "date": "20261017",
    "sec": 0.1,
    "at": "2026-10-24T11:31:23+09:00",
@@ -757,19 +744,32 @@
     "cache_hits": 1,
     "last_error": null
    }
+  },
+  {
+   "date": "20261112",
+   "sec": 14.3,
+   "at": "2026-11-13T22:01:42+09:00",
+   "races": 156,
+   "http": {
+    "requests": 1,
+    "errors": 0,
+    "seconds": 10.6,
+    "cache_hits": 1,
+    "last_error": null
+   }
   }
  ],
- "history_sec_per_day_avg": 17.6,
+ "history_sec_per_day_avg": 17.5,
  "model": {
-  "win_top1_acc": 0.5762,
-  "win_logloss": 1.1668,
-  "tri_logloss": 3.8372,
-  "tri_top1_acc": 0.09,
+  "win_top1_acc": 0.576,
+  "win_logloss": 1.168,
+  "tri_logloss": 3.8391,
+  "tri_top1_acc": 0.0905,
   "tri_logloss_uniform": 4.7875,
   "lam2": 0.6499999999999999,
   "lam3": 0.44999999999999996,
-  "train_races": 215254,
-  "valid_races": 53074,
-  "valid_from": "20251121"
+  "train_races": 215385,
+  "valid_races": 53099,
+  "valid_from": "20251122"
  }
 }
