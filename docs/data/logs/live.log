@@ -398,3 +398,4 @@ Traceback (most recent call last):
     raise HTTPError(http_error_msg, response=self)
 requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.boatrace.jp/owpc/pc/race/raceresult?rno=4&jcd=18&hd=20261118
 15:23:50 results エラー
+=== 2026-11-18 15:24:51 終了。次は live
