@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T22:24:25+09:00",
+ "generated_at": "2026-11-19T22:13:14+09:00",
  "totals": {
   "races": 274512,
   "entries": 1647072,
@@ -564,19 +564,6 @@
  ],
  "history_log_tail": [
   {
-   "date": "20261022",
-   "sec": 19.5,
-   "at": "2026-10-24T11:31:42+09:00",
-   "races": 168,
-   "http": {
-    "requests": 1231,
-    "errors": 2,
-    "seconds": 11335.5,
-    "cache_hits": 2283,
-    "last_error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (https://www1.mbrace.or.jp/od2/B/202608/b260821.lzh)"
-   }
-  },
-  {
    "date": "20261024",
    "sec": 18.7,
    "at": "2026-10-25T06:05:59+09:00",
@@ -757,9 +744,22 @@
     "cache_hits": 1,
     "last_error": "HTTPError: 403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/K/202611/k261117.lzh (https://www1.mbrace.or.jp/od2/K/202611/k261117.lzh)"
    }
+  },
+  {
+   "date": "20261118",
+   "sec": 9.5,
+   "at": "2026-11-19T22:00:54+09:00",
+   "error": "403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/K/202611/k261118.lzh",
+   "http": {
+    "requests": 3,
+    "errors": 3,
+    "seconds": 0.9,
+    "cache_hits": 1,
+    "last_error": "HTTPError: 403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/K/202611/k261118.lzh (https://www1.mbrace.or.jp/od2/K/202611/k261118.lzh)"
+   }
   }
  ],
- "history_sec_per_day_avg": 17.2,
+ "history_sec_per_day_avg": 17.1,
  "model": {
   "win_top1_acc": 0.5759,
   "win_logloss": 1.1681,
