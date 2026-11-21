@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T22:20:59+09:00",
+ "generated_at": "2026-11-21T22:17:24+09:00",
  "totals": {
   "races": 274512,
   "entries": 1647072,
@@ -564,19 +564,6 @@
  ],
  "history_log_tail": [
   {
-   "date": "20261025",
-   "sec": 18.7,
-   "at": "2026-10-26T05:34:05+09:00",
-   "races": 168,
-   "http": {
-    "requests": 2,
-    "errors": 0,
-    "seconds": 17.8,
-    "cache_hits": 0,
-    "last_error": null
-   }
-  },
-  {
    "date": "20261026",
    "sec": 23.3,
    "at": "2026-10-27T05:39:51+09:00",
@@ -757,9 +744,22 @@
     "cache_hits": 0,
     "last_error": "HTTPError: 403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/B/202611/b261119.lzh (https://www1.mbrace.or.jp/od2/B/202611/b261119.lzh)"
    }
+  },
+  {
+   "date": "20261120",
+   "sec": 9.7,
+   "at": "2026-11-21T22:00:56+09:00",
+   "error": "403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/B/202611/b261120.lzh",
+   "http": {
+    "requests": 3,
+    "errors": 3,
+    "seconds": 1.4,
+    "cache_hits": 0,
+    "last_error": "HTTPError: 403 Client Error: Forbidden for url: https://www1.mbrace.or.jp/od2/B/202611/b261120.lzh (https://www1.mbrace.or.jp/od2/B/202611/b261120.lzh)"
+   }
   }
  ],
- "history_sec_per_day_avg": 17.0,
+ "history_sec_per_day_avg": 16.9,
  "model": {
   "win_top1_acc": 0.5759,
   "win_logloss": 1.1681,
